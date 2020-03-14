@@ -1,0 +1,249 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block header %}
+<meta charset="UTF-8"/>
+
+<title>Class Subject Listing</title>
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="viewport" content="user-scalable = 1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap-select.min.css' %}" type="text/css"/>
+<link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.css' %}" type="text/css">
+<link href="{% static 'css/newdesign.css' %}" rel="stylesheet" type="text/css">
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+<!-- <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"> -->
+<script type="text/javascript" src="{% static 'js/bootstrap-select.min.js' %}"></script>
+{% endblock header %}
+{% block css %}
+
+
+{% endblock %}
+{% block base_content %}
+
+<div id="container">
+
+<!--Header-->
+{% include 'users/nav.html' %}  
+<!--Header-->       
+
+<!--Content Container-->
+    <main>
+        <!-- side_bar starts -->
+        {% include 'users/side_bar.html' %}
+        <!-- side_bar ends -->
+    <div id="content-container">
+            <input id="pg_find" type="number" value={{current_page}} hidden>
+        <div class="page-header">
+                <h2>Class Subjects</h2>
+               <!--  <ol class="breadcrumb">
+                    <li><a href="javascript:void(0)"><i class="fa fa-home"></i></a></li>
+                    <li><a href="listing.html">Users</a></li>
+                    <li class="active">Add User</li>
+                </ol> -->
+            </div>
+            <div class="table-top">
+                  <input type="search" id="txt-search" placeholder="Search" />
+                  <div>
+                     <div>
+                        <span>{{data|length}}</span> Results 
+                      </div>
+                      <div> 
+                        <a href="javascript:void(0)" class="add-session-link">
+                              <i class="fa fa-plus"></i>
+                              <span>Add New</span>
+                          </a>
+                      </div>
+                  </div>
+              </div>    
+                <div class="page-content">
+                    
+                    <div class="listing-wrapper">
+                    <div class="listing-container">
+                        {% if status == False %}
+                            <h4 style="color: red;">{{message}}</h4>
+                        {% endif %}
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Code</th>
+                                    <th>Master Subject</th>
+                                    <th>Description</th>
+                                    <th class="division-actions">Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody class="listingtable">
+                                        {% for alldata in data %}
+                                        <tr>
+                                            <td>{{alldata.label}}</a></td>
+                                                <td>{{alldata.code}}</td>
+                                                <td>{{alldata.master_subject.label}}</td>
+                                                <td>{{alldata.description|default:""}}</td>
+                                               <td class='division-actions'><a href="javascript:void(0);" class='edit-link' onclick="editDivision({{alldata.id}},'{{alldata.label}}','{{alldata.code}}',`{{alldata.description|default:""}}`,'{{alldata.master_subject.id}}');"><i class="fa fa-pencil"></i></a><a href="javascript:void(0);" onclick="removeDivision({{alldata.id}})"><i class="fa fa-trash"></i></a></td>
+                                        </tr>
+                                        {% endfor %}
+                                </tbody>
+                            </table>    
+                        </div>
+                        <div class="paginationWrapper">
+                                <div id="divPagination" class="paginationContainer" actpage="1">
+                                    {% if data|length != 0 %}
+                                    {% if batch_numpage != 1 %}
+                                    {% if current_page != 1%}
+                                    <a id="pageprev" href="/subject/class_subjects/?page={{batch_previous_page}}&class={{class_id}}">prev</a>
+                                    {% endif %}
+                                    {% endif %}
+                                    {% with ''|center:batch_numpage as range %}
+                                    {% for i in range %}
+                                    {% if forloop.counter == 1 %}
+                                    <a id="page{{forloop.counter}}" href="/subject/class_subjects/?class={{class_id}}">{{forloop.counter}}</a>
+                                    {% else %}
+                                    <a id="page{{forloop.counter}}" href="/subject/class_subjects/?page={{forloop.counter}}&class={{class_id}}">{{forloop.counter}}</a>
+                                    {% endif %}
+                                    {% endfor %}
+                                    {% endwith %}
+                                    {% if batch_numpage != 1 %}
+                                    {% if current_page != batch_numpage %}
+                                    <a id="pagenext" href="/subject/class_subjects/?page={{batch_next_page}}&class={{class_id}}">next</a>
+                                    {% endif %}
+                                    {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                     </div>
+
+                    
+                  
+                    
+                    
+                    </div>
+
+                </div>
+
+            </div>
+ </main>           
+<!--Content Container-->
+
+</div>
+
+
+<!-- Add Content Dialog-->
+<div id="addMaterSubjectDialog" class="addDivisionDialog">
+    <div class="addDivisionDialogContainer">
+        <div class="heading"><span id="dialogue_title"></span> &nbsp;Subject</div>
+        <div class="dialog-content">
+            <form id="add-subject" method="POST">{% csrf_token %}
+                <input id="edit_value_id" type="number" name="id" placeholder="Add title" hidden/>
+            <div class="form-wrapper">
+                <div class="form-block">
+                    <input id="classs_id" name="classs_id" value={{class_id}} hidden required>
+                            
+                </div>
+                <div class="form-block">
+                    <select name="master_subject_id" id="mastersubjectdd" data-live-search="true" required>
+                            <option value="" selected disabled>Select Master Subject</option>
+                            {% for all_subject in master_subject %}
+                            <option value="{{all_subject.id}}">{{all_subject.label}}</option>
+                            {% endfor %}    
+                    </select>
+                </div>
+            </div>
+            <div class="form-wrapper">
+                <div class="form-block">
+                    <input id="label" type="text" name="label" placeholder="Enter name" required/>
+                </div>
+                <div class="form-block">
+                    <input id="code" type="text" name="code" placeholder="Enter uniquecode" required/>
+                </div>
+            </div>
+            <div class="form-wrapper">
+                <div class="form-block">
+                    <textarea id="description" name="description" placeholder="Enter desc"></textarea>
+                </div>
+            </div>
+            <div class="form-actions">
+                <a href="javascript:void(0);" onclick="refreshPage()">Cancel</a>
+                <button type="submit">Save</button>
+            </div>  
+            </form> 
+        </div>
+    </div>     
+</div>
+<!-- Add Content Dialog-->
+
+
+    <!-- Confirmation Content Dialog-->
+    <div class="confirmationDialog">
+        <div class="confirmationDialogContainer">
+            <div class="heading">Confirmation</div>
+            <div class="dialog-content">
+                <h3>Are you Sure ?</h3>
+               <p>You want to delete the record</p>
+            </div>
+             <div class="form-actions">
+                <a href="javascript:void(0);" onclick="confirmation('cancel')">Cancel</a>
+                <button onclick="confirmation('confirm')">Confirm</button>
+            </div>  
+        </div>     
+    </div>
+<!-- Confirmation Content Dialog-->
+
+<!-- Success Content Dialog-->
+{% if status == True %}
+
+    <div id="successDialog" class="successDialog">
+        <div class="successDialogContainer">
+            <div class="heading">Success</div>
+            <div class="dialog-content">
+                <i class="fa fa-check"></i>
+                <h3>Awesome</h3>
+               <p>{{message}}</p>
+            </div>
+             <div class="form-actions">
+                <!-- <a href="javascript:void(0);" onclick="success('cancel')">Cancel</a> -->
+                <button onclick="success({{class_id}})">OK</button>
+            </div>  
+        </div>     
+    </div>
+{% endif %}
+<!-- Success Content Dialog-->
+
+<!-- Delete Content Dialog-->
+{% if status == "Deleted" %}
+
+    <div id="DeleteDialog" class="successDialog">
+        <div class="successDialogContainer">
+            <div class="heading">Deleted</div>
+            <div class="dialog-content">
+                <i class="fa fa-check"></i>
+                <h3>Awesome</h3>
+               <p>{{message}}</p>
+            </div>
+             <div class="form-actions">
+                <!-- <a href="javascript:void(0);" onclick="success('cancel')">Cancel</a> -->
+                <button onclick="failure({{class_id}})">OK</button>
+            </div>  
+        </div>     
+    </div>
+{% endif %}
+<!-- Delete Content Dialog-->
+
+<div>
+    <form id="remove-model" method="POST" hidden>{% csrf_token %}
+        <input type="text" name="action" value="delete"/>
+        <input id="delete_id" type="number" name="id"/>
+    </form>
+</div>
+{% endblock base_content %}
+
+{% block htmljs %}
+<script src="{% static 'js/site.js' %}"></script>
+<script src="{% static 'js/class_subject.js' %}"></script>
+</script>    
+{% endblock htmljs %}

@@ -1,0 +1,342 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block header %}
+<meta charset="UTF-8"/>
+
+<title>Content</title>
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="viewport" content="user-scalable = 1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap-select.min.css' %}" type="text/css"/>
+<link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.css' %}" type="text/css">
+<link href="{% static 'css/newdesign.css' %}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="{% static 'css/tagify.css' %}" media="screen">
+
+{% endblock header %}
+{% block css %}
+<style type="text/css" media="screen">
+.toclevel1{
+    padding-left: 5%;
+}
+.toclevel2{
+    padding-left: 10%;
+}
+.toclevel3{
+    padding-left: 15%;
+}
+.toclevel4{
+    padding-left: 20%;
+}
+</style>
+
+{% endblock %}
+{% block base_content %}
+
+<div id="container">
+
+    <!--Header-->
+        {% include 'users/nav.html' %}
+    <!-- <header>
+
+    <!--Content Container-->
+    <main>
+       <!-- side_bar starts -->
+       {% include 'users/side_bar.html' %}
+       <!-- side_bar ends -->
+	<div id="content-container">
+       <div class="page-header">
+            <h2>Content</h2>
+            <ol class="breadcrumb">
+                <li><a href="javascript:void(0)"><i class="fa fa-home"></i></a></li>
+                <li><a href="/institute/content/">Content List</a></li>
+               
+            </ol>
+        </div>
+        <div class="page-content">
+
+
+        	<div class="study-material-wrapper">
+        		<div class="study-material-container">
+                    <div class="right-section">
+                        <div class="top-section">
+                            <form method="GET">
+                                <select name="class">
+                                	{% for class in classes %}
+    	                                <option value="{{class.id}}" {% if request.GET.class|add:"0" == class.id %}selected {% endif %}>{{class.label}}</option>
+    	                            {% endfor %}
+                                </select>
+                                <select name="subject">
+                                	{% for subject in subjects %}
+                                    	<option value="{{subject.id}}" {% if request.GET.subject|add:"0" == subject.id %}selected {% endif %}>{{subject.label}}</option>
+                                    {% endfor %}
+                                </select>
+                                <input type=submit value=Submit />
+                            </form>
+                        </div>
+                        <div class="bottom-section">
+
+                            <!--No topic added-->
+                             <div class="phases-wrapper2">
+                                <div class="phases-container">
+                                    <div class="lecture-planner3-wrapper">
+                                        <div class="lecture-planner3-container">
+                                            <div class=" open">
+
+                                                <ul class="units-ul" id="tree1" style="margin-top: 3em;">
+
+                                                </ul>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--No topic added-->
+
+                            <ol class="Left-Unit-Menu" style="display: none;">
+                                <li>
+                                    <div class="default-menu">
+                                        <div>
+                                            <i></i>
+                                            <span>Unit1</span>
+                                        </div>
+                                        <div></div>
+                                    </div>
+                                    <ul>
+                                        <li>
+                                            <div class="default-menu">
+                                                <div>
+                                                    <i></i>
+                                                    <span>Chapter1</span>
+                                                </div>
+                                                <div></div>
+                                            </div>
+                                            <ul>
+                                                <li>
+                                                    <div class="default-menu">
+                                                        <div>
+                                                            <i></i>
+                                                            <span>Topic</span>
+                                                        </div>
+                                                        <div></div>
+                                                    </div>
+                                                    <ul>
+                                                        <li>
+                                                            <div class="default-menu">
+                                                                <div>
+                                                                    <i></i>
+                                                                    <span>Sub Topic</span>
+                                                                </div>
+                                                                <div></div>
+                                                            </div>
+                                                            <ul>
+                                                                <li>
+                                                                    <div class="default-menu">
+                                                                        <div>
+                                                                            <i></i>
+                                                                            <span>Notes</span>
+                                                                        </div>
+                                                                        <div>
+                                                                             <div class="draft">(Draft)</div>
+                                                                            <div class="saved">(Saved)</div>
+                                                                            <div class="published">(Published)</div>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+                                    </ul>
+                                </li>
+
+
+                             </ol>
+
+
+                             <ol class="Left-Unit-Menu" id="Left-Unit-Menu">
+
+
+
+                             </ol>
+
+                            <ol class="Left-Unit-Section" style="display: none;">
+                                <li>
+                                    <div>
+                                        <i></i>
+                                        <span>Unit1</span>
+                                    </div>
+                                    <div>
+                                       <!--  <a href="#"><img src="images/prev-arrow.png"/></a>
+                                        <a href="#"><img src="images/next-arrow.png"/></a> -->
+                                    </div>
+                                </li>
+                                <li class="has-chapter">
+                                    <div>
+                                        <i></i>
+                                        <span>Chapter1</span>
+                                    </div>
+                                    <div>
+                                       <!--  <a href="#"><img src="images/prev-arrow.png"/></a>
+                                        <a href="#"><img src="images/next-arrow.png"/></a> -->
+                                    </div>
+                                </li>
+                                <li class="has-topic">
+                                    <div>
+                                        <i></i>
+                                        <span>Topic</span>
+                                    </div>
+                                    <div>
+                                        <!-- <a href="#"><img src="images/prev-arrow.png"/></a>
+                                        <a href="#"><img src="images/next-arrow.png"/></a> -->
+                                    </div>
+                                </li>
+                                 <li class="has-notes">
+                                    <div>
+                                        <i></i>
+                                        <span>Notes</span>
+                                    </div>
+                                    <div>
+                                        <div class="draft">(Draft)</div>
+                                        <div class="saved">(Saved)</div>
+                                        <div class="published">(Published)</div>
+                                        <!-- <a href="#"><img src="images/prev-arrow.png"/></a>
+                                        <a href="#"><img src="images/next-arrow.png"/></a> -->
+                                    </div>
+                                </li>
+                                <li>
+                                    <div>
+                                        <i></i>
+                                        <span>Unit2</span>
+                                    </div>
+                                    <div>
+                                       <!--  <a href="#"><img src="images/prev-arrow.png"/></a>
+                                        <a href="#"><img src="images/next-arrow.png"/></a> -->
+                                    </div>
+                                </li>
+                            </ol>
+
+
+                        </div>
+
+
+                    </div>
+
+        	   </div>
+            </div>
+
+        </div>
+
+	</div>
+      <div class="successDialog">
+          <div class="successDialogContainer">
+              <div class="heading">Success</div>
+              <div class="dialog-content">
+                  <i class="fa fa-check"></i>
+                  <h3>Awesome</h3>
+                 <p>Successfully create</p>
+              </div>
+              <div class="form-actions">
+                  <!-- <a href="javascript:void(0);" onclick="success('cancel')">Cancel</a> -->
+                  <button onclick="success()">OK</button>
+              </div>
+          </div>
+      </div>
+</main>
+<!--Content Container-->
+</div>
+{% endblock %}
+{% block htmljs %}
+<!-- <script src="{% static 'js/bootstrap.min.js' %}"></script> -->
+<script type="text/javascript" src="{% static 'js/tagify.js' %}"></script>
+<script  type="text/javascript" charset="utf-8" >
+    {% if request.GET.subject and request.GET.class %}
+     $.ajax({
+            type:'POST',
+            url:'{% url "get_toc_by_subject_and_class" %}',
+            data:{'subject_id':$("select[name=subject]").val(), 'classs_id':$("select[name=class]").val()},
+            success:function(response){
+                $("ul.units-ul").empty();
+                response.forEach(function(val, index){
+                    var ele = $("ul.units-ul");
+
+                    if(val.parent_id)
+                    {
+                        ele = $("#toc" + val.parent_id);
+                    }
+                    var li_string= '';
+                    if(val.content_type){
+                        console.log(val.preview_link,"fwkjfwkhdwj"),
+                        li_string += "<li style='display:block;' id='toccontent" +val.id +"' class='toclevel" +val.level +"' >";
+                        // li_string += '<a href="' +val.link+ '?toc_id='+val.parent_id+'">'+val.label+'</a>';
+                        li_string += '<a href="' +val.preview_link+ '?toc_id='+val.parent_id+'">'+val.label+'</a>';
+
+                    }
+                    else{
+                        li_string += "<li style='display:block;' id='toc" +val.id +"' class='toclevel" +val.level +"' >";
+                        li_string += val.label;
+                        li_string += "<span type='button' style='float:right;margin-left: 10px;width:30px' onclick='openSMCreate("+val.id+")'>+SM</span>";
+                        li_string += "<span type='button' style='float:right;margin-left: 10px;width:30px' onclick='openATCreate("+val.id+")'>+AT</span>";
+                    }
+                    li_string += "</li>";
+                        // $(ele).append("<label data-parent_id="+val.id+"><input type='radio' name='toc' value="+val.id+" data-content-type="+val.content_type+" class='toc "+(val.content_type ? " content":"")+"'/><span>"+val.label+"</span></label>")
+                    if(val.level == 0){
+                        $(ele).append(li_string)
+                    }
+                    else{
+                        if ($(ele).find('ul').length == 0){
+                            $(ele).append('<ul></ul>');
+                        }
+                        var child_el = $(ele).find('ul')[0];
+                        $(child_el).prepend(li_string);
+                    }
+
+                });
+
+
+
+                {% if request.GET.modified_id %}
+                    setTimeout(function(){
+                        var created_id = '#toccontent{{request.GET.modified_id}}';
+                        $(created_id).find('a').css( "color", "green" );
+                        var uls = $(created_id).parents('ul');
+                        for (i = 0; i < uls.length; i++) {
+                          ul = uls[i];
+                          $(ul).children()[0].click()
+                        }
+                     }, 2000);
+                {% endif %}
+                $('#tree1').treed();
+            }
+        });
+        {% endif %}
+    function openSMCreate(toc_id){
+        // alert("Opened TOC Content Create Page for " + toc_id)
+        window.location.href= '{% url 'content_sm_create' %}?toc_id=' + toc_id ;
+    }
+
+    function openATCreate(toc_id){
+      window.location.href= `{% url 'AssessmentCreateTemplateView' %}?toc_id=${toc_id}`;
+    }
+
+    {% if request.GET.success %}
+        $('.successDialog').css('display', 'flex');
+
+        function success(){
+          let win_url = new URL(window.location.href)
+          let search = win_url.search;
+          var search_params = new URLSearchParams(search);
+          search_params.delete('success');
+          win_url.search = search_params.toString();
+          var new_url = win_url.toString();
+          window.location.href = new_url;
+          $('.successDialog').css('display', 'none');
+        }
+    {% endif %}
+</script>
+{% include 'include/collapse_part.html' %}
+{% endblock htmljs %}

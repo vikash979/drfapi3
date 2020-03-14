@@ -1,0 +1,207 @@
+{% extends 'identity_service/base.html' %}
+{% load static %}
+{% block header %}
+<meta charset="UTF-8"/>
+
+<title>Master Subject Listing</title>
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="viewport" content="user-scalable = 1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.css' %}" type="text/css">
+<link href="{% static 'css/newdesign.css' %}" rel="stylesheet" type="text/css">
+{% endblock header %}
+{% block css %}
+
+
+{% endblock %}
+{% block base_content %}
+
+
+
+<div id="container">
+    {% include 'identity_service/nav.html' %}
+
+<!--Header-->
+ 
+<!--Header-->       
+
+<!--Content Container-->
+    <main>
+        {% include 'identity_service/side_bar.html' %}
+    <div id="content-container">
+        <div class="page-header">
+                <h2>Class</h2>
+               <!--  <ol class="breadcrumb">
+                    <li><a href="javascript:void(0)"><i class="fa fa-home"></i></a></li>
+                    <li><a href="listing.html">Users</a></li>
+                    <li class="active">Add User</li>
+                </ol> -->
+            </div>
+            <div class="table-top">
+                        <input type="search" id="txt-search" placeholder="Search" onkeyup="class_filter(this.value)" />
+                        <div>
+                           <div>
+                                3 Classes 
+                            </div>
+                            <div> 
+                              <a href="javascript:void(0)" class="add-session-link">
+                                    <i class="fa fa-plus"></i>
+                                    <span>Add New</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>    
+                <div class="page-content">
+                    
+                    <div class="listing-wrapper">
+                    <div class="listing-container">
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Sequence Number</th>
+                                    <th>Short Code</th>
+                                    
+                                    <th>Description</th>
+                                    <th class="division-actions">Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody class="listingtable" id="listingtable">
+                                   
+                                
+                                </tbody>
+                            </table>    
+                        </div>
+                        <div class="paginationWrapper">
+                            <div class="paginationContainer" actpage="1" id="pagination">
+                               
+                            </div>
+                        </div>
+                     </div>
+
+                    
+                  
+                    
+                    
+                    </div>
+
+                </div>
+
+            </div>
+ </main>           
+<!--Content Container-->
+
+</div>
+
+
+<!-- Add Content Dialog-->
+    <div class="addSessionDialog">
+        <div class="addSessionDialogContainer">
+            <div class="heading">Add Class</div>
+            <div class="dialog-content">
+                <form>
+                <div class="form-wrapper">
+                     <div class="form-block">
+                        <input type="hidden" name="hidden_class_id"  id= "hidden_class_id" value=""> 
+                        <input type="text" name="title" id="title" placeholder="Enter title" required/>
+                    </div>
+                     <div class="form-block">
+                        <input type="text" name="shortcode" id="shortcode" placeholder="Enter short code" required/>
+                    </div>
+                    <div class="form-block">
+                        <input type="text" name="description" id="description" placeholder="Enter description" required/>
+                   </div>
+                    <div class="form-block">
+                        <input type="text" name="order" id="order" placeholder="Enter sequence" required/>
+                   </div>
+                </div>
+
+                
+                <div class="form-actions">
+                    <a href="javascript:void(0);">Cancel</a>
+                    <button type="submit" id="addclass" class="save_class" >Save</button>
+                    <button type="submit" style="display:none;" id="update" class="save_class" onclick="updateclass()" >Save</button>
+                </div>  
+                </form> 
+            </div>
+        </div>     
+    </div>
+    <!-- Add Content Dialog-->
+
+
+    <!-- Add Content Dialog-->
+    <div class="addSessionDialog foredit " id="addSessionDialog">
+        <div class="addSessionDialogContainer">
+            <div class="heading">Edit Classss</div>
+            <div class="dialog-content">
+                <form>
+                <div class="form-wrapper">
+                     <div class="form-block">
+                        <input type="text" name="title" placeholder="Enter title" required/>
+                    </div>
+                     <div class="form-block">
+                        <input type="text" name="shortcode" placeholder="Enter short code" required/>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <a href="javascript:void(0);">Cancel</a>
+                    <button type="submit">Save</button>
+                </div>  
+                </form> 
+            </div>
+        </div>     
+    </div>
+    <!-- Add Content Dialog-->
+
+
+<!-- Confirmation Content Dialog-->
+    <div class="confirmationDialog">
+        <div class="confirmationDialogContainer">
+            <div class="heading">Confirmation</div>
+            <div class="dialog-content">
+                <h3>Are you Sure ?</h3>
+               <p>This is a confirmation dialog  with custom message.</p>
+            </div>
+             <div class="form-actions">
+                <a href="javascript:void(0);" onclick="confirmation('cancel')">Cancel</a>
+                <button onclick="confirmation('confirm')">Confirm</button>
+            </div>  
+        </div>     
+    </div>
+<!-- Confirmation Content Dialog-->
+
+<!-- Success Content Dialog-->
+    <div class="successDialog">
+        <div class="successDialogContainer">
+            <div class="heading">Success</div>
+            <div class="dialog-content">
+                <i class="fa fa-check"></i>
+                <h3>Awesome</h3>
+               <p>This is a Success dialog  with custom message.</p>
+            </div>
+             <div class="form-actions">
+                <a href="javascript:void(0);" onclick="success('cancel')">Cancel</a>
+                <button onclick="success('ok')">OK</button>
+            </div>  
+        </div>     
+    </div>
+<!-- Success Content Dialog-->
+<script>
+    $( "form" ).on( "submit", function( event ) {
+          event.preventDefault();
+          console.log( $( this ).serializeArray() );
+        });
+
+
+</script>  
+
+
+
+{% endblock base_content %}
+
+{% block htmljs %}
+<script src="{% static 'js/class2.js' %}"></script>
+<script src="{% static 'js/site.js' %}"></script>
+{% endblock htmljs %}

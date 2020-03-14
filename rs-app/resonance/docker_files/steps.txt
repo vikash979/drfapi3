@@ -1,0 +1,2 @@
+docker build -t resonance_env . -f docker_files/DockerfileEnv
+docker-compose -f docker-compose-local.yaml up

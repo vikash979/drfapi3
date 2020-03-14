@@ -1,0 +1,107 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block header %}
+<!DOCTYPE html>
+  <html lang="en">
+<head>
+<title>Login</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="icon" type="image/png" href="https://colorlib.com/etc/lf/Login_v10/images/icons/favicon.ico" />
+
+<link rel="stylesheet" type="text/css" href="https://colorlib.com/etc/lf/Login_v10/vendor/bootstrap/css/bootstrap.min.css">
+
+<link rel="stylesheet" type="text/css" href="https://colorlib.com/etc/lf/Login_v10/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+
+<link rel="stylesheet" type="text/css" href="https://colorlib.com/etc/lf/Login_v10/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+
+<link rel="stylesheet" type="text/css" href="https://colorlib.com/etc/lf/Login_v10/vendor/animate/animate.css">
+
+<link rel="stylesheet" type="text/css" href="https://colorlib.com/etc/lf/Login_v10/vendor/css-hamburgers/hamburgers.min.css">
+
+<link rel="stylesheet" type="text/css" href="https://colorlib.com/etc/lf/Login_v10/vendor/animsition/css/animsition.min.css">
+
+<link rel="stylesheet" type="text/css" href="https://colorlib.com/etc/lf/Login_v10/vendor/select2/select2.min.css">
+
+<link rel="stylesheet" type="text/css" href="https://colorlib.com/etc/lf/Login_v10/vendor/daterangepicker/daterangepicker.css">
+
+<link rel="stylesheet" type="text/css" href="https://colorlib.com/etc/lf/Login_v10/css/util.css">
+<link rel="stylesheet" type="text/css" href="https://colorlib.com/etc/lf/Login_v10/css/main.css">
+
+</head>
+{% endblock header %}
+{% block base_content %}
+<body>
+<div class="limiter">
+<div class="container-login100">
+<div class="wrap-login100 p-t-50 p-b-90">
+<form class="login100-form validate-form flex-sb flex-w" method="post" id="loginform" action="/institute/login/">{% csrf_token %}
+  <span class="login100-form-title p-b-51">
+    Login
+  </span>
+  <span style="color:red;font-size:16px;">{{error.errors}}</span>
+  <div class="wrap-input100 validate-input m-b-16" data-validate="Username is required">
+    <input class="input100" type="text" name="username" placeholder="Username" required>
+    <span class="focus-input100"></span>
+  </div>
+  <div class="wrap-input100 validate-input m-b-16" data-validate="Password is required">
+    <input class="input100" type="password" name="password" placeholder="Password" required>
+    <span class="focus-input100"></span>
+  </div>
+  
+  <div class="container-login100-form-btn m-t-17">
+    <button class="login100-form-btn" type="submit">
+      Login
+    </button>
+  </div>
+  </form>
+</div>
+</div>
+</div>
+<div id="dropDownSelect1"></div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<script src="https://colorlib.com/etc/lf/Login_v10/vendor/animsition/js/animsition.min.js" type="8ec87d848c05cf4d5bb41324-text/javascript"></script>
+
+<script src="https://colorlib.com/etc/lf/Login_v10/vendor/bootstrap/js/popper.js" type="8ec87d848c05cf4d5bb41324-text/javascript"></script>
+<script src="https://colorlib.com/etc/lf/Login_v10/vendor/bootstrap/js/bootstrap.min.js" type="8ec87d848c05cf4d5bb41324-text/javascript"></script>
+
+<script src="https://colorlib.com/etc/lf/Login_v10/vendor/select2/select2.min.js" type="8ec87d848c05cf4d5bb41324-text/javascript"></script>
+
+<script src="https://colorlib.com/etc/lf/Login_v10/vendor/daterangepicker/moment.min.js" type="8ec87d848c05cf4d5bb41324-text/javascript"></script>
+<script src="https://colorlib.com/etc/lf/Login_v10/vendor/daterangepicker/daterangepicker.js" type="8ec87d848c05cf4d5bb41324-text/javascript"></script>
+
+<script src="https://colorlib.com/etc/lf/Login_v10/vendor/countdowntime/countdowntime.js" type="8ec87d848c05cf4d5bb41324-text/javascript"></script>
+
+<script src="https://colorlib.com/etc/lf/Login_v10/js/main.js" type="8ec87d848c05cf4d5bb41324-text/javascript"></script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13" type="8ec87d848c05cf4d5bb41324-text/javascript"></script>
+<script type="8ec87d848c05cf4d5bb41324-text/javascript">
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+
+	  gtag('config', 'UA-23581568-13');
+	</script>
+<script src="https://ajax.cloudflare.com/cdn-cgi/scripts/7089c43e/cloudflare-static/rocket-loader.min.js" data-cf-settings="8ec87d848c05cf4d5bb41324-|49" defer=""></script></body>
+<!-- <script>
+  $('#loginform').on('submit', function(e){
+    e.preventDefault();
+    var login_form_data = $(this).serialize();
+    $.ajax({
+      url: `/api/v1/auth/login/`,
+      type: 'POST',
+      data: login_form_data,
+      success: function(response){
+        window.location.href = `/dashboard/`;
+      }
+    });
+  });
+</script> -->
+</html>
+{% endblock base_content %}
+
+{% block htmljs %}
+{% endblock htmljs %}

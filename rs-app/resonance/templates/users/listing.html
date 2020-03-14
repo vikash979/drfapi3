@@ -1,0 +1,352 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block header %}
+<meta charset="UTF-8"/>
+
+<title>Faculty / Coordinator Listing</title>
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="viewport" content="user-scalable = 1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap-select.min.css' %}" type="text/css"/>
+<link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.css' %}" type="text/css">
+<link href="{% static 'css/newdesign.css' %}" rel="stylesheet" type="text/css">
+{% endblock header %}
+{% block css %}
+
+
+{% endblock %}
+{% block base_content %}
+
+<div id="container">
+<!--Header-->
+{% include 'users/nav.html' %}
+<!-- <header>  	
+
+<!--Content Container-->
+<main>
+     <!-- side_bar starts -->
+     {% include 'users/side_bar.html' %}
+     <!-- side_bar ends -->
+     <div id="content-container">
+            <input id="pg_find" type="number" value={{current_page}} hidden>
+        <div class="table-top">
+                  <input type="search"  id="txt-search" placeholder="Search" />
+                  <div>
+                     <div>
+                          <span id="faculty_count"></span> Results 
+                      </div>
+                      <div> 
+                        <a href="/user/faculties/add/">
+                              <i class="fa fa-plus"></i>
+                              <span>Add New</span>
+                          </a>
+                      </div>
+                  </div>
+              </div>    
+              <div class="page-content">
+                  
+                  <div class="listing-wrapper">
+                  <div class="listing-container">
+                    {% if status == False %}
+                        <h4 style="color: red;">{{message}}</h4>
+                    {% endif %}
+                      <div class="table-wrapper">
+                          <table>
+                              <thead>
+                              <tr>
+                                  <th>Name</th>
+                                  <th>Center</th>
+                                  <th>Subject</th>
+                                  <th>Actions</th>
+                              </tr>
+                              </thead>
+                              <tbody class="listingtable">
+                                  {% for key, value in fulldata.items %}
+                                        <tr>
+                                            <td>
+                                                <div class="usersProfile">
+                                                    <div class="thumb"><img id="front_image" class="img-header" src="{{value.profile_pic}}" alt="no image"></div>
+                                                    <div class="thumb-content">
+                                                        <a href="/user/faculties/update/{{value.id}}">{{value.name}}</a>
+                                                                <div><span>{{value.department}}</span></div>
+                                                                <div><span>{{value.designation}}</span></div>
+                                                                <div><span>{{value.role}}</span></div>
+                                                        </div>
+                                                </div>
+                                            </td>
+                                                            
+                                            <td>{{value.center}}</td>
+                                            <td>{{value.subject}}</td>
+                                            <td><a href="javascript:void(0);" onclick="stor_update_id({{value.id}});"><i class="fa fa-pencil"></i></a><a href="javascript:void(0);" onclick="delete_faculty({{value.id}});"><i class="fa fa-trash"></i></a></td>
+                                        </tr>
+                                {% endfor %}
+                              </tbody>
+                          </table>    
+                      </div>
+                      <div class="paginationWrapper">
+                            <div id="divPagination" class="paginationContainer" actpage="1">
+                                {% if data|length != 0 %}
+                                {% if batch_numpage != 1 %}
+                                <a id="pageprev" href="/user/faculties/?page={{batch_previous_page}}">prev</a>
+                                {% endif %}
+                                {% with ''|center:batch_numpage as range %}
+                                {% for i in range %}
+                                {% if forloop.counter == 1 %}
+                                <a id="page{{forloop.counter}}" href="/user/faculties/">{{forloop.counter}}</a>
+                                {% else %}
+                                <a id="page{{forloop.counter}}" href="/user/faculties/?page={{forloop.counter}}">{{forloop.counter}}</a>
+                                {% endif %}
+                                {% endfor %}
+                                {% endwith %}
+                                {% if batch_numpage != 1 %}
+                                <a id="pagenext" href="/user/faculties/?page={{batch_next_page}}">next</a>
+                                {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
+                   </div>
+
+                  
+                  <div class="filter-section" id="filter-section">
+                      <div class="filter-section-container">
+                           <div class="form-actions">
+                              <div>Filters</div>
+                              <span style="margin-left:44px">
+                               <a class="filterApplyBtn" href="/user/faculties/">Reset</a></span> <span >
+                              <a class="filterApplyBtn" href="javascript:void(0);" onclick="redirecFilterPage();">Apply</a></span>
+                            </span>
+                          </div>  
+                          <div class="filters-wrapper">
+                          <div class="filter-block">
+                              <div class="filter-header">
+                                      Departments
+                                      <div>
+                                         <!-- <a href="javascript:void(0);" class="add-departments-link"><i class="fa fa-plus"></i></a><a href="manage.html" class="manage-departments-link"><i class="fa fa-cog"></i></a>  -->
+                                     </div>
+                              </div>
+                              <div class="filter-list">
+                                  <ol class="departmentFilter">
+                                        {% for alldata in department%}
+                                        <li><label><input id="department_id={{alldata.id}}" type="checkbox" value="{{alldata.id}}" class="etcheckbox" onclick="selectFilterOption('department_id',{{alldata.id}}, this);">{{alldata.name}}</label></li>
+                                          {% endfor %}
+                                  </ol>
+                              </div>
+                          </div>
+                          <div class="filter-block">
+                              <div class="filter-header">
+                                  Designation
+                                  <div>
+                                      <!-- <a href="javascript:void(0);" class="add-designation-link"><i class="fa fa-plus"></i></a><a href="manage.html" class="manage-designation-link"><i class="fa fa-cog"></i></a>  -->
+                                  </div>
+                              </div>
+                              <div class="filter-list">
+                                  <ol class="designationFilter">
+                                        {% for alldata in designation%}
+                                        <li><label><input id="designation_id={{alldata.id}}" type="checkbox" value="{{alldata.id}}" class="etcheckbox" onclick="selectFilterOption('designation_id',{{alldata.id}}, this);">{{alldata.name}}</label></li>
+                                          {% endfor %} 
+                                  </ol>
+                              </div>
+                          </div>
+                          <div class="filter-block">
+                              <div class="filter-header">
+                                  Division
+                                  <div>
+                                      <!-- <a href="javascript:void(0);" class="add-division-link"><i class="fa fa-plus"></i></a><a href="manage.html" class="manage-division-link"><i class="fa fa-cog"></i></a> -->
+                                  </div> 
+                              </div>
+                              <div class="filter-list">
+                                  <ol class="divisionFilter">
+                                        {% for alldata in division%}
+                                        <li><label><input id="division_id={{alldata.id}}" type="checkbox" value="{{alldata.id}}" class="etcheckbox" onclick="selectFilterOption('division_id',{{alldata.id}}, this);">{{alldata.name}}</label></li>
+                                        {% endfor %}
+                                  </ol>
+                              </div>
+                          </div>
+                          <!-- <div class="filter-block">
+                              <div class="filter-header">
+                                  Skills
+                                  <div>
+                                      
+                                  </div> 
+                              </div>
+                              <div class="filter-list">
+                                  <ol class="skillFilter">
+                                        
+                                  </ol>
+                              </div>
+                          </div> -->
+                          <div class="filter-block">
+                              <div class="filter-header">
+                                  Employment Type
+                                  <div>
+                                      <!-- <a href="javascript:void(0);" class="add-et-link"><i class="fa fa-plus"></i></a><a href="manage.html" class="manage-et-link"><i class="fa fa-cog"></i></a>  -->
+                                  </div> 
+                              </div>
+                              <div class="filter-list">
+                                  <ol class="ETFilter">
+                                      {% for alldata in employement%}
+                                      <li><label><input id="employment_type_id={{alldata.id}}" type="checkbox" value="{{alldata.id}}" class="etcheckbox" onclick="selectFilterOption('employment_type_id',{{alldata.id}}, this);">{{alldata.name}}</label></li>
+                                        {% endfor %}
+                                </ol>
+                              </div>
+                          </div>
+                          <!-- <div class="filter-block">
+                              <div class="filter-header">
+                                  Roles
+                                  <div>
+                                      <a href="javascript:void(0);" class="add-roles-link"><i class="fa fa-plus"></i></a><a href="manage.html" class="manage-roles-link"><i class="fa fa-cog"></i></a> 
+                                  </div> 
+                              </div>
+                              <div class="filter-list">
+                                  <ol class="rolesFilter">
+                                      <li><label><input type="checkbox" value="role1" class="rolescheckbox">role1</label></li>
+                                  </ol>
+                              </div>
+                          </div> -->
+                          <div class="filter-block">
+                              <div class="filter-header">
+                                  Centers
+                                  <div>
+                                      <!-- <a href="javascript:void(0);" class="add-centers-link"><i class="fa fa-plus"></i></a><a href="manage.html" class="manage-centers-link"><i class="fa fa-cog"></i></a>  -->
+                                  </div> 
+                              </div>
+                              <div class="filter-list">
+                                  <ol class="centersFilter">
+                                        {% for alldata in center%}
+                                        <li><label><input id="center_id={{alldata.id}}" type="checkbox" value="{{alldata.id}}" class="etcheckbox" onclick="selectFilterOption('center_id',{{alldata.id}}, this);">{{alldata.name}}</label></li>
+                                          {% endfor %}
+                                  </ol>
+                              </div>
+                          </div>
+                          <div class="filter-block">
+                              <div class="filter-header">
+                                  Subjects
+                                 
+                              </div>
+                              <div class="filter-list">
+                                  <ol class="subjectsFilter">
+                                        {% for alldata in subject%}
+                                        <li><label><input id="subject_id={{alldata.id}}" type="checkbox" value="{{alldata.id}}" class="etcheckbox" onclick="selectFilterOption('subject_id',{{alldata.id}}, this);">{{alldata.label}}</label></li>
+                                          {% endfor %}
+                                  </ol>
+                              </div>
+                          </div>
+                          <div class="filter-block">
+                              <div class="filter-header">
+                                  Batch
+                                </div>
+                                 
+                              <div class="filter-list">
+                                  <ol class="batchFilter">
+                                        {% for alldata in batch%}
+                                        <li><label><input id="batch_id={{alldata.id}}" type="checkbox" value="{{alldata.id}}" class="etcheckbox" onclick="selectFilterOption('batch_id',{{alldata.id}}, this);">{{alldata.label}}</label></li>
+                                          {% endfor %}
+                                  </ol>
+                              </div>
+                          </div>
+                      </div>
+                           
+                      </div>
+                  </div>
+
+                  
+                  
+                  </div>
+
+              </div>
+
+          </div>
+      </main>
+<!--Content Container-->
+
+
+
+
+</div>
+
+
+<!-- Add Content Dialog-->
+<div class="AddContentDialog">
+  <div class="AddContentDialogContainer">
+      <div class="heading">Add Department</div>
+      <div class="dialog-content">
+          <form>
+          <input type="search"name="tags-outside" placeholder="Type and Search" />
+          <div class="form-actions">
+              <a href="javascript:void(0);">Cancel</a>
+              <button type="submit">Save</button>
+          </div>  
+          </form> 
+      </div>
+  </div>     
+</div>
+<!-- Add Content Dialog-->
+
+
+<!-- Confirmation Content Dialog-->
+  <div class="confirmationDialog">
+      <div class="confirmationDialogContainer">
+          <div class="heading">Confirmation</div>
+          <div class="dialog-content">
+              <h3>Are you Sure ?</h3>
+             <p>This is a confirmation dialog  with custom message.</p>
+          </div>
+           <div class="form-actions">
+              <a href="javascript:void(0);" onclick="confirmation('cancel')">Cancel</a>
+              <button onclick="confirmation('confirm')">Confirm</button>
+          </div>  
+      </div>     
+  </div>
+<!-- Confirmation Content Dialog-->
+
+<!-- Success Content Dialog-->
+{% if status == True %}
+
+    <div id="successDialog" class="successDialog">
+        <div class="successDialogContainer">
+            <div class="heading">Success</div>
+            <div class="dialog-content">
+                <i class="fa fa-check"></i>
+                <h3>Awesome</h3>
+               <p>{{message}}</p>
+            </div>
+             <div class="form-actions">
+                <!-- <a href="javascript:void(0);" onclick="success('cancel')">Cancel</a> -->
+                <button onclick="success()">OK</button>
+            </div>  
+        </div>     
+    </div>
+{% endif %}
+<!-- Success Content Dialog-->
+{% if status == "Deleted" %}
+
+    <div id="failDialogue" class="successDialog">
+        <div class="successDialogContainer">
+            <div class="heading">Success</div>
+            <div class="dialog-content">
+                <i class="fa fa-check"></i>
+                <h3>Awesome</h3>
+               <p>{{message}}</p>
+            </div>
+             <div class="form-actions">
+                <!-- <a href="javascript:void(0);" onclick="success('cancel')">Cancel</a> -->
+                <button onclick="failure()">OK</button>
+            </div>  
+        </div>     
+    </div>
+{% endif %}
+<div>
+    <form id="remove-model" method="POST" action="/user/faculties/add/" hidden>{% csrf_token %}
+        <input type="text" name="action" value="delete"/>
+        <input id="delete_id" type="number" name="id"/>
+    </form>
+</div>
+
+{% endblock base_content %}
+
+{% block htmljs %}
+<script src="{% static 'js/site.js' %}"></script>
+<script src="{% static 'js/faculty_listing.js' %}"></script>
+{% endblock htmljs %}	

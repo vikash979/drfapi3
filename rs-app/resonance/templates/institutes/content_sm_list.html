@@ -1,0 +1,117 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block header %}
+<meta charset="UTF-8"/>
+
+<title>Content SM Create</title>
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="viewport" content="user-scalable = 1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap-select.min.css' %}" type="text/css"/>
+<link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.css' %}" type="text/css">
+<link href="{% static 'css/newdesign.css' %}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="{% static 'css/tagify.css' %}" media="screen">
+
+{% endblock header %}
+{% block css %}
+<style type="text/css" media="screen">
+.toclevel1{
+    padding-left: 5%;
+}    
+.toclevel2{
+    padding-left: 10%;
+}
+.toclevel3{
+    padding-left: 15%;
+}
+.toclevel4{
+    padding-left: 20%;
+}
+</style>
+
+{% endblock %}
+{% block base_content %}
+
+<div id="container">
+
+    <!--Header-->
+        {% include 'users/nav.html' %}
+    <!-- <header>        
+
+    <!--Content Container-->
+    <main>
+       <!-- side_bar starts -->
+       {% include 'users/side_bar.html' %}
+       <!-- side_bar ends -->
+	<div id="content-container">
+       <div class="page-header">
+            <h2>Study Material</h2>
+            <ol class="breadcrumb">
+                <li><a href="javascript:void(0)"><i class="fa fa-home"></i></a></li>
+                <li><a href="listing.html">Study Material</a></li>
+                <li class="active">TOC Creation</li>
+            </ol>
+
+            <div class="table-top">
+                        <div>
+                           <div>
+                                <span>{{materials|length}} Study Materials</span>
+                            </div>
+                            <div> 
+                              <a href="{% url 'content_sm_create' %}" class="add-center-link">
+                                    <i class="fa fa-plus"></i>
+                                    <span>Add New</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>    
+        </div>
+
+       <div class="page-content">
+
+            <table style="width:100%">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Type</th>
+                        <th>Faculty Only</th>
+                        <th>Language</th>
+                        <th>Duration</th>
+                       
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for material in materials %}
+                    <tr>
+                        <td>{{material.id}}</td>
+                        <td>{{material.title}}</td>
+                        <td>{{material.get_type_display}}</td>
+                        <td>{{material.faculty_only}}</td>
+                        <td>
+                            {% for i in material.files.all %}
+                                {{i.language.name}} 
+                            {% endfor %}
+                        </td>
+                        
+                        <td>{{material.duration_mins}}</td>
+                       
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+	</div>
+</main>    
+<!--Content Container-->
+</div>
+{% endblock %}
+{% block htmljs %}
+<script type="text/javascript">
+    {% if request.GET.success %}
+        alert("Saved Successfully!");
+    {% endif %}
+</script>
+{% endblock htmljs %}

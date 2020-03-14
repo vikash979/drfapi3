@@ -1,0 +1,639 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block header %}
+<meta charset="UTF-8"/>
+
+<title>Program Phases Listing</title>
+<!-- <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"> -->
+<meta name="viewport" content="user-scalable = 1">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="css/bootstrap-datetimepicker.css" />
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/bootstrap-select.min.js' %}"></script>
+<script src="{% static 'js/highstock.js' %}"></script>
+<script src="{% static 'js/moment.min.js' %}"></script>            
+<script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
+
+
+
+<link href="{% static 'css/bootstrap-select.min.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'css/newdesign.css' %}" rel="stylesheet" type="text/css">
+
+<!-- Include the plugin's CSS and JS: -->
+
+
+{% endblock header %}
+{% block css %}
+
+
+{% endblock %}
+{% block base_content %}
+
+
+
+<div id="container">
+    {% include 'users/nav.html' %}
+
+<!--Header-->
+ 
+<!--Header-->       
+
+<!--Content Container-->
+    <main>
+        {% include 'users/side_bar.html' %}
+    <div id="content-container">
+        <div class="page-header">
+                <h2>Programs Phases</h2>
+               <!--  <ol class="breadcrumb">
+                    <li><a href="javascript:void(0)"><i class="fa fa-home"></i></a></li>
+                    <li><a href="listing.html">Users</a></li>
+                    <li class="active">Add User</li>
+                </ol> -->
+            </div>
+            <div class="table-top">
+                        
+                        
+                           
+                            <div style="padding-left: 80%"> 
+                              
+                              <a href="javascript:void(0)" class="add-session-link" onclick="openPopup()">
+                                    <i class="fa fa-plus"></i>
+                                    <span>Add New</span>
+                                </a>
+                            </div>
+                        
+                    </div>    
+                <div class="page-content">
+                    
+                    <div class="listing-wrapper">
+                    <div class="listing-container">
+                         {% if status == False %}
+                            <h4 style="color: red;">{{message}}</h4>
+                        {% endif %}
+                       
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>Name(Short Code)</th>
+                                    
+                                    <th>Description</th>
+                                    <th>start_date</th>
+                                    <th>End</th>
+                                    
+                                   
+                                   
+                                    <th >Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody class="listingtable" id="listingtable">
+                                   
+                                    
+                                    {% for class_ob in data %}
+                                        <tr> <td>{{class_ob.label}}({{class_ob.short_code}})</td><td>{{class_ob.description}}</td><td>{{class_ob.start_date|date:"d/m/Y"}}</td><td>{{class_ob.end_date|date:"d/m/Y"}}</td></td><td><a href="{% url 'edit_phase' class_ob.id %}" ><i class='fa fa-pencil'></i></a><a href="javascript:void(0);" onclick="removeDivision({{class_ob.id}})"><i class="fa fa-trash"></i></a></a></td></tr>
+                                    {% endfor %}
+                               
+                                    
+                                
+                                </tbody>
+                            </table>    
+                        </div>
+                        {% if status == True %}
+                            <div id="successDialog" class="successDialog">
+                                <div class="successDialogContainer">
+                                    <div class="heading">Success</div>
+                                    <div class="dialog-content">
+                                        <i class="fa fa-check"></i>
+                                        <h3>Awesome</h3>
+                                       <p>This is a Success dialog  with custom message.</p>
+                                    </div>
+                                     <div class="form-actions">
+                                        
+                                        <button id="success" onclick="success('ok')">OK</button>
+                                    </div>  
+                                </div>     
+                            </div>
+
+                        {% endif %}
+                        {% if status == "Deleted" %}
+
+                            <div id="DeleteDialog" class="successDialog">
+                                <div class="successDialogContainer">
+                                    <div class="heading">Deleted</div>
+                                    <div class="dialog-content">
+                                        <i class="fa fa-check"></i>
+                                        <h3>Awesome</h3>
+                                       <p>{{message}}</p>
+                                    </div>
+                                     <div class="form-actions">
+                                        <!-- <a href="javascript:void(0);" onclick="success('cancel')">Cancel</a> -->
+                                        <button onclick="failure()">OK</button>
+                                    </div>  
+                                </div>     
+                            </div>
+                        {% endif %}
+                        <div class="paginationWrapper">
+                             <div class="paginationContainer" actpage="1" id="pagination">
+                                {% if data.has_other_pages == True %}
+
+                                {% if data.has_previous == True %}
+                                <a id="page{{data.previous_page_number}}" href="/institute/phase/?page={{data.previous_page_number}}">prev</a>
+
+                                {% endif %}
+                                {% for i in PAGINATION_COUNT%}
+                               
+                                {% if i == data.number %}
+                                <a id="page{{i}}" class="selected" href="/institute/phase/?page={{i}}">{{i}}</a>
+
+                                {% else %}
+                                <a id="page{{i}}" href="/institute/phase/?page={{i}}">{{i}}</a>
+
+                                {% endif %}
+                                
+
+                                {% endfor %}
+                                {% if data.has_next == True %}
+                                <a id="page{{data.next_page_number}}" href="/institute/phase/?page={{data.next_page_number}}">next</a>
+                                {% endif %}
+                                {% endif %}         
+
+
+                               
+                                <!-- {% if pagination.program_numpage > 2 %} -->
+                                
+                               
+
+                                
+                               
+
+                                    
+                                    
+                                <!-- {% endif %} -->
+                               
+
+
+                              
+                               
+                            </div>
+                           
+                        </div>
+
+
+                        
+                     </div>
+
+                    
+                  
+                    
+                    
+                    </div>
+
+                </div>
+
+            </div>
+ </main>           
+<!--Content Container-->
+
+</div>
+
+
+<!-- Add Content Dialog-->
+    <div id="addPopUp" class="addSessionDialog">
+        <div class="addSessionDialogContainer">
+            <div class="heading">Add Phases   
+                </div>
+            <div class="dialog-content">
+                <form method="post">{% csrf_token %}
+                <div class="form-wrapper">
+                    <div class="form-block">
+                        <input type="hidden" name="hidden_id" id="title" value="" placeholder="Enter numeric ID"/>
+
+                         <select name="program"  id="programdds" data-live-search="true" title= "Choose Session" required>
+                             <option value="">----Select-session program---</option>
+                             {% for program_ob in session_programe %}
+                                <option value="{{program_ob.session_program_obj}}">{{program_ob.program_objects.label}}({{program_ob.session_objects.label}})</option>
+
+                             {% endfor %}
+
+                        </select>
+                    </div>
+                 </div>
+                <div class="form-wrapper">
+                    <div class="form-block">
+                        <input type="text" name="title" id="phase_title"   placeholder="Enter title" required/>
+                    </div>
+                     
+                </div>
+
+                 <div class="form-wrapper">
+                    <div class="form-block">
+                        <input type="text" name="short_code" id="Short_code"   placeholder="Enter Short Code" required/>
+                    </div>
+                     
+                </div>
+                <div class="form-wrapper">
+                    <div class="form-block">
+                        <input type="text" name="startdate" id="phase_start" onchange="enddatepicker()" class="startdatepicker"  placeholder="Enter startdate" required/>
+                    </div>
+                     <div class="form-block">
+                        <input type="text" name="enddate"  id="phase_end" onchange="enddatepicker()" class="enddatepicker" placeholder="Enter enddate" required/>
+                    </div>
+                </div>
+                <div class="form-wrapper">
+                    <div class="form-block">
+                        <textarea name="description" id="phase_description" placeholder="Enter description" required></textarea>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <a href="javascript:void(0);">Cancel</a>
+                    <button  id="add_submit" onclick="add_submit()" type="submit">Save</button>
+                </div>  
+                </form> 
+            </div>
+        </div>     
+    </div>
+    <!-- Add Content Dialog-->
+
+
+    <!-- Add Content Dialog-->
+    <div class="addSessionDialog foredit">
+        <div class="addSessionDialogContainer">
+            <div class="heading">Edit Phases<input type="hidden" name="hidden_class_id"  id= "hidden_class_id" value=""> </div>
+            <div class="dialog-content">
+                <form>
+                <div class="form-wrapper">
+                    <div class="form-block">
+
+                         <select name="program"  id="phasesdd"  title= "Choose phase" required >
+
+                       
+                          
+                        </select>
+                    </div>
+                 </div>
+                <div class="form-wrapper">
+                    <div class="form-block">
+                        <input type="text" name="title"  id="title" placeholder="Enter title" required/>
+                    </div>
+                     <div class="form-block">
+                        <input type="text" name="uniquecode" id="uniquecode" placeholder="Enter unique code" required/>
+                    </div>
+                </div>
+                <div class="form-wrapper">
+                    <div class="form-block">
+                        <input type="text" name="startdate" id="startdatepicker" class="startdatepicker"  placeholder="Enter startdate" required/>
+                    </div>
+                     <div class="form-block">
+                        <input type="text" name="enddate" id="enddatepicker" class="enddatepicker" placeholder="Enter enddate" required/>
+                    </div>
+                </div>
+                <div class="form-wrapper">
+                    <div class="form-block">
+                        <textarea name="description" id="description" placeholder="Enter description" required></textarea>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <a href="javascript:void(0);">Cancel</a>
+                    <button  id="edit_submit" type="submit" onclick="updateclass()">Save</button>
+                </div>  
+                </form> 
+            </div>
+        </div>     
+    </div>
+    <!-- Add Content Dialog-->
+
+    <!-- Add Content Dialog-->
+   
+    <div id="add_batch" class="addSessionDialog foredits">
+        <div class="addSessionDialogContainer">
+            <div class="heading">Add Batch<input type="hidden" name="hidden_batch_id"  id= "hidden_class_id" value=""> </div>
+            <div class="dialog-content">
+                <form>
+                <div class="form-wrapper">
+                    <div class="form-block">
+                        
+                    </div>
+                    <!-- <div class="form-block">
+                         <select name="phase" id="phasesdd" data-live-search="true" title= "Choose Phase">
+                            <option value="phase1">phase1</option>
+                            <option value="phase1">phase2</option>
+                            <option value="phase3">phase3</option>
+                            <option value="phase4">phase4</option>
+                            <option value="phase5">phase5</option>
+                            <option value="phase6">phase6</option>
+                        </select>
+                    </div> -->
+                 </div>
+                <div class="form-wrapper">
+                    <div class="form-block">
+                        <input type="text" name="title"  id="title_batch" placeholder="Enter title" required/>
+                    </div>
+                     <div class="form-block">
+                        <input type="text" name="uniquecode" id="uniquecode_batch" placeholder="Enter unique code" required/>
+                    </div>
+                </div>
+                <div class="form-wrapper">
+                    <div class="form-block">
+                        <input type="text" name="startdate" id="startdatepicker_batch" class="startdatepicker"  placeholder="Enter startdate" required/>
+                    </div>
+                     <div class="form-block">
+                        <input type="text" name="enddate" id="enddatepicker_batch" class="enddatepicker" placeholder="Enter enddate" required/>
+                    </div>
+                    <div class="form-block">
+                        <input type="text" name="time" id="time_batch" class="timepicker" placeholder="Enter time" required/>
+                    </div>
+                </div>
+                <div class="form-wrapper">
+                    <div class="form-block">
+                        <textarea name="description" id="description_batch" placeholder="Enter description" required></textarea>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <a href="javascript:void(0);">Cancel</a>
+                    <button  id="edit_batches" type="submit">Save</button>
+                </div>  
+                </form> 
+            </div>
+        </div>     
+    </div>
+
+
+
+
+
+
+<!-- Confirmation Content Dialog-->
+<div class="confirmationDialog">
+    <div class="confirmationDialogContainer">
+        <div class="heading">Confirmation</div>
+        <div class="dialog-content">
+            <h3>Are you Sure  Want to Delete?</h3>
+           <p>This is a confirmation dialog  with custom message.</p>
+        </div>
+         <div class="form-actions">
+            <a href="javascript:void(0);" onclick="confirmation('cancel')">Cancel</a>
+            <!-- <form id="remove-model" method="post" >{% csrf_token %} -->
+                <form id="remove-model" method="post" >{% csrf_token %}
+                <input type="hidden" name="action" value="delete"/>
+                <input id="delete_id" name="delete" type="hidden" name="id"/>
+                <input id="hidden_id" name="delete" type="hidden" name="hidden_id"/>
+            
+            <button >Confirm</button>
+        </form>
+        </div>  
+    </div>     
+</div>
+<!-- Confirmation Content Dialog-->
+
+<!-- Success Content Dialog-->
+    <div class="successDialog">
+        <div class="successDialogContainer">
+            <div class="heading">Success</div>
+            <div class="dialog-content">
+                <i class="fa fa-check"></i>
+                <h3>Awesome</h3>
+               <p>This is a Success dialog  with custom message.</p>
+            </div>
+             <div class="form-actions">
+                <a href="javascript:void(0);"onclick="confirmation('cancel')">Cancel</a>
+                <button onclick="success('ok')">OK</button>
+            </div>  
+        </div>     
+    </div>
+<!-- Success Content Dialog-->
+
+
+<script>
+
+    $(document).ready(function() {
+        $('#successDialog').css("display","flex");
+        $('#DeleteDialog').css("display","flex");
+
+        })
+
+ function failure(){
+        window.location = `/institute/phase/`;
+    }
+     function success(llk){
+    
+}
+$("#success").click( function(e){
+         window.location = `/institute/phase/`;
+
+    })
+    $("#cancelsuc").click( function(e){
+         window.location = `/institute/phase/`;
+
+    })
+
+    
+     function enddatepicker()
+   {
+    var startDate = document.getElementById("phase_start").value;
+    var endDate = document.getElementById("phase_end").value;
+
+    if ((Date.parse(startDate) >= Date.parse(endDate))) {
+        alert("End date should be greater than Start date");
+        document.getElementById("phase_end").value = "";
+    }
+
+   }
+    function removeDivision(Attr){
+        req_id = Attr;
+        $('#delete_id').val(req_id);
+        $('#hidden_id').val(req_id);
+        jQuery('.confirmationDialog').css("display","flex");
+    }
+
+    function confirmation(command){
+       if(command=="confirm"){
+            
+            $('#delete_id').val(req_id);
+            $('#remove-model').submit();
+        }
+        else if(command=="cancel"){
+            $('.confirmationDialog').css("display","none");
+        }
+        
+    }
+</script>
+
+    <script type="text/javascript">
+
+        $(' aside .aside-container li.active').addClass('open').children('ul').show();
+        $('aside .aside-container li.has-sub>a').on('click', function(){
+            //$(this).removeAttr('href');
+            var element = $(this).parent('li');
+            if (element.hasClass('open')) {
+                element.removeClass('open');
+                element.find('li').removeClass('open');
+                element.find('ul').slideUp(200);
+            }
+            else {
+                element.addClass('open')
+                element.children('ul').slideDown(200);
+                element.siblings('li').children('ul').slideUp(200);
+                element.siblings('li').removeClass('open');
+                element.siblings('li').find('li').removeClass('open');
+                element.siblings('li').find('ul').slideUp(200);
+            }
+        });
+
+         $("#upload_link").on('click', function(e){
+            e.preventDefault();
+            $("#upload:hidden").trigger('click');
+        })
+
+        let tableData = [
+            // { id: '1', uniquecode: 'JR001', startdate: '18-10-2019', enddate: '18-10-2020', program: 'Vikas' , title: 'Phase1' , description: 'Phase1'},
+            // { id: '2', uniquecode: 'JR002', startdate: '18-10-2019', enddate: '18-10-2020', program: 'Vikas', title: 'Phase2' , description: 'Phase2'},
+            // { id: '3', uniquecode: 'JR003', startdate: '18-10-2019', enddate: '18-10-2020', program: 'Vikas' , title: 'Phase3' , description: 'Phase3'},
+           
+           
+          
+            
+        ]
+
+
+        let paginationData = [
+          { id: '1', uniquecode: 'JR', startdate: '18-10-2019', enddate: '18-10-2020', program: 'program1', noofbatches: '7' , title: 'VIJAY JR' , description: 'Description1'},
+            { id: '2', uniquecode: 'G&J', startdate: '18-10-2019', enddate: '18-10-2020', program: 'program2', noofbatches: '2' , title: 'VIJAY G&J' , description: 'Description2'},
+            { id: '3', uniquecode: 'JR', startdate: '18-10-2019', enddate: '18-10-2020', program: 'program3', noofbatches: '5' , title: 'VIKAAS JR' , description: 'Description3'},
+          
+        ]
+
+
+            //  function confirmation(type){
+            //      if (type === 'confirm'){
+            //         console.log("confirm");
+            //      }else{
+            //        console.log("cancel"); 
+            //      }  
+            // }
+
+            function success(type){
+                 if (type === 'ok'){
+                    console.log("ok");
+                 }else{
+                   console.log("cancel"); 
+                 }  
+            }
+    
+
+    jQuery(document).ready(function(){
+        
+        let tableHTML ='';
+        let paginationHTML ='';
+
+
+        tableData.forEach((val)=>{
+            tableHTML += `<tr>
+                        <td>${val.uniquecode}</td>
+                        <td>${val.title}</td>
+                        <td>${val.startdate}</td>
+                        <td>${val.enddate}</td>
+                        <td>${val.program}</td>
+                        <td>${val.noofbatches}</td>
+                        <td>${val.description}</td>
+                       <td class='division-actions'><a href="javascript:void(0);" class='edit-link'><i class="fa fa-pencil"></i></a><a href="#"><i class="fa fa-trash"></i></a></td>
+                    </tr>`;
+
+                    
+        });
+
+        
+        jQuery('.listingtable').append(tableHTML);
+        
+       
+
+
+
+        jQuery('#txt-search').keyup(function(e){
+            let searchValue = $(this).val().toLowerCase();
+                 console.log(searchValue);
+                 console.log(tableData);
+                 let getData = tableData.find(data => data.name === searchValue);
+                 console.log(getData);
+       
+            });
+
+
+       jQuery('.add-session-link').click(function(){
+            jQuery('.addSessionDialog').addClass('open');
+           // jQuery('.addSessionDialogbatch').addClass('open');
+            jQuery('.addSessionDialog.foredit').removeClass('open');
+            jQuery('.addSessionDialog.foredits').removeClass('open');
+
+        }); 
+
+        jQuery('table td .edit-link').click(function(){
+            jQuery('.addSessionDialog.foredit').addClass('open');
+
+        });  
+
+        jQuery('table td .edit-linkBatch').click(function(){
+            jQuery('.addSessionDialogbatch').addClass('open');
+            jQuery('.addSessionDialog.foredit').removeClass('open');
+
+        }); 
+
+         $('#sessiondd , #programdd , #phasesddsss').selectpicker();
+  
+         $('.startdatepicker').datetimepicker({
+             locale: 'ru',
+            debug:true,
+            pickTime: false 
+        });
+
+        $('.enddatepicker').datetimepicker({
+           locale: 'ru',
+           debug:true,
+           pickTime: false 
+
+        });
+
+         jQuery('.timepicker').datetimepicker({
+          pickDate: false
+         
+        });
+
+        jQuery('.addSessionDialog .form-actions a').click(function(){
+            jQuery('.addSessionDialog').removeClass('open');
+        });
+    
+
+
+    });
+
+
+    
+
+
+    
+    
+
+   </script>
+
+
+   <script>
+    
+
+</script>    
+{% endblock base_content %}
+
+{% block htmljs %}
+<script src="{% static 'js/phase.js' %}"></script>
+<!-- <script src="{% static 'js/site.js' %}"></script> -->
+<script src="{% static 'js/moment.min.js' %}"></script>            
+<script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
+
+
+<link href="{% static 'css/newdesign.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'css/bootstrap-select.min.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'css/bootstrap-datetimepicker.css' %}" rel="stylesheet" type="text/css">
+{% endblock htmljs %}
+

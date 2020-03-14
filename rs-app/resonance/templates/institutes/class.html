@@ -1,0 +1,317 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block header %}
+<meta charset="UTF-8"/>
+
+<title>Class Listing</title>
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="viewport" content="user-scalable = 1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.css' %}" type="text/css">
+<link href="{% static 'css/newdesign.css' %}" rel="stylesheet" type="text/css">
+{% endblock header %}
+{% block css %}
+
+
+{% endblock %}
+{% block base_content %}
+
+
+
+<div id="container">
+    {% include 'users/nav.html' %}
+
+<!--Header-->
+ 
+<!--Header-->       
+
+<!--Content Container-->
+    <main>
+        {% include 'users/side_bar.html' %}
+    <div id="content-container">
+        <div class="page-header">
+                <h2>Class</h2>
+               <!--  <ol class="breadcrumb">
+                    <li><a href="javascript:void(0)"><i class="fa fa-home"></i></a></li>
+                    <li><a href="listing.html">Users</a></li>
+                    <li class="active">Add User</li>
+                </ol> -->
+            </div>
+            <div class="table-top">
+                        <!-- <input type="search" id="txt-search" placeholder="Search" onkeyup="class_filter(this.value)" /> -->
+                       
+                          
+                            <div style="padding-left: 80%"> 
+                              <a href="javascript:void(0)" class="add-session-link">
+                                    <i class="fa fa-plus"></i>
+                                    <span>Add New</span>
+                                </a>
+                            </div>
+                       
+                    </div>    
+                <div class="page-content">
+                    
+                    <div class="listing-wrapper">
+                    <div class="listing-container">
+                       
+                       
+                                {% if status == False %}
+                                    <h4 style="color: red;">{{message}}</h4>
+                                {% endif %}
+                       
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>Title(Short Code)</th>
+                                    
+                                    <th>Order</th>
+                                    
+                                    <th>Description</th>
+                                    <th >Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody class="listingtable" id="listingtable">
+                                    
+                                        {% for class_ob in data %}
+                                            <tr width=50%> <td>{{class_ob.label}}({{class_ob.short_code}})</td><td>{{class_ob.order}}</td><td>{{class_ob.description}}</td><td><a href="{% url 'edit_class' class_ob.id %}" ><i class='fa fa-pencil'></i></a><a href="javascript:void(0);" onclick="removeDivision({{class_ob.id}})"><i class="fa fa-trash"></i></a></td></tr>
+                                        {% endfor %}                              
+                                        
+                                </tbody>
+                            </table>    
+                        </div>
+                        <div class="paginationWrapper">
+                            <!-- {{pagination.program_numpage|add:1}}
+                             -->
+                            <!-- {{ pagination.program_previous  }} -->
+                                
+                            
+
+                            
+                            
+                            
+
+                           
+
+
+                            <div class="paginationContainer" actpage="1" id="pagination">
+
+
+                                {% if data.has_other_pages == True %}
+                                {% if data.has_other_pages == True %}
+                               
+                                
+                                {% if data.has_previous == True %}
+                                <a id="page{{data.previous_page_number}}" href="/institute/classs/?page={{data.previous_page_number}}">prev</a>
+
+                                {% endif %}
+
+                                {% endif %}
+                               
+
+                                
+                                {% for i in PAGINATION_COUNT%}
+                               
+                                {% if i == data.number %}
+                                <a id="page{{i}}" class="selected" href="/institute/classs/?page={{i}}">{{i}}</a>
+
+                                {% else %}
+                                <a id="page{{i}}" href="/institute/classs/?page={{i}}">{{i}}</a>
+
+                                {% endif %}
+                                
+
+                                {% endfor %}
+                                {% if data.has_next == True %}
+                                <a id="page{{data.next_page_number}}" href="/institute/classs/?page={{data.next_page_number}}">next</a>
+                                {% endif %}
+                                {% endif %}
+
+
+
+
+                                
+                               
+                               
+                            </div>
+                        </div>
+                     </div>
+
+                    
+                  
+                    
+                    
+                    </div>
+
+                </div>
+
+            </div>
+ </main>           
+<!--Content Container-->
+
+</div>
+
+
+<!-- Add Content Dialog-->
+    <div id="addClassModal" class="addSessionDialog">
+        <div class="addSessionDialogContainer">
+            <div class="heading">Add Class</div>
+            <div class="dialog-content">
+                <form method="post">{% csrf_token %}
+                <div class="form-wrapper">
+                     <div class="form-block">
+                        <input type="hidden" name="hidden_id" id="title" value="" placeholder="Enter numeric ID"/>
+                        
+                        <input type="text" name="title" id="title" placeholder="Enter Title" required/>
+                    </div>
+                    
+                    <div class="form-block">
+                        <input type="text" name="description" id="description" placeholder="Enter Description" required/>
+                   </div>
+               </div>
+               <div class="form-wrapper">
+                   <div class="form-block">
+                        <input type="text" name="short_code" id="short_code" placeholder="Enter Short Code " required/>
+                   </div>
+                    <div class="form-block">
+                        <input type="number" name="order" id="order" placeholder="Enter Sequence Number" required/>
+                   </div>
+                </div>
+
+                
+                <div class="form-actions">
+                    <a href="javascript:void(0);">Cancel</a>
+                    <button type="submit" id="addclass" class="save_class" >Save</button>
+                    
+                </div>  
+                </form> 
+            </div>
+        </div>     
+    </div>
+    <!-- Add Content Dialog-->
+
+
+    <!-- Add Content Dialog-->
+    
+    <!-- Add Content Dialog-->
+
+
+<!-- Confirmation Content Dialog-->
+    <div class="confirmationDialog">
+        <div class="confirmationDialogContainer">
+            <div class="heading">Confirmation</div>
+            <div class="dialog-content">
+                <h3>Are you Sure  Want to Delete?</h3>
+               <p>This is a confirmation dialog  with custom message.</p>
+            </div>
+             <div class="form-actions">
+                <a href="javascript:void(0);" onclick="confirmation('cancel')">Cancel</a>
+                <!-- <form id="remove-model" method="post" >{% csrf_token %} -->
+                    <form id="remove-model" method="post" >{% csrf_token %}
+                    <input type="hidden" name="action" value="delete"/>
+                    <input id="delete_id" name="delete" type="hidden" name="id"/>
+                    <input id="hidden_id" name="hidden_id" type="hidden" name="hidden_id"/>
+                
+                <button >Confirm</button>
+            </form>
+            </div>  
+        </div>     
+    </div>
+<!-- Confirmation Content Dialog-->
+
+<!-- Success Content Dialog-->
+{% if status == True %}
+    <div id="successDialog"class="successDialog">
+        <div class="successDialogContainer">
+            <div class="heading">Success</div>
+            <div class="dialog-content">
+                <i class="fa fa-check"></i>
+                <h3>Awesome</h3>
+               <p>This is a Success dialog  with custom message.</p>
+            </div>
+             <div class="form-actions">
+                
+                <button id="success" onclick="success('ok')">OK</button>
+            </div>  
+        </div>     
+    </div>
+    {% endif %}
+
+   {% if status == "Deleted" %}
+
+    <div id="DeleteDialog" class="successDialog">
+        <div class="successDialogContainer">
+            <div class="heading">Deleted</div>
+            <div class="dialog-content">
+                <i class="fa fa-check"></i>
+                <h3>Awesome</h3>
+               <p>{{message}}</p>
+            </div>
+             <div class="form-actions">
+                <!-- <a href="javascript:void(0);" onclick="success('cancel')">Cancel</a> -->
+                <button onclick="failure()">OK</button>
+            </div>  
+        </div>     
+    </div>
+{% endif %}
+
+<script>
+    $("#success").click( function(e){
+         window.location = `/institute/classs/`;
+
+    })
+    $("#cancelsuc").click( function(e){
+         window.location = `/institute/classs/`;
+
+    })
+     function failure(){
+        window.location = `/institute/classs/`;
+    }
+    function removeDivision(Attr){
+        req_id = Attr;
+        $('#delete_id').val(req_id);
+        $('#hidden_id').val(req_id);
+        jQuery('.confirmationDialog').css("display","flex");
+    }
+    function confirmation(command){
+        if(command=="confirm"){
+            
+            $('#delete_id').val(req_id);
+            $('#remove-model').submit();
+        }
+        else if(command=="cancel"){
+            $('.confirmationDialog').css("display","none");
+        }
+    }
+
+    $("#order").change(function() {
+    var val = $("#order").val();
+    if (parseInt(val) < 1 || isNaN(val)) {
+        alert("please enter valid values");
+        $("#order").val("");
+        $("#order").focus();
+    }
+});
+
+     $(document).ready(function() {
+$('#successDialog').css("display","flex");
+$('#DeleteDialog').css("display","flex");
+        })
+     function success(llk){
+    
+}
+
+</script>
+
+
+
+{% endblock base_content %}
+
+{% block htmljs %}
+
+<!-- <script src="{% static 'js/site.js' %}"></script> -->
+<script src="{% static 'js/class.js' %}"></script>
+<!-- <script src="{% static 'js/class.js' %}"></script>
+<script src="{% static 'js/site.js' %}"></script> -->
+{% endblock htmljs %}

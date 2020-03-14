@@ -1,0 +1,235 @@
+{% extends 'identity_service/base.html' %}
+{% load static %}
+{% block header %}
+<meta charset="UTF-8"/>
+
+<title>Concepts Listing</title>
+<!-- <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"> -->
+<meta name="viewport" content="user-scalable = 1">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'css/newdesign.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'css/tagify.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'css/bootstrap-select.min.css' %}" rel="stylesheet" type="text/css">
+
+
+{% endblock header %}
+{% block css %}
+
+
+{% endblock %}
+{% block base_content %}
+
+
+
+<div id="container">
+    {% include 'identity_service/nav.html' %}
+
+<!--Header-->
+ 
+<!--Header-->       
+
+<!--Content Container-->
+    <main>
+        {% include 'identity_service/side_bar.html' %}
+       
+    <div id="content-container">
+        <div class="page-header">
+                <h2>Concepts</h2>
+              
+            </div>
+            <div class="table-top">
+                        <input type="search" id="txt-search" placeholder="Search" />
+                        <div>
+                           <div id="total_session">
+                                5 Concepts 
+                            </div>
+                            <div>
+                            <div class="filter-by">Filter by Subject<select><option>Subject1</option><option>Subject2</option><option>Subject3</option><option>Subject4</option><option>Subject5</option></select></div> 
+                              <a href="javascript:void(0)" class="add-division-link">
+                                    <i class="fa fa-plus"></i>
+                                    <span>Add New</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>    
+                <div class="page-content">
+                    
+                    <div class="listing-wrapper">
+                    <div class="listing-container">
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>Concept Title</th>
+                                    <th>Subject Title</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody class="listingtable" id="listingtable">
+                                   
+                                
+                                </tbody>
+                            </table>    
+                        </div>
+                        <div class="paginationWrapper">
+                            <div class="paginationContainer" actpage="1" id="pagination">
+                             
+                            </div>
+                        </div>
+                     </div>
+
+                    
+                  
+                    
+                    
+                    </div>
+
+                </div>
+
+            </div>
+ </main>           
+<!--Content Container-->
+
+</div>
+
+
+<!-- Add Content Dialog-->
+    <div class="addDivisionDialog">
+        <div class="addDivisionDialogContainer">
+            <div class="heading">Add Session</div>
+            <div class="dialog-content">
+                <form>
+                <div class="form-wrapper">
+                    <div class="form-block">
+
+                        <select name="class" id="program_id" data-live-search="true" multiple  required >
+
+
+                            <option value="--">--Select Programs--</option>
+                            
+                        </select>
+                    </div>
+                    <div class="form-block">
+                        <select name="year" id="year" data-live-search="true" onchange="" required>
+                            <option value="--">--Select Year--</option>   
+                        </select>
+                    </div>
+                </div>
+                <div class="form-wrapper">
+                    <div class="form-block">
+                        <input type="text" name="name" id="name" data-type="input" placeholder="Enter Name" required/>
+                    </div>
+                    <div class="form-block">
+                        <input type="text" name="display_name" id="display_name" data-type="display_name" placeholder="Enter Display name" required/>
+                    </div>
+                </div>
+                <div class="form-wrapper">
+                    
+                    <div class="form-block">
+                        <textarea name="description" id="description" data-type="description" placeholder="Enter Name" required></textarea>
+                        
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <a href="javascript:void(0);">Cancel</a>
+                    <button id="add_session" type="submit">Save</button>
+                </div>  
+                </form> 
+            </div>
+        </div>     
+    </div>
+    <!-- Add Content Dialog-->
+
+
+    <!-- Add Content Dialog-->
+    <div class="addDivisionDialog foredit">
+        <div class="addDivisionDialogContainer">
+            <div class="heading">Edit Concepts<input type="text" name="hidden_class_id"  id= "hidden_class_id" value=""> </div>
+            <div class="dialog-content">
+                <form>
+                    <div class="form-wrapper">
+                        <div class="form-block">
+                            <select name="class" id="programs_ids" data-live-search="true" required>
+                                <option value="--">--Select Programs--</option>
+                                
+                            </select>
+                        </div>
+                        <div class="form-block">
+                            <select name="year" id="years" data-live-search="true" onchange="" required>
+                                <option value="--">--Select Year--</option>   
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-wrapper">
+                        <div class="form-block">
+                            <input type="text" name="name" id="names" data-type="input" placeholder="Enter Name" required/>
+                        </div>
+                        <div class="form-block">
+                            <input type="text" name="display_name" id="display_names" data-type="display_name" placeholder="Enter Display name" required/>
+                        </div>
+                    </div>
+                    <div class="form-wrapper">
+                        
+                        <div class="form-block">
+                            <textarea name="description" id="descriptions" data-type="description" placeholder="Enter Name" required></textarea>
+                            
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <a href="javascript:void(0);">Cancel</a>
+                        <button id="edit_session" type="submit">Save</button>
+                    </div>  
+                    </form>
+            </div>
+        </div>     
+    </div>
+    <!-- Add Content Dialog-->
+
+
+<!-- Confirmation Content Dialog-->
+    <div class="confirmationDialog">
+        <div class="confirmationDialogContainer">
+            <div class="heading">Confirmation</div>
+            <div class="dialog-content">
+                <h3>Are you Sure ?</h3>
+               <p>This is a confirmation dialog  with custom message.</p>
+            </div>
+             <div class="form-actions">
+                <a href="javascript:void(0);" onclick="confirmation('cancel')">Cancel</a>
+                <button onclick="confirmation('confirm')">Confirm</button>
+            </div>  
+        </div>     
+    </div>
+<!-- Confirmation Content Dialog-->
+
+<!-- Success Content Dialog-->
+    <div class="successDialog">
+        <div class="successDialogContainer">
+            <div class="heading">Success</div>
+            <div class="dialog-content">
+                <i class="fa fa-check"></i>
+                <h3>Awesome</h3>
+               <p>This is a Success dialog  with custom message.</p>
+            </div>
+             <div class="form-actions">
+                <a href="javascript:void(0);" onclick="success('cancel')">Cancel</a>
+                <button onclick="success('ok')">OK</button>
+            </div>  
+        </div>     
+    </div>
+<!-- Success Content Dialog-->
+
+
+{% endblock base_content %}
+
+{% block htmljs %}
+<script src="{% static 'js/session.js' %}"></script>
+<script src="{% static 'js/site.js' %}"></script>
+{% endblock htmljs %}
+ 
+<script src="js/site.js"></script>
+<script src="js/session.js"></script>
+
+

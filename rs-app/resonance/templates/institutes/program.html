@@ -1,0 +1,440 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block header %}
+
+<!doctype html>
+<html> 
+<head> 
+<meta charset="UTF-8"/>
+
+<title>Program Listing</title>
+<!-- <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"> -->
+<meta name="viewport" content="user-scalable = 1">
+
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="viewport" content="user-scalable = 1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.css' %}" type="text/css">
+<link href="{% static 'css/newdesign.css' %}" rel="stylesheet" type="text/css">
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/bootstrap-select.min.js' %}"></script>
+<script src="{% static 'js/highstock.js' %}"></script>
+<script src="{% static 'js/moment.min.js' %}"></script>            
+<script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
+
+
+<link href="{% static 'css/newdesign.css' %}" rel="stylesheet" type="text/css">
+
+
+{% endblock header %}
+{% block css %}
+
+
+{% endblock %}
+{% block base_content %}
+
+<div id="container">
+    {% include 'users/nav.html' %}
+
+<!--Header-->
+  
+<!--Header-->       
+
+<!--Content Container-->
+    <main>
+        {% include 'users/side_bar.html' %}
+    <div id="content-container">
+        <div class="page-header">
+                <h2>Programs</h2>
+                 <style>
+                            .button
+                            {
+                                background-color:
+                                #9ACD32;
+                                cursor: pointer;
+                                font-size: 15px;
+                                padding: 7px 20px;
+                                border-radius: 4px;
+                                color:
+                                #fff;
+                                font-family: latoregular;
+                                border: 0px none;
+                            }
+                        </style>
+               <!--  <ol class="breadcrumb">
+                    <li><a href="javascript:void(0)"><i class="fa fa-home"></i></a></li>
+                    <li><a href="listing.html">Users</a></li>
+                    <li class="active">Add User</li>
+                </ol> -->
+            </div>
+            <div class="table-top">
+                        <input type="search" style="display:none" id="txt-search" placeholder="Search"  />
+                        <div>
+                           <div>
+                                
+                            </div>
+                            <div> 
+                             <div class="filter-by">Filter by Session<select id="session_program"><option value=''>--Select Session--</option>
+                                {% for session_ob in session %}
+                                <option value="{{session_ob.id}}" {% if request.GET.session_program|add:0 == session_ob.id %} selected {% endif %}>{{session_ob.label}}</option>
+                                
+                                {% endfor %}
+                                </select></div> 
+                             
+                             <input type="submit" name="submit" class="button" id="searchsubmit"  value="Submit" onclick="program_search()">
+                              <a href="javascript:void(0)" class="add-session-link">
+                                    <i class="fa fa-plus"></i>
+                                    <span>Add New</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>    
+                <div class="page-content">
+                    
+                    <div class="listing-wrapper">
+                    <div class="listing-container">
+                       {% if status == False %}
+                                    <h4 style="color: red;">{{message}}</h4>
+                        {% endif %}
+
+                        <div class="table-wrapper">
+                            <table>             
+                                <thead>
+                                <tr>
+                                    <th>Program Name (Short Code)  </th>
+                                    <th>Description</th>
+                                   
+                                    <th>Target</th>
+                                    
+                                    <th >Actions</th>
+                                </tr>
+                                </thead>
+                                  <tbody class="listingtable" id="listingtable">
+                                     {% for class_ob in data %}
+                                        <tr> <td><a href="/institute/program_class_subject/{{class_ob.id}}/?subject=false" >{{class_ob.label}} ({{class_ob.short_code}})</a></td><td>{{class_ob.description}}</td><td>
+                                            {% for target_ob in target %}
+                                            
+                                            {% ifequal target_ob.id class_ob.target_id %}
+                                            {{target_ob.label}}
+                                            {% endifequal %}
+                                            
+
+                                            
+
+                                            {% endfor %}
+
+
+                                            
+                                            
+                                            </td><td><a href="{% url 'edit_program_class' class_ob.id %}" ><i class='fa fa-pencil'></i></a><a href="javascript:void(0);" onclick="removeDivision({{class_ob.id}})"><i class="fa fa-trash"></i></a></td></tr>
+                                        {% endfor %}
+                                  </tbody>
+                               
+                                
+                               
+                               
+                                
+                            </table>    
+
+                        </div>
+                        {% if status == True %}
+                            <div id="successDialog" class="successDialog">
+                                <div class="successDialogContainer">
+                                    <div class="heading">Success</div>
+                                    <div class="dialog-content">
+                                        <i class="fa fa-check"></i>
+                                        <h3>Awesome</h3>
+                                       <p>This is a Success dialog  with custom message.</p>
+                                    </div>
+                                     <div class="form-actions">
+                                      
+                                        <button id="success" onclick="success('ok')">OK</button>
+                                    </div>  
+                                </div>     
+                            </div>
+
+                        {% endif %}
+                        {% if status == "Deleted" %}
+
+                            <div id="DeleteDialog" class="successDialog">
+                                <div class="successDialogContainer">
+                                    <div class="heading">Deleted</div>
+                                    <div class="dialog-content">
+                                        <i class="fa fa-check"></i>
+                                        <h3>Awesome</h3>
+                                       <p>{{message}}</p>
+                                    </div>
+                                     <div class="form-actions">
+                                        <!-- <a href="javascript:void(0);" onclick="success('cancel')">Cancel</a> -->
+                                        <button onclick="failure()">OK</button>
+                                    </div>  
+                                </div>     
+                            </div>
+                        {% endif %}
+                        <div class="paginationWrapper">
+                            <div class="paginationContainer" actpage="1" id="pagination">
+
+
+                <!------------------------------->
+                                
+                                {% if data.has_other_pages == True %}
+                                {% if data.has_other_pages == True %}
+                               
+                                
+                                {% if data.has_previous == True %}
+                                {% if session_program and program_name %}
+                         <a id="page{{data.previous_page_number}}" href="/institute/program_class/?page={{data.previous_page_number}}&&session_program={{session_program}}&&program_name={{program_name}}">prev</a>
+                         {% elif session_program %}
+                         <a id="page{{data.previous_page_number}}" href="/institute/program_class/?page={{data.previous_page_number}}&&session_program={{session_program}}&&program_name={{program_name}}">prev</a>
+                         {% elif program_name %}
+                        <a id="page{{data.previous_page_number}}" href="/institute/program_class/?page={{data.previous_page_number}}&&session_program={{session_program}}&&program_name={{program_name}}">prev</a>
+                         {% else %}
+                        <a id="page{{data.previous_page_number}}" href="/institute/program_class/?page={{data.previous_page_number}}">prev</a>
+                         {% endif %}
+
+                                
+
+                                {% endif %}
+
+                                {% endif %}
+                               
+
+                                
+                                {% for i in PAGINATION_COUNT%}
+                               
+                                {% if i == data.number %}
+
+                                 {% if session_program and program_name %}
+                         <a id="page{{i}}" class="selected" href="/institute/program_class/?page={{i}}&&session_program={{session_program}}&&program_name={{program_name}}">{{i}}</a>
+                         {% elif session_program %}
+                         <a id="page{{i}}" class="selected" href="/institute/program_class/?page={{i}}&&session_program={{session_program}}&&program_name={{program_name}}">{{i}}</a>
+                         {% elif program_name %}
+                        <a id="page{{i}}" class="selected" href="/institute/program_class/?page={{i}}&&session_program={{session_program}}&&program_name={{program_name}}">{{i}}</a>
+                         {% else %}
+                        <a id="page{{i}}" class="selected" href="/institute/program_class/?page={{i}}">{{i}}</a>
+                         {% endif %}
+
+                                <!-- <a id="page{{i}}" class="selected" href="/institute/program_class/?page={{i}}">{{i}}</a> -->
+
+                                {% else %}
+                                {% if session_program and program_name %}
+                                 {% elif session_program %}
+                         <a id="page{{i}}"  href="/institute/program_class/?page={{i}}&&session_program={{session_program}}&&program_name={{program_name}}">{{i}}</a>
+                         {% elif program_name %}
+                        <a id="page{{i}}"  href="/institute/program_class/?page={{i}}&&session_program={{session_program}}&&program_name={{program_name}}">{{i}}</a>
+                         {% else %}
+                        <a id="page{{i}}"  href="/institute/program_class/?page={{i}}">{{i}}</a>
+
+                                {% endif %}
+
+
+                                <!-- <a id="page{{i}}" href="/institute/program_class/?page={{i}}">{{i}}</a> -->
+
+                                {% endif %}
+                                
+
+                                {% endfor %}
+                                {% if data.has_next == True %}
+
+                                 {% if session_program and program_name %}
+                         <a id="page{{data.next_page_number}}" href="/institute/program_class/?page={{data.next_page_number}}&&session_program={{session_program}}&&program_name={{program_name}}">prev</a>
+                         {% elif session_program %}
+                         <a id="page{{data.next_page_number}}" href="/institute/program_class/?page={{data.next_page_number}}&&session_program={{session_program}}&&program_name={{program_name}}">prev</a>
+                         {% elif program_name %}
+                        <a id="page{{data.next_page_number}}" href="/institute/program_class/?page={{data.next_page_number}}&&session_program={{session_program}}&&program_name={{program_name}}">prev</a>
+                         {% else %}
+                       <a id="page{{data.next_page_number}}" href="/institute/program_class/?page={{data.next_page_number}}">next</a>
+                         {% endif %}   
+
+                               
+                                {% endif %}
+
+                                    
+                                <!-- {% if pagination.program_numpage > 2 %} -->
+                                
+                              
+                                    
+                                    
+                                <!-- {% endif %} -->
+                               
+                                {% endif %}
+
+                               
+
+                                
+                               
+                            </div>
+                        </div>
+                     </div>
+
+                    
+                  
+                    
+                    
+                    </div>
+
+                </div>
+
+            </div>
+ </main>           
+<!--Content Container-->
+
+</div>
+
+
+<!-- Add Content Dialog-->
+    <div class="addSessionDialog">
+        <div class="addSessionDialogContainer">
+            <div class="heading">Add Programs</div>
+            <div class="dialog-content">
+                <form method="post" >{% csrf_token %}
+
+                <div class="form-wrapper">
+                    <div class="form-block">
+                        <input type="hidden" name="hidden_id" id="title" value="" placeholder="Enter numeric ID"/>
+                        <select name="target" id="target_id" data-live-search="true" required>
+                            <option value="">--Select target--</option>
+                          
+                            {% for target_obj in target %}
+                            <option value="{{target_obj.id}}">{{target_obj.label}}</option>
+                            {% endfor %}    
+                        </select>
+                    </div> 
+                     <div class="form-block">
+                        <select name="class_name" id="class_name" data-live-search="true" multiple="" required>
+                            <option value="">--Select Class--</option>
+                          
+                            {% for class_obj in classs %}
+                            <option value="{{class_obj.id}}">{{class_obj.label}}</option>
+                            {% endfor %}    
+                        </select>
+                     </div>
+                </div>
+                 <div class="form-wrapper">
+                    <div class="form-block">
+                        <input type="text" name="Short_code" id="name" data-type="input" placeholder="Enter Short Code" required/>
+                    </div>
+                    
+                </div>
+                <div class="form-wrapper">
+                    <div class="form-block">
+
+                        <input type="text" name="name" id="name"  placeholder="Enter programs title" required/>
+                    </div>
+                     <!-- <div class="form-block">
+                        <input type="text" name="display_name" id ="display_name" placeholder="Enter programs Display Name" required/>
+
+                    </div> -->
+                    
+                </div>
+
+
+                <div class="form-wrapper">
+                    
+                    <div class="form-block">
+                        <textarea name="description" id="description" data-type="description" placeholder="Enter description" required></textarea>
+                        
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <a href="javascript:void(0);">Cancel</a>
+                    <button  id = "add_program" name="add_program" type="submit">Save</button>
+                </div>  
+                </form> 
+            </div>
+        </div>     
+    </div>
+    <!-- Add Content Dialog-->
+
+
+    <!-- Add Content Dialog-->
+    
+    <!-- Add Content Dialog-->
+
+
+<!-- Confirmation Content Dialog-->
+<div class="confirmationDialog">
+    <div class="confirmationDialogContainer">
+        <div class="heading">Confirmation</div>
+        <div class="dialog-content">
+            <h3>Are you Sure  Want to Delete?</h3>
+           <p>This is a confirmation dialog  with custom message.</p>
+        </div>
+         <div class="form-actions">
+            <a href="javascript:void(0);" onclick="confirmations('cancel')">Cancel</a>
+            <!-- <form id="remove-model" method="post" >{% csrf_token %} -->
+                <form id="remove-model" method="post" >{% csrf_token %}
+                <input type="hidden" name="action" value="delete"/>
+                <input id="delete_id" name="delete" type="hidden" name="id"/>
+                <input id="hidden_id" name="hidden_id" type="hidden" name="hidden_id"/>
+            
+            <button >Confirm</button>
+        </form>
+        </div>  
+    </div>     
+</div>
+
+<!-- Confirmation Content Dialog-->
+
+<!-- Success Content Dialog-->
+   
+<!-- Success Content Dialog-->
+
+
+<script>
+
+    $(document).ready(function() {
+$('#successDialog').css("display","flex");
+$('#DeleteDialog').css("display","flex");
+
+        })
+
+ function failure(){
+        window.location = `/institute/program_class/`;
+    }
+     function success(llk){
+    
+}
+$("#success").click( function(e){
+         window.location = `/institute/program_class/`;
+
+    })
+    $("#cancelsuc").click( function(e){
+         window.location = `/institute/program_class/`;
+
+    })
+    function removeDivision(Attr){
+        req_id = Attr;
+        $('#delete_id').val(req_id);
+        $('#hidden_id').val(req_id);
+        jQuery('.confirmationDialog').css("display","flex");
+    }
+    function confirmations(command){
+        if(command=="confirm"){
+            
+            $('#delete_id').val(req_id);
+            $('#remove-model').submit();
+        }
+        else if(command=="cancel"){
+            $('.confirmationDialog').css("display","none");
+        }
+    }
+</script>
+
+
+   <script>
+   
+
+
+</script>    
+{% endblock base_content %}
+
+{% block htmljs %}
+<script src="{% static 'js/programe.js' %}"></script>
+<script src="{% static 'js/site.js' %}"></script>
+{% endblock htmljs %}
+

@@ -1,0 +1,340 @@
+{% extends 'identity_service/base.html' %}
+{% load static %}
+{% block header %}
+<meta charset="UTF-8"/>
+
+<title>Program Listing</title>
+<!-- <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"> -->
+<meta name="viewport" content="user-scalable = 1">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/bootstrap-datetimepicker.css" />
+<script src="js/jquery.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/moment.min.js"></script>            
+<script src="js/bootstrap-datetimepicker.min.js"></script>
+<link href="css/newdesign.css" rel="stylesheet" type="text/css">
+<!-- Include the plugin's CSS and JS: -->
+<script type="text/javascript" src="js/bootstrap-select.min.js"></script>
+<link rel="stylesheet" href="css/bootstrap-select.min.css" type="text/css"/>
+{% endblock header %}
+{% block css %}
+
+
+{% endblock %}
+{% block base_content %}
+
+
+
+<div id="container">
+    {% include 'identity_service/nav.html' %}
+
+<!--Header-->
+ 
+<!--Header-->       
+
+<!--Content Container-->
+    <main>
+        {% include 'identity_service/side_bar.html' %}
+       
+    <div id="content-container">
+        <div class="page-header">
+                <h2>Programs name</h2>
+                <ol class="breadcrumb">
+                    <li><a href="javascript:void(0)"><i class="fa fa-home"></i></a></li>
+                    <li><a href="program.html">Programs</a></li>
+                    <li class="active">Programs name</li>
+                </ol>
+            </div>
+                <div class="page-content">
+                    
+                    <div class="program-detail-wrapper">
+                        <div class="timeline-wrapper">
+                            <div class="timeline-heading">Vijay</div>       
+                            <div class="timeline-section">
+                                <div class="timeline-name"><span>Classes / Subjects</span> <a href="javascript:void(0)" class="add-more-link"><i class="fa fa-plus"></i></a></div>
+                                <div class="timeline-content classeslist">
+                                    
+                                           
+                                     
+                                </div>  
+                            </div>
+                            <div class="timeline-section">
+                                <div class="timeline-name"><span>Phases / Batches</span> <a href="javascript:void(0)" class="add-more-phases-batches-link"><i class="fa fa-plus"></i></a></div>
+                                    <div class="timeline-content phasesbatchlist">
+                                        
+                                
+                                
+                                </div>  
+                                 
+                        </div>    
+
+
+                    </div>
+
+                </div>
+
+            </div>
+ </main>           
+<!--Content Container-->
+
+</div>
+
+
+<!-- Add Content Dialog-->
+    <div class="addDialog">
+    <div class="addDialogContainer">
+        <div class="heading">Edit Classes / Subjects</div>
+        <form>
+        <div class="dialog-content"> 
+
+           <select name="subject" id="classdd" data-selected-text-format="count" data-live-search="true" required>
+                <option value="class1">Class1</option>
+                <option value="class2">Class2</option>
+                <option value="class3">Class3</option>
+                <option value="class4">Class4</option>
+                <option value="class5">Class5</option>
+                <option value="class6">Class6</option>
+            </select>
+            <select name="subject" id="subjectdd" title="Map Subjects" multiple="multiple" data-selected-text-format="count" data-live-search="true" required>
+                <option value="Subject1">Subject1</option>
+                <option value="Subject2">Subject2</option>
+                <option value="Subject3">Subject3</option>
+                <option value="Subject4">Subject4</option>
+                <option value="Subject5">Subject5</option>
+                <option value="Subject6">Subject6</option>
+            </select>
+         </div>
+         <div class="form-actions">
+             <a href="javascript:void(0);">Cancel</a>
+             <button type="submit">Save</button>
+         </div>
+        </form>
+    </div>
+</div>
+    <!-- Add Content Dialog-->
+
+
+<!-- Add Content Dialog-->
+    <div class="editProgramClassDialog">
+        <div class="editProgramClassDialogContainer">
+            <div class="heading">Edit Class / Subject</div>
+            <div class="dialog-content">
+                <form>
+                <div class="form-wrapper">
+                    <div class="form-block">
+                        <input type="text" name="title"  placeholder="Enter title" required/>
+                    </div>
+                     <div class="form-block">
+                        <input type="text" name="uniquecode" placeholder="Enter unique code" required/>
+                    </div>
+                </div>
+                <div class="form-wrapper">
+                    <div class="form-block">
+                        <select name="subject" id="editsubjectdd" data-live-search="true" required>
+                        <option value="Subject1">Subject1</option>
+                        <option value="Subject2">Subject2</option>
+                        <option value="Subject3">Subject3</option>
+                        <option value="Subject4">Subject4</option>
+                        <option value="Subject5">Subject5</option>
+                        <option value="Subject6">Subject6</option>
+                    </select>
+                    </div>
+                </div>
+                <div class="form-wrapper">
+                    <div class="form-block">
+                        <input type="text" name="startdate" class="startdatepicker"  placeholder="Enter start date" required/>
+                    </div>
+                     <div class="form-block">
+                        <input type="text" name="enddate" class="enddatepicker" placeholder="Enter enddate" required/>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <a href="javascript:void(0);">Cancel</a>
+                    <button type="submit">Save</button>
+                </div>  
+                </form> 
+            </div>
+        </div>     
+    </div>
+    <!-- Add Content Dialog-->
+
+
+
+   <!-- editPhaseBatchDialog  Dialog-->
+    <div class="editPhaseBatchDialog">
+        <div class="editPhaseBatchDialogContainer">
+            <div class="heading">Edit Phases</div>
+            <div class="dialog-content">
+                <form>
+                <div class="form-wrapper">
+                    <div class="form-block">
+                        <input type="text" name="title"  placeholder="Enter title" required/>
+                    </div>
+                     <div class="form-block">
+                        <input type="text" name="uniquecode" placeholder="Enter unique code" required/>
+                    </div>
+                </div>
+                <div class="form-wrapper">
+                    <div class="form-block">
+                        <textarea name="description"  placeholder="Enter Description" required></textarea>
+                    </div>
+                </div>
+                <div class="form-wrapper">
+                    <div class="form-block">
+                        <input type="text" name="startdate" class="startdatepicker"  placeholder="Enter start date" required/>
+                    </div>
+                     <div class="form-block">
+                        <input type="text" name="enddate" class="enddatepicker" placeholder="Enter enddate" required/>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <a href="javascript:void(0);">Cancel</a>
+                    <button type="submit">Save</button>
+                </div>  
+                </form> 
+            </div>
+        </div>     
+    </div>
+    <!-- editPhaseBatchDialog Dialog--> 
+
+
+ <!-- editBatchDialog  Dialog-->
+    <div class="editBatchDialog">
+        <div class="editBatchDialogContainer">
+            <div class="heading">Edit Batch</div>
+            <div class="dialog-content">
+                <form>
+                <div class="form-wrapper">
+                    <div class="form-block">
+                        <input type="text" name="title"  placeholder="Enter title" required/>
+                    </div>
+                     <div class="form-block">
+                        <input type="text" name="uniquecode" placeholder="Enter unique code" required/>
+                    </div>
+                </div>
+                <div class="form-wrapper">
+                    <div class="form-block">
+                        <textarea name="description"  placeholder="Enter Description" required></textarea>
+                    </div>
+                </div>
+                <div class="form-wrapper">
+                    <div class="form-block">
+                        <input type="text" name="startdate" class="startdatepicker"  placeholder="Enter start date" required/>
+                    </div>
+                     <div class="form-block">
+                        <input type="text" name="enddate" class="enddatepicker" placeholder="Enter enddate" required/>
+                    </div>
+                     <div class="form-block">
+                        <input type="text" name="time" class="timepicker" placeholder="Enter time" required/>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <a href="javascript:void(0);">Cancel</a>
+                    <button type="submit">Save</button>
+                </div>  
+                </form> 
+            </div>
+        </div>     
+    </div>
+    <!-- editPhaseBatchDialog Dialog--> 
+
+
+ <!-- Add Content Dialog-->
+<div class="addPhasesBatchDialog">
+    <div class="addPhasesBatchDialogContainer">
+        <div class="heading">Add Batches</div>
+        <form>
+        <div class="dialog-content wrapper"> 
+           <div class="form-wrapper">
+                <div class="form-block">
+                    <input type="text" name="title"  placeholder="Enter title" required/>
+                </div>
+                 <div class="form-block">
+                    <input type="text" name="uniquecode" placeholder="Enter unique code" required/>
+                </div>
+            </div>
+            <div class="form-wrapper">
+                <div class="form-block">
+                    <textarea name="description"  placeholder="Enter Description" required></textarea>
+                </div>
+            </div>
+            <div class="form-wrapper">
+                <div class="form-block">
+                    <input type="text" name="startdate" class="startdatepicker"  placeholder="Enter start date" required/>
+                </div>
+                 <div class="form-block">
+                    <input type="text" name="enddate" class="enddatepicker" placeholder="Enter enddate" required/>
+                </div>
+            </div>
+         </div>
+         <div class="form-actions">
+             <a href="javascript:void(0);">Cancel</a>
+             <button>Save</button>
+         </div>
+        </form>
+    </div>
+</div>
+    <!-- Add Content Dialog--> 
+
+
+  
+
+
+<!-- Confirmation Content Dialog-->
+    <div class="confirmationDialog">
+        <div class="confirmationDialogContainer">
+            <div class="heading">Confirmation</div>
+            <div class="dialog-content">
+                <h3>Are you Sure ?</h3>
+               <p>This is a confirmation dialog  with custom message.</p>
+            </div>
+             <div class="form-actions">
+                <a href="javascript:void(0);" onclick="confirmation('cancel')">Cancel</a>
+                <button onclick="confirmation('confirm')">Confirm</button>
+            </div>  
+        </div>     
+    </div>
+<!-- Confirmation Content Dialog-->
+
+<!-- Success Content Dialog-->
+    <div class="successDialog">
+        <div class="successDialogContainer">
+            <div class="heading">Success</div>
+            <div class="dialog-content">
+                <i class="fa fa-check"></i>
+                <h3>Awesome</h3>
+               <p>This is a Success dialog  with custom message.</p>
+            </div>
+             <div class="form-actions">
+                <a href="javascript:void(0);" onclick="success('cancel')">Cancel</a>
+                <button onclick="success('ok')">OK</button>
+            </div>  
+        </div>     
+    </div>
+<!-- Success Content Dialog-->
+
+<!-- errror Dialog-->
+<div id="error-dialogue" class="confirmationDialog">
+        <div class="confirmationDialogContainer">
+            <div class="heading">Error</div>
+            <div class="dialog-content">
+                <h3></h3>
+               <p id="error-msg"></p>
+            </div>
+             <div class="form-actions">
+                <button onclick="clickError()">OK</button>
+            </div>  
+        </div>     
+    </div>
+<!-- errror Dialog-->
+
+    
+{% endblock base_content %}
+
+{% block htmljs %}
+<script src="{% static 'js/class.js' %}"></script>
+<script src="{% static 'js/site.js' %}"></script>
+{% endblock htmljs %}

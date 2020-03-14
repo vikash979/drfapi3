@@ -1,0 +1,223 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block header %}
+<meta charset="UTF-8"/>
+
+<title>Sub-Topics Listing</title>
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="viewport" content="user-scalable = 1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<!-- <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"> -->
+
+<!-- <link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.css' %}" type="text/css"> -->
+<link href="{% static 'css/newdesign.css' %}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="{% static 'css/bootstrap-select.min.css' %}" type="text/css"/>
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+<!-- <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"> -->
+<script type="text/javascript" src="{% static 'js/bootstrap-select.min.js' %}"></script>
+{% endblock header %}
+{% block css %}
+
+
+{% endblock %}
+{% block base_content %}
+
+<div id="container">
+
+<!--Header-->
+{% include 'users/nav.html' %}
+<!-- <header>    
+
+<!--Content Container-->
+    <main>
+        <!-- side_bar starts -->
+        {% include 'users/side_bar.html' %}
+        <!-- side_bar ends -->
+        <div id="content-container">
+                <input id="pg_find" type="number" value={{current_page}} hidden>
+            <div class="page-header">
+                    <h2>{{toc_name}}</h2>
+                </div>
+                <div class="table-top">
+                            <input type="search" id="txt-search" placeholder="Search" onkeyup="filterUsingSearch()" />
+                            <div>
+                               <div>
+                                    <span>{{data|length}}</span> Sub-Topics
+                                </div>
+                                <div> 
+                                        <a href="javascript:void(0)" class="add-division-link" onclick="openTOCDialogue();">
+                                            <i class="fa fa-plus"></i>
+                                            <span>Add New</span>
+                                        </a>
+                                 </div>
+                            </div>
+                        </div>    
+                    <div class="page-content">
+                        
+                        <div class="listing-wrapper">
+                        <div class="listing-container">
+                            {% if status == False %}
+                                <h4 style="color: red;">{{message}}</h4>
+                            {% endif %}
+                            <div class="table-wrapper">
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th>Sub-Topic Title</th>
+                                        <th>Topic</th>
+                                        <th>Subject</th>
+                                        <th>Order</th>
+                                        <th>Level</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="listingtable">
+                                        {% for alldata in data %}
+                                            <tr><td>{{alldata.label}}</td><td>{{alldata.parent.label}}</td><td>{{alldata.subject.label}}</td><td>{{alldata.order}}</td><td>{{alldata.level}}</td><td><a href="javascript:void(0);" class='edit-link' onclick="editDivision({{alldata.id}},'{{alldata.label}}','{{alldata.order}}')"><i class="fa fa-pencil"></i></a><a href="javascript:void(0);" onclick="removeDivision({{alldata.id}})"><i class="fa fa-trash"></i></a></td>
+                                                <!-- <td class='division-actions'><a href="javascript:void(0);" class=' create-subjects-link' onclick="openTOCDialogue({{alldata.subject.id}},{{alldata.id}},3)"><i class="fa fa-plus"></i>Add TOC</a></td> -->
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>    
+                            </div>
+                            <div class="paginationWrapper">
+                                <div id="divPagination" class="paginationContainer" actpage="1">
+                                    {% if data|length != 0 %}
+                                    {% if batch_numpage != 1 %}
+                                    {% if current_page != 1%}
+                                    <a id="pageprev" href="/subject/sub_topic/?page={{batch_previous_page}}&toc={{toc}}">prev</a>
+                                    {% endif %}
+                                    {% endif %}
+                                    {% with ''|center:batch_numpage as range %}
+                                    {% for i in range %}
+                                    {% if forloop.counter == 1 %}
+                                    <a id="page{{forloop.counter}}" href="/subject/sub_topic/?toc={{toc}}">{{forloop.counter}}</a>
+                                    {% else %}
+                                    <a id="page{{forloop.counter}}" href="/subject/sub_topic/?page={{forloop.counter}}&toc={{toc}}">{{forloop.counter}}</a>
+                                    {% endif %}
+                                    {% endfor %}
+                                    {% endwith %}
+                                    {% if batch_numpage != 1 %}
+                                    {% if current_page != batch_numpage %}
+                                    <a id="pagenext" href="/subject/sub_topic/?page={{batch_next_page}}&toc={{toc}}">next</a>
+                                    {% endif %}
+                                    {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                         </div>
+    
+                        
+                      
+                        
+                        
+                        </div>
+    
+                    </div>
+    
+                </div>
+     </main>           
+    <!--Content Container-->
+    
+    </div>
+   
+    
+    <!-- Confirmation Content Dialog-->
+        <div class="confirmationDialog">
+            <div class="confirmationDialogContainer">
+                <div class="heading">Confirmation</div>
+                <div class="dialog-content">
+                    <h3>Are you Sure ?</h3>
+                   <p>You want to delete the record</p>
+                </div>
+                 <div class="form-actions">
+                    <a href="javascript:void(0);" onclick="confirmation('cancel')">Cancel</a>
+                    <button onclick="confirmation('confirm')">Confirm</button>
+                </div>  
+            </div>     
+        </div>
+    <!-- Confirmation Content Dialog-->
+    
+<!-- Success Content Dialog-->
+{% if status == True %}
+
+    <div id="successDialog" class="successDialog">
+        <div class="successDialogContainer">
+            <div class="heading">Success</div>
+            <div class="dialog-content">
+                <i class="fa fa-check"></i>
+                <h3>Awesome</h3>
+               <p>{{message}}</p>
+            </div>
+             <div class="form-actions">
+                <!-- <a href="javascript:void(0);" onclick="success('cancel')">Cancel</a> -->
+                <button onclick="success({{toc}});">OK</button>
+            </div>  
+        </div>     
+    </div>
+{% endif %}
+<!-- Success Content Dialog-->
+
+{% if status == "Deleted" %}
+
+<div id="DeleteDialog" class="successDialog">
+    <div class="successDialogContainer">
+        <div class="heading">Deleted</div>
+        <div class="dialog-content">
+            <i class="fa fa-check"></i>
+            <h3>Awesome</h3>
+           <p>{{message}}</p>
+        </div>
+         <div class="form-actions">
+            <!-- <a href="javascript:void(0);" onclick="success('cancel')">Cancel</a> -->
+            <button onclick="failure({{toc}})">OK</button>
+        </div>  
+    </div>     
+</div>
+{% endif %}
+
+
+<!-- Add Content Dialog-->
+<div id="addTOC" class="addDivisionDialog">
+        <div class="addDivisionDialogContainer">
+            <div class="heading"><span id="dialogue_title"></span> &nbsp;Sub-Topic</div>
+            <div class="dialog-content">
+                <form method="POST">{% csrf_token %}
+                    <input id="edit_value_id" type="number" name="id" placeholder="Add title" hidden/>
+                    <input id="subject_id" type='hidden' name="subject_id" value="{{subject_id}}" />
+                    <input id="parent_id" type="hidden" name="parent_id" value="{{toc}}"/>
+                    <input id="level" type="hidden" name="level" value="3" />
+                <div class="form-wrapper">
+                    <div class="form-block">
+                        <input id="label" type="text" name="label" placeholder="Enter name" required/>
+                    </div>
+                    <div class="form-block">
+                        <input id="order" type="number" name="order" placeholder="Enter order" required/>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <a href="javascript:void(0);" onclick="refreshPage()">Cancel</a>
+                    <button type="submit">Save</button>
+                </div>  
+                </form> 
+            </div>
+        </div>     
+    </div>
+    <!-- Add Content Dialog-->
+
+<div>
+    <form id="remove-model" method="POST" hidden>{% csrf_token %}
+        <input type="text" name="action" value="delete"/>
+        <input id="delete_id" type="number" name="id"/>
+    </form>
+</div>
+{% endblock base_content %}
+
+{% block htmljs %}
+<script src="{% static 'js/site.js' %}"></script>
+<script src="{% static 'js/sub_topic.js' %}"></script>
+{% endblock htmljs %}

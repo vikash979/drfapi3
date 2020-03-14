@@ -1,0 +1,306 @@
+{% load static %}
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+
+<title>Assessment Create</title>
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="{% static 'content/css/bootstrap.min.css' %}">
+<link href="{% static 'content/css/newdesign.css' %}" rel="stylesheet" type="text/css">
+<script src="{% static 'content/js/jquery.min.js' %}"></script>
+<script src="{% static 'content/js/popper.min.js' %}"></script>
+<script src="{% static 'content/js/bootstrap.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'content/js/tagify.js' %}"></script>
+<link rel="stylesheet" href="{% static 'content/css/tagify.css' %}" media="screen">
+<link href="{% static 'css/newdesign.css' %}" rel="stylesheet" type="text/css">
+<!-- <script src="js/highstock.js"></script> -->
+</head>
+<body>
+
+<div id="container">
+
+<!--Header-->
+{% include 'users/nav.html' %}
+<!--Header-->
+
+<!--Content Container-->
+<main>
+
+    {% include 'users/side_bar.html' %}
+
+
+	<div id="content-container">
+       <div class="page-header">
+            <h2>Assessment</h2>
+            <ol class="breadcrumb">
+                <li><a href="javascript:void(0)"><i class="fa fa-home"></i></a></li>
+                <li><a href="{% url 'AssessmentTemplateView' %}">Assessments</a></li>
+                <li class="active">Assessment Create</li>
+            </ol>
+        </div>
+        <div class="page-content">
+        	<div class="study-material-wrapper">
+            {% if error %}<h4>{{error}}</h4>{% endif %}
+            <div class="study-material-container">
+              <div class="right-section">
+                <form method="post" id="assessment_create_id" onsubmit="return check_form_error();">
+                  {% csrf_token %}
+                  <div class="form-row">
+                    <div class="form-group col-md-12">
+                      <label>Title</label>
+                      <input type="text" class="form-control" name="title" placeholder="Type Title" required>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-6">
+                      <label>Unique Code</label>
+                      <input type="text" class="form-control" placeholder="Unique Code" name="unique_code" required>
+                    </div>
+                    <div class="form-group col-6">
+                      <label>Section Count</label>
+                      <input type="number" class="form-control" name="section_count" value="1" step="1" required>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label>Difficulty</label>
+                      <select class="form-control" name="difficulty" required>
+                        <option selected disabled>Please select difficulty</option>
+                        {% for i in difficulty %}
+                          <option value="{{i.0}}">{{i.1}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label>Type</label>
+                      <select name="type" class="form-control" required>
+                        <option selected disabled>Please select type</option>
+                        {% for i in type %}
+                          <option value="{{i.0}}">{{i.1}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label>Timed-Type</label>
+                      <select name="timed-type" class="form-control" required>
+                        <option selected disabled>Please select timed type</option>
+                        {% for i in timed_type %}
+                          <option value="{{i.0}}">{{i.1}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label>Total Masks</label>
+                      <input type="number" class="form-control" oninput="input_change(this);" value="1" name="total-mask" required>
+                      <span id="total_mask"></span>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label>Passing Marks</label>
+                      <input type="number" class="form-control" oninput="input_change(this);" name="passing-marks" value="1" step="1" required>
+                      <span id="passing_marks"></span>
+                    </div>
+                    <div class="form-group col-md-4">
+                      <div class="form-check" style="margin-top: 2rem; margin-left: 5rem;">
+                        <input type="checkbox" class="form-check-input" name="reset_time_every_attempt">
+                        <label class="form-check-label">Result time every attemtp</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="inputState">Result After</label>
+                      <select name="result-after" class="form-control" required>
+                        <option selected disabled>Please select after result</option>
+                        {% for i in result_after %}
+                          <option value="{{i.0}}">{{i.1}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label>Duration (min.)</label>
+                      <input type="text" class="form-control" name="duration" value="1" step="1" required>
+                    </div>
+                   </div>
+                   <div class="form-row">
+                     <div class="form-group col-md-6">
+                       <label>Attempts</label>
+                       <input type="number" class="form-control" name="attempts" value="0" step="1" required>
+                     </div>
+                     <div class="form-group col-md-4">
+                       <div class="form-check" style="margin-top: 2rem; margin-left: 5rem;">
+                         <input class="form-check-input" type="checkbox" id="gridCheck" name="is_graded">
+                         <label class="form-check-label" for="gridCheck">
+                           Is Graded
+                         </label>
+                       </div>
+                     </div>
+                   </div>
+                   <div class="form-row">
+                     <div class="form-group col-md-6">
+                       <div class="form-check" style="margin-top: 2rem; margin-left: 5rem;">
+                         <input type="checkbox" class="form-check-input" name="closed_after_passing">
+                         <label class="form-check-label">Closed after passing</label>
+                       </div>
+                     </div>
+                     <div class="form-group col-md-6">
+                       <div class="form-check" style="margin-top: 2rem; margin-left: 5rem;">
+                         <input type="checkbox" class="form-check-input" name="allowed_after_duedate">
+                         <label class="form-check-label">Allowed after duedate</label>
+                       </div>
+                     </div>
+                   </div>
+                   <div class="form-row">
+                     <div class="form-group col-md-6">
+                       <textarea name="instructions" class="form-control" rows="8" cols="80" placeholder="Type instructions" required></textarea>
+                     </div>
+                     <div class="form-group col-md-6">
+                       <textarea name="description" class="form-control" rows="8" cols="80" placeholder="Type description" required></textarea>
+                     </div>
+                   </div>
+                   <div class="bottom-bar-section form-group col-md-4">
+                    <a href="javascript:void(0);" onclick="window.history.back(-1);">Cancel</a>
+                    <button type="submit">Save</button>
+                   </div>
+                 </form>
+              </div>
+            </div>
+            </div>
+        </div>
+	</div>
+</main>
+<!--Content Container-->
+
+
+
+</div>
+
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script>
+
+    $(' aside .aside-container li.active').addClass('open').children('ul').show();
+    $('aside .aside-container li.has-sub>a').on('click', function(){
+        //$(this).removeAttr('href');
+        var element = $(this).parent('li');
+        if (element.hasClass('open')) {
+            element.removeClass('open');
+            element.find('li').removeClass('open');
+            element.find('ul').slideUp(200);
+        }
+        else {
+            element.addClass('open')
+            element.children('ul').slideDown(200);
+            element.siblings('li').children('ul').slideUp(200);
+            element.siblings('li').removeClass('open');
+            element.siblings('li').find('li').removeClass('open');
+            element.siblings('li').find('ul').slideUp(200);
+        }
+    });
+
+        $("#upload-link").on('click', function(e){
+        e.preventDefault();
+        $("#upload").trigger('click');
+
+	   });
+
+
+
+        $(".right-action-bar .dropdown button").on('click', function(e){
+            $(this).parent().toggleClass('show');
+            $(this).next().toggleClass('show');
+
+       });
+
+
+        var input = document.querySelector('input[name="input-custom-dropdown"]'),
+    // init Tagify script on the above inputs
+    tagify = new Tagify(input, {
+      whitelist: ["A# .NET", "A# (Axiom)", "A-0 System", "A+", "A++", "ABAP", "ABC", "ABC ALGOL", "ABSET", "ABSYS", "ACC", "Accent", "Ace DASL", "ACL2", "Avicsoft", "ACT-III", "Action!", "ActionScript", "Ada", "Adenine", "Agda", "Agilent VEE", "Agora", "AIMMS", "Alef", "ALF", "ALGOL 58", "ALGOL 60", "ALGOL 68", "ALGOL W", "Alice", "Alma-0", "AmbientTalk", "Amiga E", "AMOS", "AMPL", "Apex (Salesforce.com)", "APL", "AppleScript", "Arc", "ARexx", "Argus", "AspectJ", "Assembly language", "ATS", "Ateji PX", "AutoHotkey", "Autocoder", "AutoIt", "AutoLISP / Visual LISP", "Averest", "AWK", "Axum", "Active Server Pages", "ASP.NET", "B", "Babbage", "Bash", "BASIC", "bc", "BCPL", "BeanShell", "Batch (Windows/Dos)", "Bertrand", "BETA", "Bigwig", "Bistro", "BitC", "BLISS", "Blockly", "BlooP", "Blue", "Boo", "Boomerang", "Bourne shell (including bash and ksh)", "BREW", "BPEL", "B", "C--", "C++ – ISO/IEC 14882", "C# – ISO/IEC 23270", "C/AL", "Caché ObjectScript", "C Shell", "Caml", "Cayenne", "CDuce", "Cecil", "Cesil", "Céu", "Ceylon", "CFEngine", "CFML", "Cg", "Ch", "Chapel", "Charity", "Charm", "Chef", "CHILL", "CHIP-8", "chomski", "ChucK", "CICS", "Cilk", "Citrine (programming language)", "CL (IBM)", "Claire", "Clarion", "Clean", "Clipper", "CLIPS", "CLIST", "Clojure", "CLU", "CMS-2", "COBOL – ISO/IEC 1989", "CobolScript – COBOL Scripting language", "Cobra", "CODE", "CoffeeScript", "ColdFusion", "COMAL", "Combined Programming Language (CPL)", "COMIT", "Common Intermediate Language (CIL)", "Common Lisp (also known as CL)", "COMPASS", "Component Pascal", "Constraint Handling Rules (CHR)", "COMTRAN", "Converge", "Cool", "Coq", "Coral 66", "Corn", "CorVision", "COWSEL", "CPL", "CPL", "Cryptol", "csh", "Csound", "CSP", "CUDA", "Curl", "Curry", "Cybil", "Cyclone", "Cython", "Java", "Javascript", "M2001", "M4", "M#", "Machine code", "MAD (Michigan Algorithm Decoder)", "MAD/I", "Magik", "Magma", "make", "Maple", "MAPPER now part of BIS", "MARK-IV now VISION:BUILDER", "Mary", "MASM Microsoft Assembly x86", "MATH-MATIC", "Mathematica", "MATLAB", "Maxima (see also Macsyma)", "Max (Max Msp – Graphical Programming Environment)", "Maya (MEL)", "MDL", "Mercury", "Mesa", "Metafont", "Microcode", "MicroScript", "MIIS", "Milk (programming language)", "MIMIC", "Mirah", "Miranda", "MIVA Script", "ML", "Model 204", "Modelica", "Modula", "Modula-2", "Modula-3", "Mohol", "MOO", "Mortran", "Mouse", "MPD", "Mathcad", "MSIL – deprecated name for CIL", "MSL", "MUMPS", "Mystic Programming L"],
+      maxTags: 10,
+      dropdown: {
+        maxItems: 20,           // <- mixumum allowed rendered suggestions
+        classname: "tags-look", // <- custom classname for this dropdown, so it could be targeted
+        enabled: 0,             // <- show suggestions on focus
+        closeOnSelect: false    // <- do not hide the suggestions dropdown once an item has been selected
+      }
+    });
+
+
+
+</script>
+<script>
+  function negative_marking(input_element) {
+    get_value = parseInt($('input[name="negative-marking"]').val())
+    if (get_value >= 0) {
+      var msg = "Negative Marking should be negative."
+      $('#negative_marking').css('color', 'red');
+      $('#negative_marking').html(msg);
+      $('input[name="negative-marking"]').val(-1);
+    } else {
+      $('#negative_marking').html("");
+    }
+  }
+
+  function input_change(input_element) {
+    if (input_element.getAttribute('name') == "total-mask") {
+      var total_mask = parseInt($('input[name="total-mask"]').val())
+      var passing_marks = parseInt($('input[name="passing-marks"]').val())
+      if (total_mask <= 0) {
+        $("#total_mask").css("color","red");
+        msg = "Total mark can't be in negative"
+        $("#total_mask").html(msg)
+        $('input[name="total-mask"]').val(1)
+      } else if (total_mask < passing_marks) {
+        var errormsg = "Total mark can't be less then from passing marks or equal"
+        $("#total_mask").css("color","red");
+        $("#total_mask").html(errormsg)
+        $('input[name="total-mask"]').focus();
+      } else if (total_mask == passing_marks) {
+        var errormsg = "Total mark can't be equal to passing marks"
+        $("#total_mask").css("color","red");
+        $("#total_mask").html(errormsg)
+        $('input[name="total-mask"]').focus();
+      } else {
+        $("#total_mask").html("")
+      }
+    } else if (input_element.getAttribute('name') == "passing-marks"){
+      var total_mask = parseInt($('input[name="total-mask"]').val())
+      var passing_marks = parseInt($('input[name="passing-marks"]').val())
+      if (passing_marks <= 0) {
+        $("#passing_marks").css("color","red");
+        msg = "Passing mark can't be in negative"
+        $("#passing_marks").html(msg)
+        $('input[name="passing-marks"]').val(1)
+        $('input[name="passing-marks"]').focus();
+      } else if (passing_marks > total_mask) {
+        var errormsg = "Passing marks can't be greater than from total marks"
+        $("#passing_marks").css("color","red");
+        $("#passing_marks").html(errormsg)
+        $('input[name="passing-marks"]').focus();
+      } else if (passing_marks == total_mask) {
+        var errormsg = "Passing marks can't be equal to total marks"
+        $("#passing_marks").css("color","red");
+        $("#passing_marks").html(errormsg)
+        $('input[name="passing-marks"]').focus();
+      } else {
+        $("#passing_marks").html("")
+      }
+    }
+  }
+
+  function check_form_error() {
+    if ($("#passing_marks").html() != "" || $("#total_mask").html() != "") {
+      return false
+    } else {
+      return true
+    }
+  }
+</script>
+</body>
+</html>

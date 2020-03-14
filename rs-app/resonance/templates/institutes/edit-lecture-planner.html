@@ -1,0 +1,129 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block header %}
+<meta charset="UTF-8"/>
+
+<title>Division Listing</title>
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="viewport" content="user-scalable = 1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap-select.min.css' %}" type="text/css"/>
+<link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.css' %}" type="text/css">
+<link href="{% static 'css/newdesign.css' %}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="https://colorlib.com/etc/lf/Login_v10/vendor/select2/select2.min.css">
+{% endblock header %}
+{% block css %}
+
+
+{% endblock %}
+{% block base_content %}
+
+<div id="container">
+
+<!--Header-->
+{% include 'users/nav.html' %}
+<!-- <header>        
+
+<!--Content Container-->
+    <main>
+         <!-- side_bar starts -->
+       {% include 'users/side_bar.html' %}
+       <!-- side_bar ends -->
+
+
+	<div id="content-container">
+       <div class="page-header">
+            <h2>Study Material</h2>
+            <ol class="breadcrumb">
+                <li><a href="javascript:void(0)"><i class="fa fa-home"></i></a></li>
+                <li><a href="listing.html">Study Material</a></li>
+                <li class="active">TOC Creation</li>
+            </ol>
+        </div>
+        <div class="page-content">
+
+
+            <div class="editLectureWrapper">
+                <div class="editLectureContainer">
+                    <div class="heading">Edit</div>
+                    <div class="dialog-content">
+                        <form method="POST">
+                        {% if form.errors %}
+                            Errors
+                            {{form.errors}}
+                        {% endif %}
+                        <div class="form-wrapper">
+                            <div class="form-block">
+                                <input type="text" name="title" placeholder="Lecture name" value="{{object.title}}">
+                            </div>
+                            <div class="form-block">
+                                <input type="text" name="duration_hrs" placeholder="Duration" value="{{object.duration_hrs}}">
+                            </div>
+                            
+                        </div>
+                        <div class="form-wrapper">
+                            <div class="form-block">
+                                {{form.start_date_time}}
+                            </div>
+                            
+                            <div class="form-block">
+                                <label>Is Tentative
+                                    <input type="checkbox" name="is_tentative" {% if object.is_tentative %}checked{%endif%}></label>
+                                
+                            </div>
+                        </div>
+                        <div class="form-wrapper">
+                             
+                            <div class="form-block">
+                                <input type="text" placeholder="Room no" name="room" value="{{object.room}}">
+                            </div>
+                              <div class="form-block">
+                                <select name="faculty" class="form-block">
+                                    {% for faculty in faculties %}
+                                        <option value="{{faculty.id}}" {% if faculty.id == object.faculty.id %}selected{% endif %}>{{faculty.name}}
+                                    {% endfor %}
+                                </select>
+                                <!-- <input type="text" list="FacultyList" placeholder="Faculty (Type and Search)">
+                                <datalist id="FacultyList">
+                                    {% for faculty in faculties %}
+                                        <option value="{{faculty.id}}" selected>{{faculty.name}}
+                                    {% endfor %}
+                                </datalist> -->
+                            </div>   
+                        </div>
+                        <div class="form-actions">
+                            <a href="javascript:void(0);" class="cancel-button">Cancel</a>
+                            <button type="submit">Save</button>
+                        </div>  
+                        {% if redirect %}
+                            <input type="hidden" name="redirect" value="{{redirect}}">
+                        {% endif %}
+                        </form> 
+                    </div>
+                </div>     
+            </div>	
+
+
+        	
+        	
+
+        </div>	
+
+	</div>
+</main>    
+<!--Content Container-->
+</div>
+{% endblock %}
+
+{% block htmljs %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+<script type="text/javascript">
+    $("select[name=faculty]").select2();
+    $(".cancel-button").click(function(e){
+        e.preventDefault();
+        window.history.go(-1);
+    }); 
+</script>
+{% endblock %}

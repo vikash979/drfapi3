@@ -1,0 +1,209 @@
+{% load static %}
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+
+<title>Question Bank List</title>
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="{% static 'content/css/bootstrap.min.css' %}">
+<link href="{% static 'content/css/newdesign.css' %}" rel="stylesheet" type="text/css">
+<script src="{% static 'content/js/jquery.min.js' %}"></script>
+<script src="{% static 'content/js/popper.min.js' %}"></script>
+<script src="{% static 'content/js/bootstrap.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'content/js/tagify.js' %}"></script>
+<link rel="stylesheet" href="{% static 'content/css/tagify.css' %}" media="screen">
+<link href="{% static 'css/newdesign.css' %}" rel="stylesheet" type="text/css">
+<!-- <script src="js/highstock.js"></script> -->
+</head>
+<body>
+
+<div id="container">
+
+<!--Header-->
+{% include 'users/nav.html' %}
+<!--Header-->
+
+<!--Content Container-->
+<main>
+
+    {% include 'users/side_bar.html' %}
+
+
+	<div id="content-container">
+       <div class="page-header">
+            <h2>Study Material</h2>
+            <ol class="breadcrumb">
+                <li><a href="javascript:void(0)"><i class="fa fa-home"></i></a></li>
+                <li><a href="javascript:void(0);" onclick="window.history.back(-1);">Section Question list</a></li>
+                <li class="active">Question Bank List</li>
+            </ol>
+        </div>
+        <div class="page-content">
+        	<div class="study-material-wrapper">
+          {% if error %}<h4>{{error}}</h4>{% endif %}
+            <form method="post">
+            {% csrf_token %}
+              <div class="study-material-container">
+                <div class="right-section">
+                  <div class="right-action-bar">
+                    <a href="{% url 'add_question_bank' %}">
+                      <button class="btn btn-secondary" type="button">
+                        <!-- <i class="fa fa-cog"></i> -->
+                        Add Question
+                      </button>
+                    </a>
+                  </div>
+                  <label>Negative value</label>
+                  <input type="number" name="negative_marking_per_q" step="-1" value="-2">
+                  <div class="table-responsive-sm">
+                      <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">Question Statement</th>
+                            <th scope="col">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        {% for i in question %}
+                        <tr>
+                          <td>{{ i.id }}</td>
+                          <td style="width: 50%;">{{ i.questionstatement_set.all.first.statement }}</td>
+                          <td>
+                            <input type="checkbox" name="question" value="{{ i.id }}">
+                          </td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                </div>
+                {% comment %}
+                  {% for i in question %}
+                    <input type="checkbox" name="question" value="{{ i.id }}">
+                    <label>{{ i.questionstatement_set.all.first.statement }}</label>
+                  {% endfor %}
+                {% endcomment %}
+                  <div class="bottom-bar-section">
+                    <a href="javascript:void(0);" onclick="window.history.go(-1); return false;">Cancel</a>
+                    <button type="submit">Save</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+	</div>
+</main>
+<!--Content Container-->
+
+
+
+</div>
+
+
+
+<script>
+
+    $(' aside .aside-container li.active').addClass('open').children('ul').show();
+    $('aside .aside-container li.has-sub>a').on('click', function(){
+        //$(this).removeAttr('href');
+        var element = $(this).parent('li');
+        if (element.hasClass('open')) {
+            element.removeClass('open');
+            element.find('li').removeClass('open');
+            element.find('ul').slideUp(200);
+        }
+        else {
+            element.addClass('open')
+            element.children('ul').slideDown(200);
+            element.siblings('li').children('ul').slideUp(200);
+            element.siblings('li').removeClass('open');
+            element.siblings('li').find('li').removeClass('open');
+            element.siblings('li').find('ul').slideUp(200);
+        }
+    });
+
+        $("#upload-link").on('click', function(e){
+        e.preventDefault();
+        $("#upload").trigger('click');
+
+	   });
+
+
+
+        $(".right-action-bar .dropdown button").on('click', function(e){
+            $(this).parent().toggleClass('show');
+            $(this).next().toggleClass('show');
+
+       });
+
+
+        var input = document.querySelector('input[name="input-custom-dropdown"]'),
+    // init Tagify script on the above inputs
+    tagify = new Tagify(input, {
+      whitelist: ["A# .NET", "A# (Axiom)", "A-0 System", "A+", "A++", "ABAP", "ABC", "ABC ALGOL", "ABSET", "ABSYS", "ACC", "Accent", "Ace DASL", "ACL2", "Avicsoft", "ACT-III", "Action!", "ActionScript", "Ada", "Adenine", "Agda", "Agilent VEE", "Agora", "AIMMS", "Alef", "ALF", "ALGOL 58", "ALGOL 60", "ALGOL 68", "ALGOL W", "Alice", "Alma-0", "AmbientTalk", "Amiga E", "AMOS", "AMPL", "Apex (Salesforce.com)", "APL", "AppleScript", "Arc", "ARexx", "Argus", "AspectJ", "Assembly language", "ATS", "Ateji PX", "AutoHotkey", "Autocoder", "AutoIt", "AutoLISP / Visual LISP", "Averest", "AWK", "Axum", "Active Server Pages", "ASP.NET", "B", "Babbage", "Bash", "BASIC", "bc", "BCPL", "BeanShell", "Batch (Windows/Dos)", "Bertrand", "BETA", "Bigwig", "Bistro", "BitC", "BLISS", "Blockly", "BlooP", "Blue", "Boo", "Boomerang", "Bourne shell (including bash and ksh)", "BREW", "BPEL", "B", "C--", "C++ – ISO/IEC 14882", "C# – ISO/IEC 23270", "C/AL", "Caché ObjectScript", "C Shell", "Caml", "Cayenne", "CDuce", "Cecil", "Cesil", "Céu", "Ceylon", "CFEngine", "CFML", "Cg", "Ch", "Chapel", "Charity", "Charm", "Chef", "CHILL", "CHIP-8", "chomski", "ChucK", "CICS", "Cilk", "Citrine (programming language)", "CL (IBM)", "Claire", "Clarion", "Clean", "Clipper", "CLIPS", "CLIST", "Clojure", "CLU", "CMS-2", "COBOL – ISO/IEC 1989", "CobolScript – COBOL Scripting language", "Cobra", "CODE", "CoffeeScript", "ColdFusion", "COMAL", "Combined Programming Language (CPL)", "COMIT", "Common Intermediate Language (CIL)", "Common Lisp (also known as CL)", "COMPASS", "Component Pascal", "Constraint Handling Rules (CHR)", "COMTRAN", "Converge", "Cool", "Coq", "Coral 66", "Corn", "CorVision", "COWSEL", "CPL", "CPL", "Cryptol", "csh", "Csound", "CSP", "CUDA", "Curl", "Curry", "Cybil", "Cyclone", "Cython", "Java", "Javascript", "M2001", "M4", "M#", "Machine code", "MAD (Michigan Algorithm Decoder)", "MAD/I", "Magik", "Magma", "make", "Maple", "MAPPER now part of BIS", "MARK-IV now VISION:BUILDER", "Mary", "MASM Microsoft Assembly x86", "MATH-MATIC", "Mathematica", "MATLAB", "Maxima (see also Macsyma)", "Max (Max Msp – Graphical Programming Environment)", "Maya (MEL)", "MDL", "Mercury", "Mesa", "Metafont", "Microcode", "MicroScript", "MIIS", "Milk (programming language)", "MIMIC", "Mirah", "Miranda", "MIVA Script", "ML", "Model 204", "Modelica", "Modula", "Modula-2", "Modula-3", "Mohol", "MOO", "Mortran", "Mouse", "MPD", "Mathcad", "MSIL – deprecated name for CIL", "MSL", "MUMPS", "Mystic Programming L"],
+      maxTags: 10,
+      dropdown: {
+        maxItems: 20,           // <- mixumum allowed rendered suggestions
+        classname: "tags-look", // <- custom classname for this dropdown, so it could be targeted
+        enabled: 0,             // <- show suggestions on focus
+        closeOnSelect: false    // <- do not hide the suggestions dropdown once an item has been selected
+      }
+    });
+
+
+
+</script>
+<script>
+  $(window).on('load', function(){
+    var duration_value = parseInt($('#duration_value').html());
+    $('#duration_val').val(duration_value);
+    var attempts_value = parseInt($('#attempts_value').html());
+    $('#attempts_val').val(attempts_value);
+  })
+
+  function attempts_increase(){
+    var attempts_value = parseInt($('#attempts_value').html());
+    var append_attempts_value = ++attempts_value;
+    $('#attempts_value').html(append_attempts_value);
+    $('#attempts_val').val(append_attempts_value);
+  }
+
+  function attempts_decrease(){
+    var attempts_value = parseInt($('#attempts_value').html());
+    var append_attempts_value = --attempts_value;
+    if (append_attempts_value > 0) {
+      $('#attempts_value').html(append_attempts_value);
+      $('#attempts_val').val(append_attempts_value);
+    }
+  }
+
+  function duration_decrease(){
+    var duration_value = parseInt($('#duration_value').html());
+    var append_value = --duration_value;
+    if (append_value > 0) {
+      $('#duration_value').html(append_value)
+      $('#duration_val').val(append_value)
+    }
+  }
+
+  function duration_increment(){
+    var duration_value = parseInt($('#duration_value').html());
+    var append_value = ++duration_value;
+    $('#duration_value').html(append_value)
+    $('#duration_val').val(append_value)
+  }
+
+  $('#difficulty a').on('click', function(e){
+    var click_element = e.target;
+    $('#difficulty a.active').removeAttr('class', 'active');
+    click_element.setAttribute('class', 'active');
+    $('#difficulty_value').val(click_element.getAttribute('data-id'))
+  })
+</script>
+
+</body>
+</html>

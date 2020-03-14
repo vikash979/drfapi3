@@ -1,0 +1,308 @@
+{% load static %}
+{% load custom_tag %}
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+
+<title>Question Bank</title>
+<!-- <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"> -->
+<meta name="viewport" content="user-scalable = 1">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="{% static 'content/css/bootstrap.min.css' %}">
+<script src="{% static 'content/js/jquery.min.js' %}"></script>
+<script src="{% static 'content/js/popper.min.js' %}"></script>
+<script src="{% static 'content/js/bootstrap.min.js' %}"></script>
+<link href="{% static 'css/newdesign.css' %}" rel="stylesheet" type="text/css">
+<!-- Include the plugin's CSS and JS: -->
+<script type="text/javascript" src="{% static 'content/js/bootstrap-select.min.js' %}"></script>
+<link rel="stylesheet" href="{% static 'content/css/bootstrap-select.min.css' %}" type="text/css"/>
+</head>
+<body>
+
+<div id="container">
+
+<!--Header-->
+{% include 'users/nav.html' %}
+<!--Header-->
+
+<!--Content Container-->
+    <main>
+        {% include 'users/side_bar.html' %}
+    <div id="content-container">
+        <div class="page-header">
+                <h2>Question Bank</h2>
+                <!-- <ol class="breadcrumb">
+                    <li><a href="javascript:void(0)"><i class="fa fa-home"></i></a></li>
+                    <li><a href="#">Question Bank</a></li>
+                    <li class="active">Question Bank</li>
+                </ol> -->
+            </div>
+            <div class="table-top">
+                <input type="search" id="txt-search" placeholder="Search" />
+                <div>
+                   <div>
+                       <select id="source">
+                           <option selected disabled>Question source</option>
+                           {% for i in source %}
+                              <option value="{{i.0}}">{{i.1}}</option>
+                           {% endfor %}
+                       </select>
+                       <select id='difficulty'>
+                           <option selected disabled>Difficulty level</option>
+                           {% for i in difficulty %}
+                            <option value="{{i.0}}">{{i.1}}</option>
+                           {% endfor %}
+                       </select>
+                       <select id="question_type">
+                           <option selected disabled>Question type</option>
+                           {% for i in question_type %}
+                            <option value="{{i.0}}">{{i.1}}</option>
+                           {% endfor %}
+                       </select>
+                    </div>
+                    <div>
+                      <a href="{% url 'add_question_bank' %}" class="add-question-bank-link">
+                            <i class="fa fa-plus"></i>
+                            <span>Add New</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+                <div class="page-content">
+
+                    <div class="questionbank-wrapper">
+                    <div class="questionbank-container">
+                        <div class="questionbank-left">
+                            <div class="table-wrapper">
+                              <div class="table-responsive">
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th>Unique no.</th>
+                                        <th>Source</th>
+                                        <th>Question statement</th>
+                                        <th>Type</th>
+                                        <th>Difficulty</th>
+                                        <th>Marks</th>
+                                        <!-- <th>Concepts</th> -->
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                      {% for i in object_list %}
+                                            <tr>
+                                              <td><a href="#">{{ i.uid }}</a></td>
+                                              <td>{{i.get_source_display}}</td>
+                                              <td class="question-statement">
+                                                {{ i.questionstatement_set.all.first.statement }}
+                                              </td>
+                                              <td>{{ i.get_question_type_display }}</td>
+                                              <td><span class="easy-tag">{{ i.get_difficulty_display }}</span></td>
+                                              <td><div class="marks-block"><span>{{ i.marks }}</span><span>({{ i.negative_marking }})</span></div></td>
+                                              <!-- <td>
+                                                  <div class="concepts-block">
+                                                      <span>Cpt 1</span>
+                                                      <span>Cpt 2</span>
+                                                      <span>Cpt 3</span>
+                                                      <i>(+4)</i>
+                                                  </div>
+                                              </td> -->
+                                            </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                              </div>
+                            </div>
+                            <div class="paginationWrapper">
+                                <div class="paginationContainer" actpage="1">
+                                {% if is_paginated %}
+                                  {% if page_obj.has_previous %}
+                                      {% if request.GET.source or request.GET.difficulty or request.GET.question_type %}
+                                        <a href="{% question_bank_search_filter request.GET %}&page={{ page_obj.previous_page_number }}">prev</a>
+                                      {% else %}
+                                        <a href="?page={{ page_obj.previous_page_number }}">prev</a>
+                                      {% endif %}
+                                  {% else %}
+                                      <a href="javascript:void(0);">prev</a>
+                                  {% endif %}
+                                  {% for i in page_obj.paginator.page_range %}
+                                    {% if page_obj.number == forloop.counter %}
+                                      {% if request.GET.source or request.GET.difficulty or request.GET.question_type %}
+                                      <a href="{% question_bank_search_filter request.GET %}&page={{ i }}" class="selected">{{ i }}</a>
+                                      {% else %}
+                                      <a href="?page={{ i }}" class="selected">{{ i }}</a>
+                                      {% endif %}
+                                    {% else %}
+                                      {% if request.GET.source or request.GET.difficulty or request.GET.question_type %}
+                                        <a href="{% question_bank_search_filter request.GET %}&page={{ i }}">{{ i }}</a>
+                                      {% else %}
+                                        <a href="?page={{ i }}">{{ i }}</a>
+                                      {% endif %}
+                                    {% endif %}
+                                  {% endfor %}
+                                  {% if page_obj.has_next %}
+                                    {% if request.GET.source or request.GET.difficulty or request.GET.question_type %}
+                                      <a href="{% question_bank_search_filter request.GET %}&page={{ page_obj.next_page_number }}">next</a>
+                                    {% else %}
+                                      <a href="?page={{ page_obj.next_page_number }}">next</a>
+                                    {% endif %}
+                                  {% else %}
+                                    <a href="javascript:void(0);">next</a>
+                                  {% endif %}
+                                {% else %}
+                                  <a href="javascript:void(0);">prev</a>
+                                  <a href="javascript:void(0);" class="selected">1</a>
+                                  <a href="javascript:void(0);">next</a>
+                                {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="questionbank-right">
+                            <div class="close-link"><a href="javascript:void(0);">X</a></div>
+                            <div class="top-block">
+                                <div>
+                                    <span>A001</span>
+                                    <span>S123</span>
+                                    <span>Exercises</span>
+                                    <span>Section 2</span>
+                                </div>
+                                <div class="plus-minus-block">
+                                    <span>10</span>
+                                    <span>-0.25</span>
+                                </div>
+                            </div>
+                            <div class="desc-detail">
+                                Lorem ipsum dolor sit amet, conectetur  elit sed do eiusmod tempor incididunt ut l  ipsum dolor sit amet, conectetur  elit sed do eiusmod tempor incididunt ut Lorem ipsum dolor sit amet, conectetur  elit sed do eiusmod tempor incididunt ut l Lorem v sit amet, conectetur  elit sed do eiusmod tempor incididunt ut l Lorem dolor sit amet, conectetur  elit sed do eiusmod ?
+                            </div>
+                            <div class="full-info">
+                                <span class="minute-block">5:00 mins</span>
+                                <span class="hard-tag">Hard</span>
+                                <span>T/F</span>
+                            </div>
+                            <div class="correct-info">
+                                <div class="title">Choose correct answer.</div>
+                                <div>
+                                    <a href="#">True</a>
+                                    <a href="#" class="active">False</a>
+                                </div>
+                            </div>
+                            <div class="qtn-soultion-block">
+                                <h5>Solution</h5>
+                                <textarea></textarea>
+                            </div>
+                            <div class="video-info">
+                                <img src="{% static 'content/images/video-thumb.jpg' %}"/>
+                            </div>
+                            <div class="concepts-info">
+                                <div class="title">Concepts</div>
+                                <div>
+                                    <span>Concept 1</span>
+                                    <span>Concept 2</span>
+                                    <span>Concept 3</span>
+                                </div>
+                            </div>
+                        </div>
+                     </div>
+
+
+
+
+
+                    </div>
+
+                </div>
+
+            </div>
+ </main>
+<!--Content Container-->
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <script type="text/javascript">
+
+        $(' aside .aside-container li.active').addClass('open').children('ul').show();
+        $('aside .aside-container li.has-sub>a').on('click', function(){
+            //$(this).removeAttr('href');
+            var element = $(this).parent('li');
+            if (element.hasClass('open')) {
+                element.removeClass('open');
+                element.find('li').removeClass('open');
+                element.find('ul').slideUp(200);
+            }
+            else {
+                element.addClass('open')
+                element.children('ul').slideDown(200);
+                element.siblings('li').children('ul').slideUp(200);
+                element.siblings('li').removeClass('open');
+                element.siblings('li').find('li').removeClass('open');
+                element.siblings('li').find('ul').slideUp(200);
+            }
+        });
+
+       $(".questionbank-wrapper .table-wrapper table td:first-child a").on('click', function(e){
+            $('.questionbank-right').addClass('open');
+
+       });
+
+        $(".questionbank-right .close-link a").on('click', function(e){
+            $('.questionbank-right').removeClass('open');
+
+       });
+
+   </script>
+
+<script>
+var window_url = window.location.search;
+if(window_url.length==0){
+  var req_obj = [];
+}
+else{
+  var req_obj=window.location.search.split("?")[1].split("&");
+  for (var i = 0; i < req_obj.length; i++) {
+    var obj = req_obj[i].split('=')
+    $(`#${obj[0]} option[value=${obj[1]}]`).attr('selected', 'selected');
+  }
+}
+
+$('select').each(function(e){
+  maElement = $(this);
+  maElement.change(function(maElement) {
+    return function(){
+      if (window.location.search == 0){
+        var url_pathname = window.location.pathname;
+        var value = parseInt(maElement[0].value);
+        var maElementId = maElement.attr('id');
+        window.location.href = `${url_pathname}?${maElementId}=${value}`
+      } else {
+        var url_pathname = window.location.pathname;
+        var search_parameter = window.location.search;
+        var value = parseInt(maElement[0].value);
+        var maElementId = maElement.attr('id');
+        var url = new URL(window.location.href);
+        var query_string = url.search;
+        var search_params = new URLSearchParams(query_string);
+        if (search_params.get('page')) {
+          search_params.set(`page`, `1`);
+        }
+        search_params.set(`${maElementId}`, `${value}`);
+        url.search = search_params.toString();
+        var new_url = url.toString();
+        window.location.href = new_url;
+      }
+    }
+  }(maElement))
+})
+</script>
+</body>
+</html>

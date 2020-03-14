@@ -1,0 +1,55 @@
+{% load static %}
+<aside>
+        <nav class="aside-container">
+            <ul>
+                <li id="dashboard_page"><a href="/dashboard/"><i class="fa fa-home"></i>Dashboard</a></li>
+                <li id="organization_page" class="has-sub">
+                    <a href="javascript:void(0);" class="main-link"><i class="fa fa-university"></i>Organization</a>
+                    <ul>
+                        <!-- <li><a href="organization.html">Organization</a></li> -->
+                        <li id="centers_page"><a href="/institute/centers/">Centers</a></li>
+                        <li id="divisions_page"><a href="/user/division/">Division</a></li>
+                        <li id="departments_page"><a href="/user/department/">Department</a></li>
+                        <li id="designations_page"><a href="/user/designation/">Designation</a></li>
+                        <li id="employements_page"><a href="/user/employement/">Employment Type</a></li>
+                    </ul>
+                </li>
+                <li id="classsubject_page" class="has-sub">
+                    <a href="javascript:void(0);"><i class="fa fa-university"></i>Classes & Subjects</a>
+                    <ul>
+                       <li id="mastersubject_page"><a href="/subject/master_subjects/">Master Subject</a></li>
+                       <li id="class_page"><a href="{% url 'classs'  %}">Class</a></li>
+                       <li id="subject_page"><a href="/subject/subjects/">Subjects / TOC</a></li>
+                    </ul>
+                </li>
+
+                <li id="programspage" class="has-sub">
+                    <a href="javascript:void(0);"><i class="fa fa-university"></i>Programs</a>
+                    <ul>
+                        <li id="program_page"><a href="{% url 'target_planner'  %}">Target</a></li>
+                        <li id="program_page"><a href="{% url 'program_class'  %}">Programs</a></li>
+                        <li id="study_material_page"><a href="/institute/program_class_subject/">Program Class</a></li>
+                        <li id="session_page"><a href="{% url 'sessions'  %}">Sessions</a></li>
+
+                        <li id="phase_page"><a href="{% url 'phase'  %}">Phases</a></li>
+                        <li id="batch_page"><a href="{% url 'batch'  %}">Batches</a></li>
+                       
+                    </ul>
+                </li>
+
+                <li id="faculties_page"><a href="/user/faculties/"><i class="fa fa-university"></i>Faculty / Coordinator</a></li>
+                <li id="students_page"><a href="/user/student_listing/"><i class="fa fa-graduation-cap"></i>Students</a></li>
+                <li id="contentpage"><a href="{% url 'content'  %}"><i class="fa fa-university"></i>Content</a></li>
+                <li id="asse_page"><a href="{% url 'AssessmentTemplateView' %}"><i class="fa fa-university"></i>Assessment</a></li>
+                <li id="quest_page"><a href="{% url 'QuestionListTemplateView' %}"><i class="fa fa-university"></i>Question bank</a></li>
+                <li id="lectureplan_page"><a href="{% url 'LecturePlannerView' %}"><i class="fa fa-university"></i>Lecture Planner</a></li>
+                <li id="planner_page"><a href="{% url 'DppView' %}"><i class="fa fa-university"></i>DPP Planner</a></li>
+
+            </ul>
+        </nav>
+    </aside>
+{% include 'users/js.html' %}
+{% block htmljs %}
+<!-- <script src="{% static 'js/site.js' %}"></script> -->
+<script src="{% static 'js/sidebar.js' %}?{% now 'jS F Y H:i' %}"></script>
+{% endblock htmljs %}

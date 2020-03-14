@@ -1,0 +1,420 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block header %}
+<meta charset="UTF-8"/>
+
+<title>Program Phases Listing</title>
+<!-- <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"> -->
+<meta name="viewport" content="user-scalable = 1">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="css/bootstrap-datetimepicker.css" />
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/bootstrap-select.min.js' %}"></script>
+<script src="{% static 'js/highstock.js' %}"></script>
+<script src="{% static 'js/moment.min.js' %}"></script>            
+<script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
+
+
+
+<link href="{% static 'css/bootstrap-select.min.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'css/newdesign.css' %}" rel="stylesheet" type="text/css">
+
+<!-- Include the plugin's CSS and JS: -->
+
+
+{% endblock header %}
+{% block css %}
+
+
+{% endblock %}
+{% block base_content %}
+
+
+
+<div id="container">
+    {% include 'users/nav.html' %}
+
+<!--Header-->
+ 
+<!--Header-->       
+
+<!--Content Container-->
+    <main>
+        {% include 'users/side_bar.html' %}
+    <div id="content-container">
+      <div class="page-header">
+                <h2>Programs Phase</h2>
+                  <style>
+                            .button
+                            {
+                                background-color:
+                                #204d74;
+                                cursor: pointer;
+                                font-size: 15px;
+                                padding: 7px 20px;
+                                border-radius: 4px;
+                                color:
+                                #fff;
+                                font-family: latoregular;
+                                border: 0px none;
+                            }
+                        </style>
+               <!--  <ol class="breadcrumb">
+                    <li><a href="javascript:void(0)"><i class="fa fa-home"></i></a></li>
+                    <li><a href="listing.html">Users</a></li>
+                    <li class="active">Add User</li>
+                </ol> -->
+            </div>  
+                <div class="page-content">
+                    
+                    <div class="listing-wrapper">
+                    <div class="listing-container">
+                        <div class="table-wrapper">
+                            <form method="post" action="/institute/phase/">{% csrf_token %}
+                              <table>
+                                <tr>
+                                  <td>
+                                          <div class="form-wrapper">
+                                            <label>Program Session</label>
+                                    <div class="form-block">
+                                        <input type="hidden" name="hidden_id" id="title" value="{{data.id}}" placeholder="Enter numeric ID"/>
+                
+                                         <select name="program"  id="programdds" data-live-search="true" title= "Choose Session" required>
+                                             <!-- <option value="">----Select-session program---</option> -->
+                                             {% for program_ob in session_programe %}
+                                <option value="{{program_ob.session_program_obj}}"  {% if program_ob.session_program_obj == data.session_program_id %} selected {% endif %}>{{program_ob.program_objects.label}}({{program_ob.session_objects.label}})</option>
+
+                             {% endfor %}
+                           
+                                           
+                                        
+                                         
+                
+                                        </select>
+                                    </div>
+                                 </div>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>
+                                     <div class="form-wrapper">
+                                      <LABEL>Phase Name</LABEL>
+                                    <div class="form-block">
+                                        <input type="text" name="title" id="phase_title"  placeholder="Enter title" value="{{data.label}}" required/>
+                                    </div>
+                                     
+                                </div>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>
+                                     <div class="form-wrapper">
+                                      <LABEL>Phase Short Code</LABEL>
+                                    <div class="form-block">
+                                         <input type="text" name="short_code" id="Short_code"   placeholder="Enter Short Code" value="{{data.short_code}}" required/>
+                                    </div>
+                                     
+                                </div>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>
+                                    <div class="form-wrapper">
+                                      <label>Start Date</label>
+                                    <div class="form-block">
+                                        <input type="text" name="startdate" id="phase_start" class="startdatepicker" value="{{data.start_date|date:'m/d/Y'}} " placeholder="Enter startdate" required/>
+                                    </div>
+                                  </div>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>
+                                     <div class="form-wrapper">
+                                      <label>End Date</label>
+                                    <div class="form-block">
+                                         <input type="text" name="enddate"  id="phase_end" class="enddatepicker"  value="{{data.end_date|date:'m/d/Y'}} " placeholder="Enter enddate" required/>
+                                    </div>
+                                  </div>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>
+                                    <div class="form-wrapper"><label>Description</label>
+                                    <div class="form-block">
+                                        <input name="description" id="phase_description" value="{{data.description}}" placeholder="Enter description" required>
+                                    </div>
+                                </div>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>
+                                     <div class="form-wrapper"><label></label>
+                                    <div class="form-block">
+                                       <a href="/institute/phase/" Class="button">Cancel</a>
+                                    <button  id="add_submit" Class="button" onclick="add_submit()" type="submit">Save</button>
+                                    </div>
+                                </div>
+                                  </td>
+                                </tr>
+                              </table>
+                          
+                               
+                                
+                                    
+                                
+                                <div class="form-actions">
+                                   
+                                </div>  
+                                </form> 
+                              
+                        </div>
+                     
+                     </div>
+
+                    
+                  
+                    
+                    
+                    </div>
+
+                </div>
+
+            </div>
+ </main>           
+<!--Content Container-->
+
+</div>
+
+
+<!-- Add Content Dialog-->
+    
+    <!-- Add Content Dialog-->
+
+
+    <!-- Add Content Dialog-->
+    
+    <!-- Add Content Dialog-->
+
+    <!-- Add Content Dialog-->
+   
+    
+
+
+
+
+
+
+<!-- Confirmation Content Dialog-->
+    <div class="confirmationDialog">
+        <div class="confirmationDialogContainer">
+            <div class="heading">Confirmation</div>
+            <div class="dialog-content">
+                <h3>Are you Sure ?</h3>
+               <p>This is a confirmation dialog  with custom message.</p>
+            </div>
+             <div class="form-actions">
+                <a href="javascript:void(0);" onclick="confirmation('cancel')">Cancel</a>
+                <button onclick="confirmation('confirm')">Confirm</button>
+            </div>  
+        </div>     
+    </div>
+<!-- Confirmation Content Dialog-->
+
+<!-- Success Content Dialog-->
+    <div class="successDialog">
+        <div class="successDialogContainer">
+            <div class="heading">Success</div>
+            <div class="dialog-content">
+                <i class="fa fa-check"></i>
+                <h3>Awesome</h3>
+               <p>This is a Success dialog  with custom message.</p>
+            </div>
+             <div class="form-actions">
+                <a href="javascript:void(0);" onclick="success('cancel')">Cancel</a>
+                <button onclick="success('ok')">OK</button>
+            </div>  
+        </div>     
+    </div>
+<!-- Success Content Dialog-->
+
+
+
+    <script type="text/javascript">
+
+        $(' aside .aside-container li.active').addClass('open').children('ul').show();
+        $('aside .aside-container li.has-sub>a').on('click', function(){
+            //$(this).removeAttr('href');
+            var element = $(this).parent('li');
+            if (element.hasClass('open')) {
+                element.removeClass('open');
+                element.find('li').removeClass('open');
+                element.find('ul').slideUp(200);
+            }
+            else {
+                element.addClass('open')
+                element.children('ul').slideDown(200);
+                element.siblings('li').children('ul').slideUp(200);
+                element.siblings('li').removeClass('open');
+                element.siblings('li').find('li').removeClass('open');
+                element.siblings('li').find('ul').slideUp(200);
+            }
+        });
+
+         $("#upload_link").on('click', function(e){
+            e.preventDefault();
+            $("#upload:hidden").trigger('click');
+        })
+
+        let tableData = [
+            // { id: '1', uniquecode: 'JR001', startdate: '18-10-2019', enddate: '18-10-2020', program: 'Vikas' , title: 'Phase1' , description: 'Phase1'},
+            // { id: '2', uniquecode: 'JR002', startdate: '18-10-2019', enddate: '18-10-2020', program: 'Vikas', title: 'Phase2' , description: 'Phase2'},
+            // { id: '3', uniquecode: 'JR003', startdate: '18-10-2019', enddate: '18-10-2020', program: 'Vikas' , title: 'Phase3' , description: 'Phase3'},
+           
+           
+          
+            
+        ]
+
+
+        let paginationData = [
+          { id: '1', uniquecode: 'JR', startdate: '18-10-2019', enddate: '18-10-2020', program: 'program1', noofbatches: '7' , title: 'VIJAY JR' , description: 'Description1'},
+            { id: '2', uniquecode: 'G&J', startdate: '18-10-2019', enddate: '18-10-2020', program: 'program2', noofbatches: '2' , title: 'VIJAY G&J' , description: 'Description2'},
+            { id: '3', uniquecode: 'JR', startdate: '18-10-2019', enddate: '18-10-2020', program: 'program3', noofbatches: '5' , title: 'VIKAAS JR' , description: 'Description3'},
+          
+        ]
+
+
+             function confirmation(type){
+                 if (type === 'confirm'){
+                    console.log("confirm");
+                 }else{
+                   console.log("cancel"); 
+                 }  
+            }
+
+            function success(type){
+                 if (type === 'ok'){
+                    console.log("ok");
+                 }else{
+                   console.log("cancel"); 
+                 }  
+            }
+    
+
+    jQuery(document).ready(function(){
+        
+        let tableHTML ='';
+        let paginationHTML ='';
+
+
+        tableData.forEach((val)=>{
+            tableHTML += `<tr>
+                        <td>${val.uniquecode}</td>
+                        <td>${val.title}</td>
+                        <td>${val.startdate}</td>
+                        <td>${val.enddate}</td>
+                        <td>${val.program}</td>
+                        <td>${val.noofbatches}</td>
+                        <td>${val.description}</td>
+                       <td class='division-actions'><a href="javascript:void(0);" class='edit-link'><i class="fa fa-pencil"></i></a><a href="#"><i class="fa fa-trash"></i></a></td>
+                    </tr>`;
+
+                    
+        });
+
+        
+        jQuery('.listingtable').append(tableHTML);
+        
+       
+
+
+
+        jQuery('#txt-search').keyup(function(e){
+            let searchValue = $(this).val().toLowerCase();
+                 console.log(searchValue);
+                 console.log(tableData);
+                 let getData = tableData.find(data => data.name === searchValue);
+                 console.log(getData);
+       
+            });
+
+
+       jQuery('.add-session-link').click(function(){
+            jQuery('.addSessionDialog').addClass('open');
+           // jQuery('.addSessionDialogbatch').addClass('open');
+            jQuery('.addSessionDialog.foredit').removeClass('open');
+            jQuery('.addSessionDialog.foredits').removeClass('open');
+
+        }); 
+
+        jQuery('table td .edit-link').click(function(){
+            jQuery('.addSessionDialog.foredit').addClass('open');
+
+        });  
+
+        jQuery('table td .edit-linkBatch').click(function(){
+            jQuery('.addSessionDialogbatch').addClass('open');
+            jQuery('.addSessionDialog.foredit').removeClass('open');
+
+        }); 
+
+         $('#sessiondd , #programdd , #phasesddsss').selectpicker();
+  
+         $('.startdatepicker').datetimepicker({
+             locale: 'ru',
+            debug:true,
+            pickTime: false 
+        });
+
+        $('.enddatepicker').datetimepicker({
+           locale: 'ru',
+           debug:true,
+           pickTime: false 
+
+        });
+
+         jQuery('.timepicker').datetimepicker({
+          pickDate: false
+         
+        });
+
+        jQuery('.addSessionDialog .form-actions a').click(function(){
+            jQuery('.addSessionDialog').removeClass('open');
+        });
+    
+
+
+    });
+
+
+    
+
+
+    
+    
+
+   </script>
+
+
+   <script>
+    
+
+</script>    
+{% endblock base_content %}
+
+{% block htmljs %}
+<script src="{% static 'js/phase.js' %}"></script>
+<!-- <script src="{% static 'js/site.js' %}"></script> -->
+<script src="{% static 'js/moment.min.js' %}"></script>            
+<script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
+
+
+<link href="{% static 'css/newdesign.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'css/bootstrap-select.min.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'css/bootstrap-datetimepicker.css' %}" rel="stylesheet" type="text/css">
+{% endblock htmljs %}
+

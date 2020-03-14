@@ -1,0 +1,261 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block header %}
+<meta charset="UTF-8"/>
+
+<title>Add Faculty / Coordinator</title>
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="viewport" content="user-scalable = 1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap-select.min.css' %}" type="text/css"/>
+<link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.css' %}" type="text/css">
+<link href="{% static 'css/newdesign.css' %}" rel="stylesheet" type="text/css">
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+<!-- <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"> -->
+<script type="text/javascript" src="{% static 'js/bootstrap-select.min.js' %}"></script>
+{% endblock header %}
+{% block css %}
+
+
+{% endblock %}
+{% block base_content %}
+
+<div id="container">
+
+<!--Header-->
+{% include 'users/nav.html' %}
+<!-- <header> 		
+
+<!--Content Container-->
+<main>
+    <!-- side_bar starts -->
+    {% include 'users/side_bar.html' %}
+    <!-- side_bar ends -->
+	<div id="content-container">
+        <div class="page-header">
+            <h2>Add Faculty / Coordinator</h2>
+            <ol class="breadcrumb">
+                <li><a href="javascript:void(0)"><i class="fa fa-home"></i></a></li>
+                <li><a href="/user/faculties/">Faculty / Coordinator</a></li>
+                <li class="active">Add Faculty</li>
+            </ol>
+        </div>
+        <div class="page-content">
+            
+                 
+            <div class="addUserWrapper">
+                {% if status == False %}
+                    <h4 style="color: red;">{{message}}</h4>
+                {% endif %}
+                
+                <form id="faculty_creation" method="POST" enctype='multipart/form-data'>{% csrf_token %}
+                    <div class="addUserWrapper">
+                        <div class="add-user-block">
+                            <div class="thumb">
+                                <div class="thumb-placeholder"><img id="front_image" class="img-header" src="{{req_update.profile_pic}}" alt="no image"></div>
+                                <div>
+                                    <input id="upload" name="profile_pic" type="file" onchange="readURL(this);"/>
+                                    <a href="javascript:void(0);" id="upload_link">Edit Photo</a>
+                                    <!-- <a href="javascript:void(0);" class="edit_link"><i class="fa fa-pencil"></i></a> -->
+                                </div>
+
+                            </div>
+                            <div class="add-user-content">
+                                <div class="form-wrapper">
+                                        <input type="text" name="id" data-type="input" placeholder="Enter Name" value="{{req_update.id}}" hidden/>
+                                    <div class="form-block">
+                                        <label>Name</label>
+                                        <input type="text" name="name" data-type="input" placeholder="Enter Name" value="{{req_update.name}}" required/>
+                                    </div>
+                                    <div class="form-block">
+                                            <label>Subject</label>
+                                            <select name="subject" id="subject_list" multiple="multiple" data-selected-text-format="count" data-live-search="true" required>
+                                            {% for dep in subject %}
+                                            <option value="{{dep.id}}">{{dep.label}}</option>
+                                            {% endfor %}                                       
+                                         </select>
+                                    </div>
+                                </div>
+                                <div class="form-wrapper">
+                                    <div class="form-block">
+                                        <label>Role</label>
+                                        <!-- Refer this for adding future roles -->
+                                        <select id="role" name="role" required>
+                                            <option selected="selected" disabled>Role here</option>
+                                            <option value="2">Author</option>
+                                            <option value="3">Faculty</option>
+                                        </select>
+                                        <!-- Refer this for adding future roles -->
+                                    </div>
+                                    <div class="form-block">
+                                            <label>Department</label>
+                                            <select name="department" id="department-getting-started" data-selected-text-format="count" data-live-search="true" required>
+                                            <option selected="selected" disabled>Select Department</option>
+                                            {% for dep in department %}
+                                            <option value="{{dep.id}}">{{dep.name}}</option>
+                                            {% endfor %}    
+                                            </select>
+                                            <label>Short name</label>
+                                            <input type="text" name="short_name" value="{{req_update.short_name}}" id="shortname"/>
+
+                                            <label>Employee Code</label>
+                                            <input type="text" name="employee_code" id="employee_code" value="{{req_update.username}}" required />
+                                    
+                                    </div>
+                                </div>
+                                <div class="form-wrapper">
+                                    <div class="form-block">
+                                        <label>Supervisor</label>
+                                        <select name="reporting" id="reporting-manager" data-selected-text-format="count" data-live-search="true" onchange="reporting()">
+                                           <option  value=''>Select Reporting Manager</option>
+                                                {% for repm in user %}
+                                                <option value="{{repm.id}}">{{repm.name}}</option>
+                                                {% endfor %} 
+                                        </select>
+                                    </div>
+
+                                   
+                                </div>
+                                <div class="form-wrapper">
+                                    <div class="form-block">
+                                            <label>Designation</label>
+                                            <select name="designation" id="designation-getting-started" data-selected-text-format="count" data-live-search="true" required>
+                                                    <option selected="selected" disabled>Select Designation</option>
+                                                {% for dep in designation %}
+                                                <option value="{{dep.id}}">{{dep.name}}</option>
+                                                {% endfor %}     
+                                            </select>
+
+
+                                            <label>Email</label>
+                                            <input type="email" name="email" id="email" value="{{req_update.email}}" required />
+
+                                            <label>Mobile</label>
+                                            <input type="tel" name="mobile" id="mobile" value="{{req_update.mobile}}" required />
+                                     
+                                    </div>
+                                    <div class="form-block">
+                                            <label>Employment Type</label>
+                                            <select name="employement_type" id="et-getting-started" data-selected-text-format="count" data-live-search="true" required>
+                                                    <option selected="selected" disabled>Select Employement Type</option>
+                                                {% for dep in employement %}
+                                                <option value="{{dep.id}}">{{dep.name}}</option>
+                                                {% endfor %}    
+                                            </select>
+                                     
+                                    </div>
+                                </div>
+                                <div class="form-wrapper">
+                                   
+                                    <div class="form-block">
+                                        <label>Batches</label>
+                                        <select name="batch" id="batches-getting-started" multiple="multiple" data-selected-text-format="count" data-live-search="true">
+                                            {% for dep in batch  %}
+                                            <option value="{{dep.id}}">{{dep.label}}</option>
+                                            {% endfor %} 
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-wrapper">
+                                    <div class="form-block">
+                                            <label>Country</label>
+                                            <select name="Country" id="country-getting-started" data-selected-text-format="count" data-live-search="true" onchange="SelectState();" required>
+                                             
+                                            </select>
+                
+                                    </div>
+                                  
+                                </div>
+                                <div class="form-wrapper">
+                                <div class="form-block">
+                                        <label>State</label>
+                                        <select name="State" id="state-getting-started" 
+                                        data-selected-text-format="count" data-live-search="true" onchange="SelectCity();" required>
+                                          
+                                        </select>
+                                    </div>
+                                    <div class="form-block">
+                                        <label>City</label>
+                                        <select name="City" id="city-getting-started"
+                                        data-selected-text-format="count" data-live-search="true" onchange="SelectCenter();" required>
+                                          
+                                        </select>
+                                    </div>
+                                </div>   
+
+                                <div class="form-wrapper">
+                                        <div class="form-block">
+                                                <label>Center</label>
+                                                <select name="center" id="center-getting-started"
+                                                data-selected-text-format="count" data-live-search="true" required>
+                                                  
+                                                </select>
+                                        </div>
+                                        <div class="form-block">
+                                            <label>Division</label>
+                                            <select name="division" id="division-getting-started" data-selected-text-format="count" data-live-search="true" required>
+                                                    <option selected="selected" disabled>Select Divison</option>
+                                                {% for dep in division  %}
+                                                <option value="{{dep.id}}">{{dep.name}}</option>
+                                                {% endfor %} 
+                                            </select>
+                                    </div>
+            
+                                </div> 
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <a href="user/faculties/">Cancel</a>
+                            <button type="submit">Save</button>
+                        </div>   
+                    </form>
+            </div>
+    </div>
+    </div>
+</main>       
+<!--Content Container-->
+</div>
+
+<!-- Success Content Dialog-->
+{% if status == True %}
+
+    <div class="successDialog">
+        <div class="successDialogContainer">
+            <div class="heading">Success</div>
+            <div class="dialog-content">
+                <i class="fa fa-check"></i>
+                <h3>Awesome</h3>
+               <p>{{message}}</p>
+            </div>
+             <div class="form-actions">
+                <!-- <a href="javascript:void(0);" onclick="success('cancel')">Cancel</a> -->
+                <button onclick="success()">OK</button>
+            </div>  
+        </div>     
+    </div>
+{% endif %}
+<!-- Success Content Dialog-->
+
+<input type="number" id="division_id" value="{{req_update.division}}" hidden>
+<input type="number" id="department_id" value="{{req_update.department}}" hidden> 
+<input type="number" id="designation_id" value="{{req_update.designation}}" hidden>
+<input type="number" id="employement_type_id" value="{{req_update.employement_type}}" hidden>
+<input type="number" id="country_id" value="{{req_update.country}}" hidden>
+<input type="number" id="state_id" value="{{req_update.state}}" hidden>
+<input type="number" id="city_id" value="{{req_update.city}}" hidden>
+<input type="number" id="center_id" value="{{req_update.center}}" hidden>
+<input type="number" id="role_id" value="{{req_update.role}}" hidden>
+<input type="number" id="subject_id" value="{{req_update.subject}}" hidden>
+<input type="number" id="batch_id" value="{{req_update.batch}}" hidden>
+<input type="number" id="reporting_income" value="{{req_update.reporting}}" hidden>
+{% endblock base_content %}
+
+{% block htmljs %}
+<script src="{% static 'js/site.js' %}"></script>
+<script src="{% static 'js/update_faculty.js' %}"></script>
+{% endblock htmljs %}

@@ -1,0 +1,150 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block header %}
+<meta charset="UTF-8"/>
+
+<title>Content SM Create</title>
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="viewport" content="user-scalable = 1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap-select.min.css' %}" type="text/css"/>
+<link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.css' %}" type="text/css">
+<link href="{% static 'css/newdesign.css' %}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="{% static 'css/tagify.css' %}" media="screen">
+
+{% endblock header %}
+{% block css %}
+<style type="text/css" media="screen">
+.toclevel1{
+    padding-left: 5%;
+}    
+.toclevel2{
+    padding-left: 10%;
+}
+.toclevel3{
+    padding-left: 15%;
+}
+.toclevel4{
+    padding-left: 20%;
+}
+</style>
+
+{% endblock %}
+{% block base_content %}
+
+<div id="container">
+
+    <!--Header-->
+        {% include 'users/nav.html' %}
+    <!-- <header>        
+
+    <!--Content Container-->
+    <main>
+       <!-- side_bar starts -->
+       {% include 'users/side_bar.html' %}
+       <!-- side_bar ends -->
+	<div id="content-container">
+       <div class="page-header">
+            <h2>Study Material</h2>
+            <ol class="breadcrumb">
+                <li><a href="javascript:void(0)"><i class="fa fa-home"></i></a></li>
+                <li><a href="listing.html">Study Material</a></li>
+                <li class="active">TOC Creation</li>
+            </ol>
+        </div>
+       <div class="page-content">
+
+        <form method="POST" enctype="multipart/form-data">
+            <div class="study-material-wrapper">
+                <div class="study-material-container">
+                     <div class="right-section">
+                        <div class="right-action-bar">
+                            <div><input type="text" name="title" required="" placeholder="Title" value="{{sm.title}}"></div>
+                            <div>
+                                <select name="type" {% if sm %} disabled="" {%endif%}>
+                                    <option value="0" {% if sm.type == 0 %} selected=" " {% endif %}>Notes</option>
+                                    <option value="1" {% if sm.type == 1 %} selected=" " {% endif %}>Video</option>
+                                </select>        
+                                <select name="faculty_only" {% if sm %} disabled="" {%endif%}>
+                                    <option value="0" {% if sm.faculty_only %} selected=" " {% endif %}>For Students</option>
+                                    <option value="1" {% if sm.faculty_only %} selected=" " {% endif %}>For Faculty</option>
+                                </select>        
+                                
+                                <select name="language_id" id="language_id">
+                                    <option value="1" {% if language_id == '1' %} selected=" " {% endif %}>In English</option>
+                                    <option value="2" {% if language_id == '2' %} selected=" " {% endif %}>In Hindi</option>
+                                </select>        
+                                 
+                               
+                            </div>
+                        </div>
+
+                        <div class="right-content-section">
+                           
+                          <textarea name="content" rows="5"   style="padding:5px;border:1px solid #ddd;" placeholder="Enter Text Content">{{smf.content}}</textarea>
+
+                        </div>
+
+                        <div style="padding: 10px 0;">
+                            Duration(mins)
+                            <input type="number" required name="duration" style="padding: 2px; border-radius: 5px; border: 1px solid #ddd;" value="{{sm.duration_mins}}" placeholder="Enter duration">
+                        </div>
+                        <div style="padding: 10px 0;">
+                            Faculty Releasable
+                            <input type="checkbox" name="faculty_releasable" style="padding: 2px; border-radius: 5px; border: 1px solid #ddd;">
+                        </div>
+                        {% if smf.file %}
+                            Uploaded File: {{smf.file.url}}
+                        {% endif %}
+                        <div class="upload-section-wrapper">
+                            <div class="upload-section">
+
+                                <input id="upload" name="file" type="file">
+                                <a href="javascript:void(0);" id="upload_link">Upload File</a>
+                            </div>
+                        </div>
+                        <input  name="toc_id"  value="{{toc_id}}" type="hidden">
+                        <div class="bottom-bar-section">
+                            {% if sm %}
+                                <span style="cursor:pointer" onclick="deleteThis()">Delete</span>
+                            {% endif %}
+                            <a href="#" onclick="window.history.go(-1); return false;">Cancel</a>
+                            <button>Save</button>
+                        </div>
+                        
+                     </div>   
+               </div>
+               
+            </div>
+
+
+         </form>   
+            
+
+        </div>
+	</div>
+</main>    
+<!--Content Container-->
+</div>
+{% endblock %}
+{% block htmljs %}
+<!-- <script src="{% static 'js/bootstrap.min.js' %}"></script> -->
+<script type="text/javascript">
+ $("#upload_link").on('click', function(e){
+        e.preventDefault();
+        $("#upload").trigger('click');
+    
+       });
+ {% if sm %}
+    $('#language_id').on('change',function(){
+        window.location.href = window.location.href.split('?')[0] + "?language_id=" + $('#language_id option:selected').val()
+    });
+    function deleteThis(){
+        if(confirm("Are you sure you want to delete this?")){
+            window.location.href = window.location.href.split('?')[0] + "?delete=yes"
+        }
+    }
+ {% endif %}
+</script>
+{% endblock htmljs %}

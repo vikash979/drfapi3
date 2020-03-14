@@ -1,0 +1,101 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block header %}
+<meta charset="UTF-8"/>
+
+<title>Study Material Preview</title>
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="viewport" content="user-scalable = 1">
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<link href="{% static 'css/newdesign.css' %}" rel="stylesheet" type="text/css">
+<!-- <link rel="stylesheet" href="{% static 'css/bootstrap-select.min.css' %}" type="text/css"/> -->
+{% endblock header %}
+{% block css %}
+<style>
+.center{padding-top: 28px;}
+.edit-button{float: right; margin-right: 40px; padding: 10px; padding-left: 20px; padding-right: 20px; font-size: 15px; font-weight: 700; background-color: #70c025;}
+.top-section p{font-size: 18px;}
+.frame_class{ border-radius: 10px; box-shadow: 4px 4px 8px 4px rgba(0, 0, 0, 0.1)}
+</style>
+
+{% endblock %}
+{% block base_content %}
+
+<div id="content-container">
+        <div class="page-header">
+             <h2>Study Material Preview</h2>
+             <ol class="breadcrumb">
+                 <li><a href="javascript:void(0)"><i class="fa fa-home"></i></a></li>
+                 
+             </ol>
+         </div>
+         <div class="page-content">
+ 
+ 
+             <div class="study-material-wrapper">
+                 <div class="study-material-container">
+                     <div class="right-section">
+                         <div class="top-section row">
+                             <div class="col-lg-6 row">
+                                 <p class="col-sm-3">Type: {{type}}</p>
+                                 <p class="col-sm-3">Language: {{smf_language}}</p>
+                                 <p class="col-sm-3">Title: {{sm.title}}</p>
+                                 <p class="col-sm-3">Duration: {{sm.duration_mins}}</p>
+                            </div>
+                                <div class="col-lg-6">
+                                    <a class="btn btn-success edit-button" href="{{link}}">Edit</a>
+                                </div>
+                             
+                         </div>
+                         <div class="bottom-section">
+                              
+                             <!--No topic added-->     
+                              <div class="phases-wrapper2">
+                                 <div class="phases-container">
+                                     <div class="lecture-planner3-wrapper">
+                                         <div class="lecture-planner3-container">
+                                             <div class=" open">
+                                                 
+                                                 <ul class="units-ul" id="tree1" style="margin-top: 3em;">
+                                                     
+                                                 </ul>
+                                                 
+                                             </div>
+                                         </div>
+                                     </div>
+                                 </div>
+                             </div>
+                             <!--No topic added-->
+ 
+                                
+                         </div>
+ 
+ 
+                     </div>
+                         
+                </div>
+             </div>
+            
+         </div>	
+ 
+     </div>
+ </main>    
+ <!--Content Container-->
+ </div>
+
+
+    <center>
+
+            <iframe frameborder="0" class="frame_class" src="{{converted_link}}" width="700px" height="600px">
+            </iframe>
+    </center>
+
+
+{% endblock base_content %}
+
+{% block htmljs %}
+
+<script src="{% static 'js/site.js' %}"></script>
+<script src="{% static 'js/smpreview.js' %}"></script>
+
+{% endblock htmljs %}

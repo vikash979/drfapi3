@@ -1,0 +1,291 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block header %}
+<meta charset="UTF-8"/>
+
+<title>Update Student Student</title>
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="viewport" content="user-scalable = 1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap-select.min.css' %}" type="text/css"/>
+<link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.css' %}" type="text/css">
+<link href="{% static 'css/newdesign.css' %}" rel="stylesheet" type="text/css">
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+<!-- <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"> -->
+<script type="text/javascript" src="{% static 'js/bootstrap-select.min.js' %}"></script>
+{% endblock header %}
+{% block css %}
+
+
+{% endblock %}
+{% block base_content %}
+
+<div id="container">
+
+<!--Header-->
+{% include 'users/nav.html' %}
+<!-- <header> 		
+
+<!--Content Container-->
+<main>
+    <!-- side_bar starts -->
+    {% include 'users/side_bar.html' %}
+    <!-- side_bar ends -->
+	<div id="content-container">
+        <div class="page-header">
+            <h2>Update Student</h2>
+            <ol class="breadcrumb">
+                <li><a href="javascript:void(0)"><i class="fa fa-home"></i></a></li>
+                <li><a href="/user/student_listing/">Student</a></li>
+                <li class="active">Add student</li>
+            </ol>
+        </div>
+        <div class="page-content">
+            
+                
+                <div class="addUserWrapper">
+                        {% if status == False %}
+                        <h4 style="color: red;">{{message}}</h4>
+                    {% endif %}
+                     <form id='student_form' method='post' enctype='multipart/form-data'>{% csrf_token %}
+                    <div class="add-user-block">
+                        <div class="thumb">
+                            <div class="thumb-placeholder"><img id="front_image" class="img-header" src="{{profile_pic}}"></div>
+                            <div>
+                                <input id="upload" name="profile_pic" type="file" onchange="readURL(this);"/>
+                                <a href="javascript:void(0);" id="upload_link">Edit Photo</a>
+                                <!-- <a href="javascript:void(0);" class="edit_link"><i class="fa fa-pencil"></i></a> -->
+                            </div>
+                        </div>
+                        <div class="add-user-content">
+                            <div class="form-wrapper">
+                                    <input type="text" name="id" data-type="input" placeholder="Enter Name" value="{{data.id}}" hidden/>
+                                <div class="form-block">
+                                    <label>Name</label>
+                                    <input type="text" name="name" placeholder="Enter Name" value="{{data.user.name}}" required/>
+                                </div>
+                                <div class="form-block">
+                                    <label>Self email</label>
+                                    <input type="email" name="student_email" value="{{data.user.email}}" placeholder="Enter self email" required/>
+                                </div>
+                            </div>
+                            <div class="form-wrapper">
+                                <div class="form-block">
+                                    <label>Self mobile no.</label>
+                                    <input type="tel" name="student_mobile" value="{{data.user.mobile}}" placeholder="Enter mobile no" required/>
+                                </div>
+                                <div class="form-block">
+                                    <label>Date of Birth (DOB)</label>
+                                    
+                                        <input type="date"  name="student_dob" placeholder="Enter DOB" value="{{data.user.date_of_birth|date:"Y-m-d"}}" required/>
+                                   
+                                </div>
+                                <div class="form-block">
+                                    <label>Gender</label>
+                                    <select id="gender" name="gender" required>
+                                        <option value='' >Select Gender</option>
+                                        <option value='1'>Male</option>
+                                        <option value='2'>female</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-wrapper">
+                                <div class="form-block">
+                                    <label>Division</label>
+                                    <select id="division" name="division" required>
+                                        <option value='' >Select Division</option>
+                                        {% for dep in division  %}
+                                        <option value="{{dep.id}}">{{dep.name}}</option>
+                                        {% endfor %}   
+                                    </select>
+                                </div>
+                                <div class="form-block">
+                                    <label>Medium</label>
+                                    <select id="medium" name="medium" required>
+                                        <option value='' >Select Medium</option>
+                                        <option value='1'>English</option>
+                                        <option value='2'>Hindi</option>
+                                    </select>
+                                </div>
+                                <div class="form-block">
+                                    <label>Country</label>
+                                    <select id="country-getting-started" name="country" onchange="SelectState();" required>
+                                       
+                                    </select>
+                                </div>
+                               
+                            </div>
+
+                            <div class="form-wrapper">
+                                
+                                <div class="form-block">
+                                    <label>State</label>
+                                    <select id="state-getting-started" name="state" onchange="SelectCity();" required>
+                                      
+                                    </select>
+                                </div>
+                                <div class="form-block">
+                                    <label>City</label>
+                                    <select id="city-getting-started" name="city" onchange="SelectCenter();" required>
+                                       
+                                    </select>
+                                </div>
+                                <div class="form-block">
+                                    <label>Study Center</label>
+                                    <select id="center-getting-started" name="center">
+                                      
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-wrapper">
+                                <div class="form-block">
+                                    <label>Roll No</label>
+                                   <input type="text" name="role_number" value="{{data.user.username}}" placeholder="Enter roll no" required/>
+                                </div>
+                                <div class="form-block">
+                                    <label>Session</label>
+                                   <select id="session" name="session" onchange="program_session();"  required>
+                                        <option selected disabled>Select Session</option>
+                                        {% for dep in session %}  
+                                        <option value="{{dep.id}}">{{dep.label}}</option>
+                                        {% endfor %}   
+                                    </select>
+                                </div>
+                               
+                            </div>
+                            <div class="form-wrapper">
+                               
+                                <div class="form-block">
+                                        <label>Programs</label>
+                                        <select id="program" name="program" onchange="program_class(); program_phase_session();" required>
+                                            <option selected disabled>Select Program</option>
+                                        </select>
+                                        
+                                    </div>
+                                    <div class="form-block">
+                                            <label>Phase</label>
+                                            <select id="phase" name="phase" onchange="phase_batch();" required>
+                                                <option selected disabled >Select Phase</option>
+                                            
+                                            </select>
+                                    </div>
+                                
+                                
+                            </div>
+                            <div class="form-wrapper">
+                                <div class="form-block">
+                                    <label> Batch</label>
+                                    <select name="current_batch" id="current_batch">
+                                         <option selected disabled >Select Batch</option>
+                                       
+                                    </select>
+                                </div>
+                                
+                            </div>
+                            <div class="form-wrapper">
+                                <div class="form-block">
+                                    <label>Class</label>
+                                   <select id="class" name="class" required>
+                                        <option selected disabled>Select class</option>
+                                    </select>
+                                </div>
+                                
+                            </div>
+                            <div class="form-wrapper">
+                                <div class="form-block">
+                                    <label>Father name</label>
+                                   <input type="text" name="father_name" value="{{data.father_name}}" placeholder="Enter father name"/>
+                                </div>
+                                <div class="form-block">
+                                    <label>Mother name</label>
+                                    <input type="text" name="mother_name" value="{{data.mother_name}}" placeholder="Enter mother name"/>
+                                </div>
+                            </div>
+                            <div class="form-wrapper">
+                                <div class="form-block">
+                                    <label>Father Email</label>
+                                   <input type="email" name="father_email" value="{{data.father_email}}" placeholder="Enter father email"/>
+                                </div>
+                                <div class="form-block">
+                                    <label>Mother Email</label>
+                                    <input type="email" name="mother_email" value="{{data.mother_email}}"  placeholder="Enter mother email"/>
+                                </div>
+                            </div>
+                            <div class="form-wrapper">
+                                <div class="form-block">
+                                    <label>Father Mobile</label>
+                                    {% if data.mother_mobile == 0 %}
+                                    <input type="tel" name="father_mobile" value="" placeholder="Enter father mobile" />
+                                    {% else %}
+                                   <input type="tel" name="father_mobile" value="{{data.father_mobile}}" placeholder="Enter father mobile" />
+                                   {% endif %}
+                                </div>
+                                <div class="form-block">
+                                    <label>Mother Mobile</label>
+                                    {% if data.mother_mobile == 0 %}
+                                    <input type="tel" name="mother_mobile" value="" placeholder="Enter mother mobile"/>
+                                    {% else %}
+                                    <input type="tel" name="mother_mobile" value="{{data.mother_mobile}}" placeholder="Enter mother mobile"/>
+                                    {% endif %}
+                                </div>
+                            </div>
+                             
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <a href="/user/student_listing/">Cancel</a>
+                        <button type="submit">Save</button>
+                    </div>   
+                </form>
+                </div>
+        </div>
+    </div>
+</main>     
+<!--Content Container-->
+
+
+
+</div>
+<!-- Success Content Dialog-->
+{% if status == True %}
+
+    <div class="successDialog">
+        <div class="successDialogContainer">
+            <div class="heading">Success</div>
+            <div class="dialog-content">
+                <i class="fa fa-check"></i>
+                <h3>Awesome</h3>
+               <p>{{message}}</p>
+            </div>
+             <div class="form-actions">
+                <!-- <a href="javascript:void(0);" onclick="success('cancel')">Cancel</a> -->
+                <button onclick="success()">OK</button>
+            </div>  
+        </div>     
+    </div>
+{% endif %}
+<!-- Success Content Dialog-->
+<input type="number" id="division_id" value="{{data.division.id}}" hidden>
+<input type="number" id="gender_id" value="{{data.user.gender}}" hidden> 
+<input type="number" id="medium_id" value="{{data.medium}}" hidden>
+<input type="number" id="phase_id" value="{{data.phase.id}}" hidden>
+<input type="number" id="country_id" value="{{data.center.country.id}}" hidden>
+<input type="number" id="state_id" value="{{data.center.state.id}}" hidden>
+<input type="number" id="city_id" value="{{data.center.city.id}}" hidden>
+<input type="number" id="center_id" value="{{data.center.id}}" hidden>
+<input type="number" id="session_id" value="{{data.session.id}}" hidden>
+<input type="number" id="class_id" value="{{data.classs.id}}" hidden>
+<input type="number" id="program_id" value="{{data.program.id}}" hidden>
+<input type="number" id="batch_id" value="{{batch_data}}" hidden>
+{% endblock base_content %}
+
+{% block htmljs %}
+</script>
+<script src="{% static 'js/site.js' %}"></script>
+<script src="{% static 'js/update_student.js' %}"></script>
+{% endblock htmljs %}

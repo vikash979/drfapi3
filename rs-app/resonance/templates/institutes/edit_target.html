@@ -1,0 +1,214 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block header %}
+
+<!doctype html>
+<html> 
+<head> 
+<meta charset="UTF-8"/>
+
+<title>Edit Target</title>
+<!-- <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"> -->
+<meta name="viewport" content="user-scalable = 1">
+
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="viewport" content="user-scalable = 1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.css' %}" type="text/css">
+<link href="{% static 'css/newdesign.css' %}" rel="stylesheet" type="text/css">
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/bootstrap-select.min.js' %}"></script>
+<script src="{% static 'js/highstock.js' %}"></script>
+<script src="{% static 'js/moment.min.js' %}"></script>            
+<script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
+
+
+<link href="{% static 'css/newdesign.css' %}" rel="stylesheet" type="text/css">
+
+
+{% endblock header %}
+{% block css %}
+
+
+{% endblock %}
+{% block base_content %}
+
+<div id="container">
+    {% include 'users/nav.html' %}
+
+<!--Header-->
+  
+<!--Header-->       
+
+<!--Content Container-->
+    <main>
+        {% include 'users/side_bar.html' %}
+    <div id="content-container">
+        <div class="page-header">
+                <h2>Target</h2>
+                 <style>
+                            .button
+                            {
+                                background-color:
+#204d74;
+cursor: pointer;
+font-size: 15px;
+padding: 7px 20px;
+border-radius: 4px;
+color:
+#fff;
+font-family: latoregular;
+border: 0px none;
+                            }
+                        </style>
+               <!--  <ol class="breadcrumb">
+                    <li><a href="javascript:void(0)"><i class="fa fa-home"></i></a></li>
+                    <li><a href="listing.html">Users</a></li>
+                    <li class="active">Add User</li>
+                </ol> -->
+            </div>
+             
+                <div class="page-content">
+                    
+                    <div class="listing-wrapper">
+                    <div class="listing-container">
+                        <div class="table-wrapper">
+                            <form method="post" action="/institute/target_planner/" >{% csrf_token %}
+                            <table>
+                               
+                               
+                                <tbody class="listingtable" id="listingtable">
+                                   
+                                   
+                                    <tr>
+                                        <td>
+                                             <div class="form-wrapper">
+                                            <div class="form-block">
+                                                <input type="hidden" name="hidden_id" id="title" value="{{data.id}}" placeholder="Enter numeric ID" required/>
+                                                <input type="text" name="name" id="name"  placeholder="Enter programs title" value="{{data.label}}" required/>
+                                            </div>
+                                             
+                                            
+                                        </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                             <div class="form-wrapper">
+                                            <div class="form-block">
+                                                
+                                                
+                                                <input type="text" name="short_code" id="short_code"  placeholder="Enter programs title" value="{{data.short_code}}" required/>
+                                            </div>
+                                             
+                                            
+                                        </div>
+                                        </td>
+                                    </tr>
+                                    
+                                     <tr>
+                                        <td>
+                                             <div class="form-wrapper">
+                                            <div class="form-block">
+                                                <a href="/institute/target_planner/" class="button">Cancel</a>
+                                                <button  id = "add_program" name="add_program" type="submit" class="button">Save</button>
+                                            </div>
+                                             
+                                            
+                                        </div>
+                                        </td>
+                                    </tr>
+                                       
+                                       
+                                        </div>
+                                       
+                                        
+                                        
+                                   
+                                   
+                                
+                                </tbody>
+                            </table> 
+                        </form>    
+                        </div>
+                       
+                     </div>
+
+                    
+                  
+                    
+                    
+                    </div>
+
+                </div>
+
+            </div>
+ </main>           
+<!--Content Container-->
+
+</div>
+
+
+<!-- Add Content Dialog-->
+   
+    <!-- Add Content Dialog-->
+
+
+   
+    <!-- Add Content Dialog-->
+
+
+<!-- Confirmation Content Dialog-->
+    <div class="confirmationDialog">
+        <div class="confirmationDialogContainer">
+            <div class="heading">Confirmation</div>
+            <div class="dialog-content">
+                <h3>Are you Sure ?</h3>
+               <p>This is a confirmation dialog  with custom message.</p>
+            </div>
+             <div class="form-actions">
+                <a href="javascript:void(0);" onclick="confirmation('cancel')">Cancel</a>
+                <button onclick="confirmation('confirm')">Confirm</button>
+            </div>  
+        </div>     
+    </div>
+<!-- Confirmation Content Dialog-->
+
+<!-- Success Content Dialog-->
+    <div class="successDialog">
+        <div class="successDialogContainer">
+            <div class="heading">Success</div>
+            <div class="dialog-content">
+                <i class="fa fa-check"></i>
+                <h3>Awesome</h3>
+               <p>This is a Success dialog  with custom message.</p>
+            </div>
+             <div class="form-actions">
+                <a href="javascript:void(0);" onclick="success('cancel')">Cancel</a>
+                <button onclick="success('ok')">OK</button>
+            </div>  
+        </div>     
+    </div>
+<!-- Success Content Dialog-->
+
+
+
+    
+
+   <script>
+   
+
+
+</script>    
+{% endblock base_content %}
+
+{% block htmljs %}
+<script src="{% static 'js/programe.js' %}"></script>
+<script src="{% static 'js/site.js' %}"></script>
+{% endblock htmljs %}
+

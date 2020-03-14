@@ -1,0 +1,609 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block header %}
+<meta charset="UTF-8"/>
+
+<title>TOC Listing</title>
+<!-- <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"> -->
+<meta name="viewport" content="user-scalable = 1">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="css/bootstrap-datetimepicker.css" />
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/bootstrap-select.min.js' %}"></script>
+<!-- <script src="{% static 'js/highstock.js' %}"></script> -->
+<script src="{% static 'js/moment.min.js' %}"></script>            
+<script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
+
+
+
+<link href="{% static 'css/bootstrap-select.min.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'css/newdesign.css' %}" rel="stylesheet" type="text/css">
+
+<!-- Include the plugin's CSS and JS: -->
+
+
+{% endblock header %}
+{% block css %}
+
+
+{% endblock %}
+{% block base_content %}
+
+
+
+<div id="container">
+    {% include 'users/nav.html' %}
+
+<!--Header-->
+ 
+<!--Header-->       
+
+<!--Content Container-->
+    <main>
+        {% include 'users/side_bar.html' %}
+
+	<div id="content-container">
+       <div class="page-header">
+            <h2>Study Material</h2>
+            <ol class="breadcrumb">
+                <li><a href="javascript:void(0)"><i class="fa fa-home"></i></a></li>
+                <li><a href="listing.html">Study Material</a></li>
+                <li class="active">TOC Creation</li>
+            </ol>
+        </div>
+        <div class="page-content">
+
+
+        	<div class="study-material-wrapper">
+        		<div class="study-material-container">
+                    <div class="left-section">
+                        <div class="top-section">
+                            <select>
+                                <option>Class1</option>
+                                <option>Class2</option>
+                                <option>Class3</option>
+                                <option>Class4</option>
+                                <option>Class5</option>
+                            </select>        
+                            <select>
+                                <option>Subject1</option>
+                                <option>Subject2</option>
+                                <option>Subject3</option>
+                                <option>Subject4</option>
+                                <option>Subject5</option>
+                            </select> 
+                        </div>
+                        <div class="bottom-section">
+                             
+                            <!--No topic added-->     
+                            <div class="no-topic-added">No Topics Added</div>
+                            <!--No topic added-->
+
+                            <ol class="Left-Unit-Menu">
+                                <li>
+                                    <div class="default-menu">
+                                        <div>
+                                            <i></i>
+<<<<<<< Updated upstream
+                                            <span><b class="active">Unit</b><input type="text" name="" id="unit_label_1" onclick="unit_obj(this.id,this.value)" placeholder="title"/></span>
+=======
+                                            <span><b class="active">Unit</b><input type="text" placeholder="title" /></span>
+>>>>>>> Stashed changes
+                                        </div>
+                                        <div></div>
+                                    </div>
+                                    <ul>
+                                        <li>
+                                            <div class="default-menu">
+                                                <div>
+                                                    <i></i>
+<<<<<<< Updated upstream
+                                                    <span><b>Chapter</b><input type="text" name="" placeholder="title"/></span>
+=======
+                                                    <span><b>Chapter</b><input type="text" placeholder="title" /></span>
+>>>>>>> Stashed changes
+                                                </div>
+                                                <div></div>
+                                            </div>
+                                            <ul>
+                                                <li>
+                                                    <div class="default-menu">
+                                                        <div>
+                                                            <i></i>
+<<<<<<< Updated upstream
+                                                            <span><b>Topic</b><input type="text" name="" placeholder="title"/></span>
+=======
+                                                            <span><b>Topic</b><input type="text" placeholder="title" /></span>
+>>>>>>> Stashed changes
+                                                        </div>
+                                                        <div></div>
+                                                    </div>
+                                                    <ul>
+                                                        <li>
+                                                            <div class="default-menu">
+                                                                <div>
+                                                                    <i></i>
+<<<<<<< Updated upstream
+                                                                    <span><b>Sub Topic</b><input type="text" name="" placeholder="title"/></span>
+=======
+                                                                    <span><b>Sub Topic</b><input type="text" placeholder="title" /></span>
+>>>>>>> Stashed changes
+                                                                </div>
+                                                                <div></div>
+                                                            </div>
+                                                            <ul>
+                                                                <li>
+                                                                    <div class="default-menu">
+                                                                        <div>
+                                                                            <i></i>
+                                                                            <span>Notes</span>
+                                                                        </div>
+                                                                        <div>
+                                                                             <div class="draft">(Draft)</div>
+                                                                            <div class="saved">(Saved)</div>
+                                                                            <div class="published">(Published)</div>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+                                    </ul>
+                                </li>
+
+
+                             </ol>   
+
+
+                             <ol class="Left-Unit-Menu" id="Left-Unit-Menu">
+                                
+
+
+                             </ol>   
+
+                            <ol class="Left-Unit-Section" style="display: none;">
+                                <li>
+                                    <div>
+                                        <i></i>
+                                        <span>Unit1</span>
+                                    </div>
+                                    <div>
+                                       <!--  <a href="#"><img src="images/prev-arrow.png"/></a>
+                                        <a href="#"><img src="images/next-arrow.png"/></a> -->
+                                    </div>
+                                </li>
+                                <li class="has-chapter">
+                                    <div>
+                                        <i></i>
+                                        <span>Chapter1</span>
+                                    </div>
+                                    <div>
+                                       <!--  <a href="#"><img src="images/prev-arrow.png"/></a>
+                                        <a href="#"><img src="images/next-arrow.png"/></a> -->
+                                    </div>
+                                </li>
+                                <li class="has-topic">
+                                    <div>
+                                        <i></i>
+                                        <span>Topic</span>
+                                    </div>
+                                    <div>
+                                        <!-- <a href="#"><img src="images/prev-arrow.png"/></a>
+                                        <a href="#"><img src="images/next-arrow.png"/></a> -->
+                                    </div>
+                                </li>
+                                 <li class="has-notes">
+                                    <div>
+                                        <i></i>
+                                        <span>Notes</span>
+                                    </div>
+                                    <div>
+                                        <div class="draft">(Draft)</div>
+                                        <div class="saved">(Saved)</div>
+                                        <div class="published">(Published)</div>
+                                        <!-- <a href="#"><img src="images/prev-arrow.png"/></a>
+                                        <a href="#"><img src="images/next-arrow.png"/></a> -->
+                                    </div>
+                                </li>
+                                <li>
+                                    <div>
+                                        <i></i>
+                                        <span>Unit2</span>
+                                    </div>
+                                    <div>
+                                       <!--  <a href="#"><img src="images/prev-arrow.png"/></a>
+                                        <a href="#"><img src="images/next-arrow.png"/></a> -->
+                                    </div>
+                                </li>
+                            </ol>
+
+
+                        </div>
+
+
+                        <div class="bottom-bar-section">
+                            <button class="addtoc-btn" onclick="addtocclick()"><i class="fa fa-plus"></i>TOC</button>
+                            <div class="dropdown">
+                              <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-plus"></i>Learning mode
+                              </button>
+                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="javascript:void(0);" onclick="notesvideo()">Notes</a>
+                                <a class="dropdown-item" href="javascript:void(0);">Video</a>
+                                <a class="dropdown-item" href="javascript:void(0);">Solved Examples</a>
+                                <a class="dropdown-item" href="javascript:void(0);">Excerise</a>
+                                <a class="dropdown-item" href="javascript:void(0);">DPP</a>
+                              </div>
+                            </div>
+                        </div>
+
+                    </div>
+                     <div class="right-section">
+
+                        <div class="right-action-bar">
+                            <div>Title</div>
+                            <div>
+                                <select>
+                                    <option>English</option>
+                                    <option>Hindi</option>
+                                </select>        
+                                <select>
+                                    <option>For Student</option>
+                                    <option>For Teacher</option>
+                                </select>
+                                <div class="dropdown">
+                                  <button class="btn btn-secondary">
+                                    <i class="fa fa-cog"></i>
+                                  </button>
+                                  <div class="dropdown-menu">
+                                        <div class="heading-title">Settings</div>
+                                        <div class="setting-content">
+                                            <div class="block">
+                                                <div class="title">Duration</div>
+                                                <div class="block-content">
+                                                    <div class="duration-block">
+                                                        <a href="#">-</a>
+                                                        <span>3</span>
+                                                        <a href="#">+</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="block">
+                                                <div class="title">Option to Download</div>
+                                                <div class="block-content">
+                                                    <div class="option-block">
+                                                        <label>
+                                                            <input type="radio" name="offile">
+                                                            Offline Access
+                                                        </label>
+                                                        <label>
+                                                            <input type="radio" name="offile">
+                                                            Desktop Download
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="block">
+                                                <div class="title">Concept</div>
+                                                <div class="block-content">
+                                                   <input type="text" class='some_class_name'  name="input-custom-dropdown" value='title1, title2, title3' placeholder="Type and search" />
+                                                </div>
+                                            </div>      
+
+
+                                        </div>
+
+
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="right-content-section">
+                           
+                          <p>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                          
+                          <p>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+
+
+                          <p>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>  
+
+
+                        </div>
+
+                        <div class="no-content-added">No Content Added / Selected</div>
+
+                        <div class="upload-section-wrapper">
+                            <input type="text" placeholder="Enter Title">
+                            <div class="upload-section">
+                                <input id="upload" type="file"/>
+                                <a href="javascript:void(0);" id="upload_link">Upload File</a>
+                            </div>
+                        </div>
+
+                        <div class="bottom-bar-section">
+                            <a href="#">Cancel</a>
+                            <button>Save</button>
+                        </div>
+                        <div class="bottom-bar-section">
+                            <a href="#">Publish</a>
+                            <button>Edit</button>
+                        </div>
+                     </div>   
+        	   </div>
+               
+            </div>
+
+
+        	
+        	
+
+        </div>	
+
+	</div>
+</main>    
+<!--Content Container-->
+
+
+
+</div>
+
+<script>
+
+    function unit_obj(id,data)
+    {
+
+        //alert(data)
+    }
+</script>
+<style>
+    .red {
+  background:red;
+  }
+    </style>
+
+<script>
+
+    $(' aside .aside-container li.active').addClass('open').children('ul').show();
+    $('aside .aside-container li.has-sub>a').on('click', function(){
+        //$(this).removeAttr('href');
+        var element = $(this).parent('li');
+        if (element.hasClass('open')) {
+            element.removeClass('open');
+            element.find('li').removeClass('open');
+            element.find('ul').slideUp(200);
+        }
+        else {
+            element.addClass('open')
+            element.children('ul').slideDown(200);
+            element.siblings('li').children('ul').slideUp(200);
+            element.siblings('li').removeClass('open');
+            element.siblings('li').find('li').removeClass('open');
+            element.siblings('li').find('ul').slideUp(200);
+        }
+    });    
+
+        $("#upload_link").on('click', function(e){
+        e.preventDefault();
+        $("#upload").trigger('click');
+	
+	   });
+
+        
+
+        $(".right-action-bar .dropdown button").on('click', function(e){
+            $(this).parent().toggleClass('show');
+            $(this).next().toggleClass('show');
+    
+       });
+
+
+
+        var sidebarValue = 1;
+        var sidebarDDValue = 1;
+        var htmlcode= '';
+        var levelvalue = 0;
+        var nestedvalue = 0;
+        var chaptervalue=0
+        var chaptertopic = 0
+        var subtopic = 0
+        var chapter_notes = 0
+
+        
+
+
+          function addtocclick(id){
+
+                console.log('clicked id' +  id) 
+                if ($("#Left-Unit-Menu :not(:contains(li))") ){
+                    htmlcode = "<li id='parent-" + levelvalue + "'><div class='default-menu' class='parent_unit'><div><i></i><span id='unit-" + levelvalue + "'  onclick='clickOn(id)'>Unit1</span></div><input type='text' id='parent_unit" + levelvalue + "' onchange='myFunction(this.id,this.value)'><div></div></div><span><ul id='unit-" + levelvalue + "chapter-" + levelvalue + "'><li><li></li></span></li>";
+                    levelvalue += 1;
+                    $('#Left-Unit-Menu').append(htmlcode); 
+                 }else if(id){
+                   console.log('id mili'); 
+                   htmlcode = "<li id='chapter-" + nestedvalue + "' onclick='clickOn(id)'><div class='default-menu'><div><i></i><span>Chapter</span></div><div></div></div></li>";
+                    nestedvalue += 1;
+                    $('#Left-Unit-Menu').append(htmlcode); 
+                 }
+
+            }     
+
+            var chaptervalue = 0
+        function myFunction(id,datavalue)
+        {
+            alert(id)
+        }
+        var chaptervalue = 0
+        function clickOn(id){
+           
+           
+            var unit_id = id.split("-")
+
+            
+
+            $(".red").removeClass( 'red' );
+            
+            
+            $("#"+id).addClass( 'red' );
+
+           var idd = $(this).closest('li').attr('id');
+            var chaterId= "#"+id+"chapter-"+unit_id[1]
+            
+           chaptervalue +=1
+           alert(chaptervalue)
+
+            
+           // $(chaterId).append("<li><div><i></i><span id='chap-"+chaptervalue+"' onclick='chapter_topic(id)'>Chapter</span></div><span><ul id='topic-" + chaptervalue + "'><li><li></li></span><ul id='unit_notes-"+chaptervalue+"'></ul></li>")
+           //chaptervalue += 1;
+            // console.log('clickon' + id);
+            // addtocclick(id);
+        }   
+        var chaptertopic = 0
+
+         function notesvideo()
+    {
+        $(".select:checked").attr('id');
+    }
+        function  chapter_topic(id)
+        {
+            chaptertopic += 1;
+            var unit_id = id.split("-")
+
+            var topid= "#topic-"+unit_id[1]
+            $(topid).append("<li><div><i></i><span id='ch_topic-"+chaptertopic+"' onclick='chapter_subtopic(id)'>Topic</span></div><span><ul id='sub_topic-" + chaptertopic + "'><li><li></li></span></li>")
+           
+        }
+        var subtopic = 0
+
+        function chapter_subtopic(id)
+        {
+            subtopic += 1;
+             var unit_id = id.split("-")
+
+            var sub_topic= "#sub_topic-"+unit_id[1]
+            $(sub_topic).append("<li><div><i></i><span id='sub_topic-"+subtopic+"' onclick='chapter_notes(id)'>Sub Topic</span></div><span><ul id='notes-" + subtopic + "'><li><li></li></span></li>")
+           
+        }
+        var chapter_notes = 0
+        function chapter_notes(id)
+        {
+            chapter_notes += 1;
+            var unit_id = id.split("-")
+
+            var notes= "#notes-"+unit_id[1]
+            $(notes).append("<li><div><i></i><span id='sub_topic-"+chapter_notes+"' onclick='chapter_notes(id)'>Notes</span></div><span><ul id='notes-" + chapter_notes + "'><li><li></li></span></li>")
+           
+        }
+              
+
+        function ManagesidebarValue(e, val){
+            sidebarValue = val;
+            mainid = e.id;
+            //console.log(id);
+            //console.log(sidebarValue);
+            $('.Left-Unit-Section li span b').removeClass('active');
+            e.classList.toggle('active');
+            // var parent = e.parentNode;
+            // parent.toggle('active');
+
+        }
+
+
+        $(".addtssoc-btn").on('click', function(e){
+          var htmlcode= '';
+          switch(sidebarValue) {
+              case 1:
+                htmlcode = `<li class="has-unit">
+                            <div>
+                                <i></i>
+                                <span>
+                                    <b onclick="ManagesidebarValue(this, 2)" id="unit">Unit</b>
+                                    <input type="text" placeholder ="title" value="Title"/>
+                                </span>
+                            </div>
+                            <div></div>
+                        </li>`;
+                 $('.Left-Unit-Section').append(htmlcode);      
+                break;
+              case 2:
+                htmlcode = `<li class="has-chapter">
+                            <div>
+                                <i></i>
+                                <span>
+                                    <b onclick = "ManagesidebarValue(this, 3)" id="chapter">Chapter</b>
+                                    <input type="text" placeholder ="title" value="Title" />
+                                </span>
+                            </div>
+                            <div></div>
+                        </li>`;
+                 $('.Left-Unit-Section').append(htmlcode);  
+                break;
+                case 3:
+                htmlcode = `<li class="has-topic">
+                            <div>
+                                <i></i>
+                                <span>
+                                    <b onclick = "ManagesidebarValue(this, 4)" id="topic">Topic</b>
+                                    <input type="text" placeholder ="title" value ="Title" />
+                                </span>
+                            </div>
+                            <div></div>
+                        </li>`;
+                 $('.Left-Unit-Section').append(htmlcode);  
+                break;
+                case 4:
+                htmlcode = `<li class="has-subtopic">
+                            <div>
+                                <i></i>
+                                <span>
+                                    <b>Sub Topic</b>
+                                    <input type="text" placeholder ="Title" value ="Title" />
+                                </span>
+                            </div>
+                            <div></div>
+                        </li>`;
+                 $('.Left-Unit-Section').append(htmlcode);  
+                break;
+              default:
+                // code block
+            }
+    
+       });
+
+        
+
+
+        var input = document.querySelector('input[name="input-custom-dropdown"]'),
+    // init Tagify script on the above inputs
+    tagify = new Tagify(input, {
+      whitelist: ["A# .NET", "A# (Axiom)", "A-0 System", "A+", "A++", "ABAP", "ABC", "ABC ALGOL", "ABSET", "ABSYS", "ACC", "Accent", "Ace DASL", "ACL2", "Avicsoft", "ACT-III", "Action!", "ActionScript", "Ada", "Adenine", "Agda", "Agilent VEE", "Agora", "AIMMS", "Alef", "ALF", "ALGOL 58", "ALGOL 60", "ALGOL 68", "ALGOL W", "Alice", "Alma-0", "AmbientTalk", "Amiga E", "AMOS", "AMPL", "Apex (Salesforce.com)", "APL", "AppleScript", "Arc", "ARexx", "Argus", "AspectJ", "Assembly language", "ATS", "Ateji PX", "AutoHotkey", "Autocoder", "AutoIt", "AutoLISP / Visual LISP", "Averest", "AWK", "Axum", "Active Server Pages", "ASP.NET", "B", "Babbage", "Bash", "BASIC", "bc", "BCPL", "BeanShell", "Batch (Windows/Dos)", "Bertrand", "BETA", "Bigwig", "Bistro", "BitC", "BLISS", "Blockly", "BlooP", "Blue", "Boo", "Boomerang", "Bourne shell (including bash and ksh)", "BREW", "BPEL", "B", "C--", "C++ – ISO/IEC 14882", "C# – ISO/IEC 23270", "C/AL", "Caché ObjectScript", "C Shell", "Caml", "Cayenne", "CDuce", "Cecil", "Cesil", "Céu", "Ceylon", "CFEngine", "CFML", "Cg", "Ch", "Chapel", "Charity", "Charm", "Chef", "CHILL", "CHIP-8", "chomski", "ChucK", "CICS", "Cilk", "Citrine (programming language)", "CL (IBM)", "Claire", "Clarion", "Clean", "Clipper", "CLIPS", "CLIST", "Clojure", "CLU", "CMS-2", "COBOL – ISO/IEC 1989", "CobolScript – COBOL Scripting language", "Cobra", "CODE", "CoffeeScript", "ColdFusion", "COMAL", "Combined Programming Language (CPL)", "COMIT", "Common Intermediate Language (CIL)", "Common Lisp (also known as CL)", "COMPASS", "Component Pascal", "Constraint Handling Rules (CHR)", "COMTRAN", "Converge", "Cool", "Coq", "Coral 66", "Corn", "CorVision", "COWSEL", "CPL", "CPL", "Cryptol", "csh", "Csound", "CSP", "CUDA", "Curl", "Curry", "Cybil", "Cyclone", "Cython", "Java", "Javascript", "M2001", "M4", "M#", "Machine code", "MAD (Michigan Algorithm Decoder)", "MAD/I", "Magik", "Magma", "make", "Maple", "MAPPER now part of BIS", "MARK-IV now VISION:BUILDER", "Mary", "MASM Microsoft Assembly x86", "MATH-MATIC", "Mathematica", "MATLAB", "Maxima (see also Macsyma)", "Max (Max Msp – Graphical Programming Environment)", "Maya (MEL)", "MDL", "Mercury", "Mesa", "Metafont", "Microcode", "MicroScript", "MIIS", "Milk (programming language)", "MIMIC", "Mirah", "Miranda", "MIVA Script", "ML", "Model 204", "Modelica", "Modula", "Modula-2", "Modula-3", "Mohol", "MOO", "Mortran", "Mouse", "MPD", "Mathcad", "MSIL – deprecated name for CIL", "MSL", "MUMPS", "Mystic Programming L"],
+      maxTags: 10,
+      dropdown: {
+        maxItems: 20,           // <- mixumum allowed rendered suggestions
+        classname: "tags-look", // <- custom classname for this dropdown, so it could be targeted
+        enabled: 0,             // <- show suggestions on focus
+        closeOnSelect: false    // <- do not hide the suggestions dropdown once an item has been selected
+      }
+    });
+
+
+
+</script>
+	
+
+</script>    
+{% endblock base_content %}
+
+{% block htmljs %}
+<script src="{% static 'js/phase.js' %}"></script>
+
+
+{% endblock htmljs %}

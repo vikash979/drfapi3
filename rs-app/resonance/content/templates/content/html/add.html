@@ -1,0 +1,271 @@
+{% load static %}
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+
+<title>Study Material Question Bank Add</title>
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="{% static 'content/css/bootstrap.min.css' %}">
+<link href="{% static 'css/newdesign.css' %}" rel="stylesheet" type="text/css">
+<script src="{% static 'content/js/jquery.min.js' %}"></script>
+<script src="{% static 'content/js/popper.min.js' %}"></script>
+<script src="{% static 'content/js/bootstrap.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'content/js/tagify.js' %}"></script>
+<link rel="stylesheet" href="{% static 'content/css/tagify.css' %}" media="screen">
+<!-- <script src="js/highstock.js"></script> -->
+</head>
+<body>
+
+<div id="container">
+
+<!--Header-->
+{% include 'users/nav.html' %}
+<!--Header-->
+
+<!--Content Container-->
+<main>
+
+    {% include 'users/side_bar.html' %}
+
+	<div id="content-container">
+       <div class="page-header">
+            <h2>Question Bank</h2>
+            <ol class="breadcrumb">
+                <li><a href="javascript:void(0)"><i class="fa fa-home"></i></a></li>
+                <li><a href="javascript:void(0)">Question Bank</a></li>
+                <li class="active">Add</li>
+            </ol>
+        </div>
+        <span id="error"></span>
+        <div class="page-content">
+        	<div class="study-material-wrapper">
+        		<div class="study-material-container">
+                     <div class="right-section">
+                       {% if error %}
+                          <h5 style="color: red;">{{ error }}</h5>
+                       {% endif %}
+                       <form id="question_id" method="post" enctype="multipart/form-data" onsubmit="return form_check();">
+                         {% csrf_token %}
+                         <input type="hidden" name="option_true_value" id="option_true_value" required>
+                            <div class="dpp-section-wrapper">
+                              <div class="question-section">
+                                  <div class="question-top">
+                                    <div>
+                                        {% comment %}
+                                        <img src="{% static 'content/images/drag-icon.png' %}"/>
+                                        {% endcomment %}
+                                        <h2>Question1</h2>
+                                        {% comment %}
+                                        <div class="toggle-btn"><a href="javascript:void(0);">-</a></div>
+                                        {% endcomment %}
+                                    </div>
+                                    <div>
+                                        <input type="text" name="unique_number" placeholder="Unique No" required>
+                                        <!-- <input type="text" name="source_name" placeholder="Source name" required> -->
+                                        <select name="source_name" required>
+                                          <option selected disabled>Please select source</option>
+                                          {% for i in source %}
+                                            <option value="{{ i.0 }}">{{ i.1 }}</option>
+                                          {% endfor %}
+                                        </select>
+                                        <input type="text" name="source_unique_number" placeholder="Source unique no." required>
+                                        <input type="text" name="section_number" placeholder="Section no." required>
+                                        <select name="language" required>
+                                          <option selected disabled>Please select language</option>
+                                          {% for i in languages %}
+                                           <option value="{{ i.id }}">{{ i.name }}</option>
+                                          {% endfor %}
+                                        </select>
+                                    </div>
+                                  </div>
+                                  <div class="question-desc">
+                                      <textarea name="description" placeholder="Enter Description" required></textarea>
+                                  </div>
+                                  <div class="question-options">
+                                      <div>
+                                          <div class="duration-block">
+                                            <a href="javascript:void(0);" onclick="mask_decrease();">-</a>
+                                            <span>
+                                              <input type="number" oninput="input_element(this);" name="mask" value="10" style="width: 60px;" required>
+                                              Marks
+                                            </span>
+                                            <a href="javascript:void(0);" onclick="mask_increment();">+</a>
+                                           </div>
+                                           <div class="duration-block">
+                                                <a href="javascript:void(0);" onclick="negative_mask_decrease();">-</a>
+                                                <span>
+                                                  <input type="number" oninput="negative_input(this);" name="negative-mark" step="-0.25" value="-0.25" style="width: 60px;" required>
+                                                  Marks</span>
+                                                <a href="javascript:void(0);" onclick="negative_mask_increment();">+</a>
+                                           </div>
+                                           <div class="duration-block">
+                                                <a href="javascript:void(0);" onclick="duration_decrease();">-</a>
+                                                <span>
+                                                  <input type="number" oninput="input_element(this);" name="duration" step="1" value="5" style="width: 60px;" required>
+                                                  Minutes</span>
+                                                <a href="javascript:void(0);" onclick="duration_increment();">+</a>
+                                           </div>
+                                           <select name="difficulty-level" required>
+                                               <option selected disabled>Difficulty Level</option>
+                                               {% for i in difficulty_level %}
+                                                  <option value="{{ i.0 }}">{{ i.1 }}</option>
+                                               {% endfor %}
+                                           </select>
+                                      </div>
+                                      <div>
+                                          <select name="question_type" onchange="question_type_change_value();" required>
+                                            <option selected disabled>Please select Question Type</option>
+                                               {% for i in question_type %}
+                                                  <option value="{{ i.0 }}">{{ i.1 }}</option>
+                                               {% endfor %}
+                                           </select>
+                                      </div>
+                                  </div>
+
+                                  <div class="question-write-block">
+                                      <span id="question_true_false_msg"></span>
+                                      <div class="heading-block">
+                                          <h3>Choose correct answer.</h3>
+                                      </div>
+                                      <ol id='option'>
+                                      </ol>
+                                      <div class="add-optn-btn" style="display: none;"><a href="javascript:void(0);" onclick="add_question_option();">+</a></div>
+                                      <div class="qtn-soultion-block">
+                                            <div>
+                                              <h5>Solution</h5>
+                                              <input id="upload" type="file" name="solution_image"/>
+                                                <a href="javascript:void(0);" id="upload-link"><img src="{% static 'content/images/upload-cloud-icon.png' %}"/></a>
+                                            </div>
+                                          <textarea name="solution" placeholder="Enter Solution" required></textarea>
+                                      </div>
+                                  </div>
+                                  <div class="question-image-block">
+                                      <img src="{% static 'content/images/question-image-thumb.jpg' %}"/>
+                                  </div>
+                                  <div class="question-write-block">
+                                      <div class="heading-block">
+                                          <h3>Write your answer.</h3>
+                                      </div>
+                                      <div class="qtn-soultion-block">
+                                          <textarea name="answer" placeholder="Enter answer" required></textarea>
+                                      </div>
+
+                                  </div>
+                                  <!-- <div class="concepts-block">
+                                      <h3>Concepts</h3>
+                                      <input type="text" class='some_class_name'  name="input-custom-dropdown" value='title1, title2, title3' placeholder="Type and search" />
+                                  </div> -->
+                               </div>
+
+                              <!-- <div class="add-new-section-block"><a href="javascript:void(0);"><i class="fa fa-plus"></i>Add New Section</a></div> -->
+                        </div>
+
+                        <div class="bottom-bar-section">
+                            <a href="javascript:void(0)" onclick="window.history.go(-1); return false;">Cancel</a>
+                            <button type="submit">Save</button>
+                        </div>
+                      </form>
+                     </div>
+        	   </div>
+
+            </div>
+
+
+
+
+
+        </div>
+
+	</div>
+</main>
+<!--Content Container-->
+
+
+
+</div>
+
+
+
+<script>
+  function form_check(){
+    if ($('#option_true_value').val() == "") {
+      var msg = "Please Select which option is true.";
+      $('#question_true_false_msg').html(msg);
+      $('#question_true_false_msg').css('color', 'red');
+      $('html, body').animate({
+        scrollTop: $("#error").offset().top
+    }, 1);
+      return false
+    } else {
+      return true
+    }
+  }
+
+  function input_element(input_el){
+    var value = $(`input[name="${input_el.getAttribute('name')}"]`).val();
+    if (value <= 0) {
+      $(`input[name="${input_el.getAttribute('name')}"]`).val(1);
+    }
+  }
+
+  function negative_input(input_el){
+    var value = $(`input[name="${input_el.getAttribute('name')}"]`).val();
+    if (value >= 0) {
+      $(`input[name="${input_el.getAttribute('name')}"]`).val(-1.24);
+    }
+  }
+
+    $(' aside .aside-container li.active').addClass('open').children('ul').show();
+    $('aside .aside-container li.has-sub>a').on('click', function(){
+        //$(this).removeAttr('href');
+        var element = $(this).parent('li');
+        if (element.hasClass('open')) {
+            element.removeClass('open');
+            element.find('li').removeClass('open');
+            element.find('ul').slideUp(200);
+        }
+        else {
+            element.addClass('open')
+            element.children('ul').slideDown(200);
+            element.siblings('li').children('ul').slideUp(200);
+            element.siblings('li').removeClass('open');
+            element.siblings('li').find('li').removeClass('open');
+            element.siblings('li').find('ul').slideUp(200);
+        }
+    });
+
+        $("#upload-link").on('click', function(e){
+        e.preventDefault();
+        $("#upload").trigger('click');
+
+	   });
+
+
+
+        $(".right-action-bar .dropdown button").on('click', function(e){
+            $(this).parent().toggleClass('show');
+            $(this).next().toggleClass('show');
+
+       });
+
+
+        var input = document.querySelector('input[name="input-custom-dropdown"]'),
+    // init Tagify script on the above inputs
+    tagify = new Tagify(input, {
+      whitelist: ["A# .NET", "A# (Axiom)", "A-0 System", "A+", "A++", "ABAP", "ABC", "ABC ALGOL", "ABSET", "ABSYS", "ACC", "Accent", "Ace DASL", "ACL2", "Avicsoft", "ACT-III", "Action!", "ActionScript", "Ada", "Adenine", "Agda", "Agilent VEE", "Agora", "AIMMS", "Alef", "ALF", "ALGOL 58", "ALGOL 60", "ALGOL 68", "ALGOL W", "Alice", "Alma-0", "AmbientTalk", "Amiga E", "AMOS", "AMPL", "Apex (Salesforce.com)", "APL", "AppleScript", "Arc", "ARexx", "Argus", "AspectJ", "Assembly language", "ATS", "Ateji PX", "AutoHotkey", "Autocoder", "AutoIt", "AutoLISP / Visual LISP", "Averest", "AWK", "Axum", "Active Server Pages", "ASP.NET", "B", "Babbage", "Bash", "BASIC", "bc", "BCPL", "BeanShell", "Batch (Windows/Dos)", "Bertrand", "BETA", "Bigwig", "Bistro", "BitC", "BLISS", "Blockly", "BlooP", "Blue", "Boo", "Boomerang", "Bourne shell (including bash and ksh)", "BREW", "BPEL", "B", "C--", "C++ – ISO/IEC 14882", "C# – ISO/IEC 23270", "C/AL", "Caché ObjectScript", "C Shell", "Caml", "Cayenne", "CDuce", "Cecil", "Cesil", "Céu", "Ceylon", "CFEngine", "CFML", "Cg", "Ch", "Chapel", "Charity", "Charm", "Chef", "CHILL", "CHIP-8", "chomski", "ChucK", "CICS", "Cilk", "Citrine (programming language)", "CL (IBM)", "Claire", "Clarion", "Clean", "Clipper", "CLIPS", "CLIST", "Clojure", "CLU", "CMS-2", "COBOL – ISO/IEC 1989", "CobolScript – COBOL Scripting language", "Cobra", "CODE", "CoffeeScript", "ColdFusion", "COMAL", "Combined Programming Language (CPL)", "COMIT", "Common Intermediate Language (CIL)", "Common Lisp (also known as CL)", "COMPASS", "Component Pascal", "Constraint Handling Rules (CHR)", "COMTRAN", "Converge", "Cool", "Coq", "Coral 66", "Corn", "CorVision", "COWSEL", "CPL", "CPL", "Cryptol", "csh", "Csound", "CSP", "CUDA", "Curl", "Curry", "Cybil", "Cyclone", "Cython", "Java", "Javascript", "M2001", "M4", "M#", "Machine code", "MAD (Michigan Algorithm Decoder)", "MAD/I", "Magik", "Magma", "make", "Maple", "MAPPER now part of BIS", "MARK-IV now VISION:BUILDER", "Mary", "MASM Microsoft Assembly x86", "MATH-MATIC", "Mathematica", "MATLAB", "Maxima (see also Macsyma)", "Max (Max Msp – Graphical Programming Environment)", "Maya (MEL)", "MDL", "Mercury", "Mesa", "Metafont", "Microcode", "MicroScript", "MIIS", "Milk (programming language)", "MIMIC", "Mirah", "Miranda", "MIVA Script", "ML", "Model 204", "Modelica", "Modula", "Modula-2", "Modula-3", "Mohol", "MOO", "Mortran", "Mouse", "MPD", "Mathcad", "MSIL – deprecated name for CIL", "MSL", "MUMPS", "Mystic Programming L"],
+      maxTags: 10,
+      dropdown: {
+        maxItems: 20,           // <- mixumum allowed rendered suggestions
+        classname: "tags-look", // <- custom classname for this dropdown, so it could be targeted
+        enabled: 0,             // <- show suggestions on focus
+        closeOnSelect: false    // <- do not hide the suggestions dropdown once an item has been selected
+      }
+    });
+
+</script>
+<script src="{% static 'content/js/add_question_bank.js' %}?{% now 'jS F Y H:i' %}"></script>
+</body>
+</html>

@@ -1,0 +1,419 @@
+from django.shortcuts import render
+from django.views.generic import TemplateView , View
+
+from django.http import HttpResponse 
+
+from institute.models import Classs, Program, Target, Sessions, SessionProgram
+
+
+class Testt():
+    def __init__(self):
+        return("hell")
+    def common_message(self,condition,model_name):
+        context_data={}
+        if condition==False:
+
+            context_data["status"] = False
+            context_data["message"] = "record already exist"
+            req_obj = Classs.objects.all().values()
+        else:
+            context_data["status"] = True
+            context_data["message"] = "Updated Successfully exist"
+            req_obj = model_name.objects.all().values()
+            context_data["data"] = req_obj  
+
+class ClassViews(TemplateView,Testt):
+    template_name = "institutes/class.html"
+    def get(self, request, id=None):
+        
+        if id == None:
+            template_name = self.template_name
+        else:
+            template_name = "institutes/edit_class.html"
+        
+
+        context_data = {}
+        context_data["status"] = True
+        req_count = Classs.objects.all().count()
+        
+        if req_count > 0:
+            if id == None:
+                req_obj = Classs.objects.all().values()
+            else:
+                req_obj = Classs.objects.get(id=id)
+            context_data["data"] = req_obj
+        else:
+            context_data["data"] ={}   
+        return render(request, template_name, context_data)
+
+    def post(self,request):
+        context_data = {}
+        req_obj = Classs.objects.all().values()
+        context_data["data"] = req_obj
+        if request.method == "POST":
+            label = request.POST.get('title')
+            if label:
+                label = label.strip()
+                if len(label) != 0:
+                    description = request.POST.get('description')
+                    order = request.POST.get('order')
+                    
+                    if request.POST.get('hidden_id')=='':
+
+                        class_view,class_post = Classs.objects.get_or_create(label=label,description=description,order=order)
+                        
+                        if class_post==False:
+                            context_data["status"] = False
+                            context_data["message"] = "record already exist"
+                            req_obj = Classs.objects.all().values()
+                        else:
+                            context_data["status"] = True
+                            context_data["message"] = "Updated Successfully exist"
+                            req_obj = Classs.objects.all().values()
+                            context_data["data"] = req_obj    
+                                #return render_statement_subject(request,False,"Successfully deleted",template,req_obj_all,req_class_obj,req_master_obj)     
+                    else:
+                        
+                        if Classs.objects.filter(id=request.POST.get('hidden_id')).update(label=label,description=description,order=order) ==True:
+                            context_data["status"] = True
+                            context_data["message"] = "record already exist"
+                            req_obj = Classs.objects.all().values()
+                            context_data["data"] = req_obj
+                        else:
+                            context_data["status"] = True
+                            context_data["message"] = "Updated Successfully exist"
+                            req_obj = Classs.objects.all().values()
+
+                else:
+                    
+                    context_data["status"] = False
+                    context_data["message"] = "please provide your input"
+                    req_obj = Classs.objects.all().values()
+
+                    context_data["data"] = req_obj
+                    #return render(request, self.template_name, context_data)
+            else:
+                  if request.POST.get("action") =='delete':
+                      
+                        try:
+                            id = request.POST.get("delete")
+                            Classs.objects.get(id=id).delete()
+                            context_data["status"] = True
+                            context_data["message"] = "Deleted SuccessFully"
+                            req_obj = Classs.objects.all().values()
+                            context_data["data"] = req_obj
+                           
+                        except:
+                            context_data["status"] = True
+                            context_data["message"] = "Already Deleted"
+                            req_obj = Classs.objects.all().values()
+
+        else:    
+            context_data["status"] = False
+            context_data["message"] = "please provide your input"
+            req_obj = Classs.objects.all().values()
+
+        context_data["data"] = req_obj
+        
+        return render(request, self.template_name, context_data)
+
+class ClassRemoveViews(TemplateView):
+    def get(self, request, id=None):
+        pass
+
+
+
+class ProgramViews(TemplateView):
+    template_name = "institutes/program.html"
+    def get(self, request, id=None):
+        
+        context_data = {}
+        if id == None:
+            template_name = self.template_name
+        else:
+            template_name = "institutes/edit_program.html"
+        context_data["status"] = True
+        req_count = Program.objects.all().count()
+        target = Target.objects.all().values()
+        
+        if req_count > 0:
+            if id == None:
+                req_obj = Program.objects.all().values()
+                
+                
+            else:
+                req_obj = Program.objects.get(id=id)
+            context_data["data"] = req_obj
+        else:
+            pass
+        context_data['target'] = target
+        
+
+        return render(request, template_name, context_data)
+
+
+    def post(self, request, id=None):
+        context_data = {}
+        
+        req_obj = Program.objects.all().values()
+        context_data["data"] = req_obj
+        if request.method == "POST":
+            label = request.POST.get('name')
+            if label:
+                label = label.strip()
+                if len(label) != 0:
+                    
+                    target = request.POST.get('target')
+                    description = request.POST.get('description')
+                    if request.POST.get('hidden_id')=='':
+                        Program.objects.get_or_create(label=label,description=description,target=Target.objects.get(id=target))
+                        
+                        #r#eq_obj = Program.objects.get_or_create(label=label,description=description,target=target,description=description)
+                       
+                        
+                    else:
+                        req_obj = Program.objects.filter(id=request.POST.get('hidden_id')).update(label=label,description=description,target=Target.objects.get(id=target))
+                        req_obj = Program.objects.all().values()
+                    if req_obj[1] ==  False:
+                        
+                        context_data["status"] = True
+                        context_data["message"] = "record already exist"
+                        req_obj = Program.objects.all().values()
+                        
+                        #return render(request, self.template_name, context_data)
+                    else:  
+                        context_data["status"] = True
+                        context_data["message"] = "Updated Successfully exist"
+                        req_obj = Program.objects.all().values()
+
+                        context_data["data"] = req_obj
+                else: 
+                    context_data["status"] = False
+                    context_data["message"] = "please provide your input"
+                    req_obj = Program.objects.all().values()
+
+                    context_data["data"] = req_obj
+        else:
+             context_data["status"] = False
+             context_data["message"] = "please provide your input"
+             req_obj = Program.objects.all().values()
+             context_data["data"] = req_obj
+
+            
+        return render(request, self.template_name, context_data)
+
+
+class SessionViews(TemplateView):
+    template_name = "institutes/session.html"
+    def get(self, request, id=None):
+        if id == None:
+            template_name = self.template_name
+        else:
+            template_name = "institutes/session-phase.html"
+        
+
+        context_data = {}
+        context_data["status"] = True
+        req_count = Sessions.objects.all().count()
+        
+        if req_count > 0:
+            if id == None:
+                req_obj = Sessions.objects.all().values()
+            else:
+                req_obj = Sessions.objects.get(id=id)
+            context_data["data"] = req_obj
+        else:
+            context_data["data"] ={}  
+        program = Program.objects.all().values()
+        context_data["program"] = program
+        
+        
+        return render(request, template_name, context_data)
+
+    
+
+    def post(self,request,id=None):
+        context_data = {}
+        req_obj = Sessions.objects.all().values()
+        context_data["data"] = req_obj
+        if request.method == "POST":
+            label = request.POST.get('name')
+            print(request.POST.getlist('program_name'))
+            program_name_Length = len(equest.POST.getlist('program_name'))
+            if label:
+                label = label.strip()
+                if len(label) != 0:
+                    description = request.POST.get('description')
+                    year = request.POST.get('year')
+                    
+                    if request.POST.get('enddate') !='':
+                        endi = request.POST.get('enddate').split("/")
+                        end_date = endi[2]+"-"+endi[0]+"-"+endi[1]
+                    else:
+                        end_date = request.POST.get('enddate')
+
+                    if request.POST.get('startdate') !='':
+                        start = request.POST.get('startdate').split("/")
+                        start_date = start[2]+"-"+start[0]+"-"+start[1]
+                    else:
+                        start_date = request.POST.get('startdate')
+                    
+                    if request.POST.get('hidden_id')=='':
+                        for program in request.POST.getlist('program_name'):
+                            class_view,class_post = Sessions.objects.get_or_create(label=label,description=description,year=year,start_date=start_date,end_date=end_date)
+                            try:
+                                SessionProgram.objects.get_or_create(session=class_view)
+
+                        if class_post==False:
+                            context_data["status"] = False
+                            context_data["message"] = "record already exist"
+                            req_obj = Sessions.objects.all().values()
+                        else:
+                            context_data["status"] = True
+                            context_data["message"] = "Updated Successfully exist"
+                            req_obj = Sessions.objects.all().values()
+                            context_data["data"] = req_obj    
+                                #return render_statement_subject(request,False,"Successfully deleted",template,req_obj_all,req_class_obj,req_master_obj)     
+                    else:    
+                        if Sessions.objects.filter(id=request.POST.get('hidden_id')).update(label=label,description=description,year=year,start_date=start_date,end_date=end_date) ==True:
+                            context_data["status"] = True
+                            context_data["message"] = "record already exist"
+                            req_obj = Sessions.objects.all().values()
+                            context_data["data"] = req_obj
+                        else:
+                            context_data["status"] = True
+                            context_data["message"] = "Updated Successfully exist"
+                            req_obj = Sessions.objects.all().values()
+
+                else:
+                    
+                    context_data["status"] = False
+                    context_data["message"] = "please provide your input"
+                    req_obj = Sessions.objects.all().values()
+
+                    context_data["data"] = req_obj
+                    #return render(request, self.template_name, context_data)
+            else:
+                  if request.POST.get("action") =='delete':
+                      
+                        try:
+                            id = request.POST.get("delete")
+                            Sessions.objects.get(id=id).delete()
+                            context_data["status"] = True
+                            context_data["message"] = "Deleted SuccessFully"
+                            req_obj = Sessions.objects.all().values()
+                            context_data["data"] = req_obj
+                           
+                        except:
+                            context_data["status"] = True
+                            context_data["message"] = "Already Deleted"
+                            req_obj = Sessions.objects.all().values()
+
+        else:    
+            context_data["status"] = False
+            context_data["message"] = "please provide your input"
+            req_obj = Sessions.objects.all().values()
+
+        context_data["data"] = req_obj
+        
+        return render(request, self.template_name, context_data)
+
+
+
+#########################Phase#################
+
+
+class PhaseViews(TemplateView,Testt):
+    template_name = "institutes/class.html"
+    def get(self, request, id=None):
+        
+        if id == None:
+            template_name = self.template_name
+        else:
+            template_name = "institutes/edit_class.html"
+        
+
+        context_data = {}
+        context_data["status"] = True
+        req_count = Classs.objects.all().count()
+        
+        if req_count > 0:
+            if id == None:
+                req_obj = Classs.objects.all().values()
+            else:
+                req_obj = Classs.objects.get(id=id)
+            context_data["data"] = req_obj
+        else:
+            context_data["data"] ={}   
+        return render(request, template_name, context_data)
+
+    def post(self,request):
+        context_data = {}
+        req_obj = Classs.objects.all().values()
+        context_data["data"] = req_obj
+        if request.method == "POST":
+            label = request.POST.get('title')
+            if label:
+                label = label.strip()
+                if len(label) != 0:
+                    description = request.POST.get('description')
+                    order = request.POST.get('order')
+                    
+                    if request.POST.get('hidden_id')=='':
+
+                        class_view,class_post = Classs.objects.get_or_create(label=label,description=description,order=order)
+                        
+                        if class_post==False:
+                            context_data["status"] = False
+                            context_data["message"] = "record already exist"
+                            req_obj = Classs.objects.all().values()
+                        else:
+                            context_data["status"] = True
+                            context_data["message"] = "Updated Successfully exist"
+                            req_obj = Classs.objects.all().values()
+                            context_data["data"] = req_obj    
+                                #return render_statement_subject(request,False,"Successfully deleted",template,req_obj_all,req_class_obj,req_master_obj)     
+                    else:
+                        
+                        if Classs.objects.filter(id=request.POST.get('hidden_id')).update(label=label,description=description,order=order) ==True:
+                            context_data["status"] = True
+                            context_data["message"] = "record already exist"
+                            req_obj = Classs.objects.all().values()
+                            context_data["data"] = req_obj
+                        else:
+                            context_data["status"] = True
+                            context_data["message"] = "Updated Successfully exist"
+                            req_obj = Classs.objects.all().values()
+
+                else:
+                    
+                    context_data["status"] = False
+                    context_data["message"] = "please provide your input"
+                    req_obj = Classs.objects.all().values()
+
+                    context_data["data"] = req_obj
+                    #return render(request, self.template_name, context_data)
+            else:
+                  if request.POST.get("action") =='delete':
+                      
+                        try:
+                            id = request.POST.get("delete")
+                            Classs.objects.get(id=id).delete()
+                            context_data["status"] = True
+                            context_data["message"] = "Deleted SuccessFully"
+                            req_obj = Classs.objects.all().values()
+                            context_data["data"] = req_obj
+                           
+                        except:
+                            context_data["status"] = True
+                            context_data["message"] = "Already Deleted"
+                            req_obj = Classs.objects.all().values()
+
+        else:    
+            context_data["status"] = False
+            context_data["message"] = "please provide your input"
+            req_obj = Classs.objects.all().values()
+
+        context_data["data"] = req_obj
+        
+        return render(request, self.template_name, context_data)

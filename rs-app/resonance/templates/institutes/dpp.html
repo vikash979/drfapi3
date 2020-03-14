@@ -1,0 +1,301 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block header %}
+<meta charset="UTF-8"/>
+
+<title>Division Listing</title>
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="viewport" content="user-scalable = 1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap-select.min.css' %}" type="text/css"/>
+<link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.css' %}" type="text/css">
+<link href="{% static 'css/newdesign.css' %}" rel="stylesheet" type="text/css">
+{% endblock header %}
+{% block css %}
+
+
+{% endblock %}
+{% block base_content %}
+
+<div id="container">
+
+    <!--Header-->
+    {% include 'users/nav.html' %}
+<!-- <header>        
+
+    <!--Content Container-->
+    <main>
+       <!-- side_bar starts -->
+       {% include 'users/side_bar.html' %}
+       <!-- side_bar ends -->
+       <div id="content-container">
+         <div class="page-header">
+            <h2>DPP Planner</h2>
+            <ol class="breadcrumb">
+                <li><a href="javascript:void(0)"><i class="fa fa-home"></i></a></li>
+                <li><a href="#">DPP</a></li>
+                
+            </ol>
+        </div>
+        <div class="page-content">
+            <div class="phases-wrapper">
+                <form method="GET">
+                    <div class="phases-container">
+                        <div class="topbar-wrapper">
+                            <div class="topbar-block">
+                                <div class="block">
+                                    <select class="select-class" name="classs" data-target_id="subject" required>
+                                        <option value="">Select Class</option>
+                                        {% for class in classes %}
+                                        <option value="{{class.id}}">{{class.label}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <select name="subject" data-target_id="session" required>
+                                        <option value="">Select Subject</option>
+                                        {% for subject in subjects %}
+                                        <option value="{{subject.id}}">{{subject.label}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <select class="select-class" name="session" data-target_id="program" required>
+                                        <option value="">Select Session</option>
+                                        {% for session in sessions %}
+                                        <option value="{{session.id}}">{{session.label}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="block">
+                                    <select class="select-class" name="program" data-target_id="phase" required>
+                                        <option>Select Program</option>
+                                        {% for programme in programmes %}
+                                        <option value="{{programme.id}}">{{programme.label}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <select class="select-class" name="phase" data-target_id="batch" required>
+                                        <option value="">Select Phase</option>
+                                        {% for phase in phases %}
+                                        <option value="{{phase.id}}">{{phase.label}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <select name="batch" required>
+                                        <option>Select Batch</option>
+                                        {% for batch in batches %}
+                                        <option value="{{batch.id}}">{{batch.label}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div><button>GO</button></div>
+                        </div>
+                    </form>
+                    <!-- <div class="no-content-added">No Planned DPP's</div> -->
+
+
+                    <div class="lecture-planner2-wrapper">
+                        <div class="lecture-info">
+                            <div class="info-block">
+                                <div>Phase I</div>
+                                <div>Start Date : 12.10.19</div>
+                                <div>End Date : 12.10.20</div>
+                            </div>
+                            {% if request.GET %}
+                                <button style="background-color: #bad44c;text-decoration: none;margin-left: 15px;cursor: pointer;font-size: 15px;padding: 7px 30px;border-radius: 38px;color: #fff;font-family: latoregular;border: 1px solid #bad44c;" class="create-dpps">Create DPPS for {{unplanned_count}} Count</button>
+                            {% endif %}
+                            <!-- <div class="btn-block">
+                                <span>( 21 ) Unplanned DPP's</span>
+                                <a href="javascript:void(0);" class="add-lecture-btn">Plan DPP's</a>
+                            </div> -->
+                        </div>
+                    </div>
+                    <div class="lecture-planner3-wrapper">
+                        <div class="lecture-planner3-container">
+                            <div class="listing-section">
+                                <ol>
+                                    {
+                                    {% for dpp in dpps %}
+                                    <li>
+                                        <div class="top-block">
+                                            <div>
+                                              <span>{{dpp.title}}</span>
+                                              <span>{{dpp.start_date}}</span>
+                                            </div>
+                                            <div>
+                                              <span class="dpp-status" style="margin-left: 15px;padding-left: 15px;font-family: latobold;margin-right: 12px;">{% if dpp.is_released %}Released{% else %}Not Released {% endif %}</span>
+                                                {% if dpp.released_button %}
+                                                    <button data-dpp_id="{{dpp.id}}" class="update-release-status">Release</button>
+                                                {% endif %}
+                                                <a href="{% url 'edit_dpp' pk=dpp.id  %}"><i class="fa fa-pencil"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="bottom-block">
+                                            <ul>
+                                                <li>
+                                                    <div>
+                                                        <i class="fa fa-calendar"></i>
+                                                        <span>Start Date</span>
+                                                    </div>
+                                                    <div>{{dpp.start_date}}</div>
+                                                </li>
+                                                <li>
+                                                    <div>
+                                                        <i class="fa fa-calendar"></i>
+                                                        <span>End Date</span>
+                                                    </div>
+                                                    <div>{{dpp.start_date}}</div>
+                                                </li>
+                                                {% if dpp.is_tentative %}
+                                                    <li>
+                                                        <div>
+                                                            <span>Tentative</span>
+                                                        </div>
+                                                    </li>
+                                                {% endif %}
+                                                <li>
+                                                    <div>
+                                                        <i class="fa fa-user"></i>
+                                                    </div>
+                                                    <div>{{dpp.facultty.name}}</div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ol>
+                        </div>
+                        <div class="mapping-section">
+                            <div class="heading-title">
+                                Select chapters to map to lectures
+                                <a href="javascript:void(0);">X</a>
+                            </div>
+                            <ul>
+                                <li>
+                                    <label>
+                                        <input type="checkbox"/>
+                                        <span>Electrostatics</span>
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"/>
+                                        <span>Charging properties</span>
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"/>
+                                        <span>Subtopic</span>
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"/>
+                                        <span>Class lecture title</span>
+                                    </label>
+                                    <label>
+                                        <input type="checkbox"/>
+                                        <span>Study material title</span>
+                                    </label> 
+                                </li>
+                                <li>
+                                    <label>
+                                        <input type="checkbox"/>
+                                        <span>DPP's</span>
+                                    </label> 
+                                    <div>
+                                        <label>
+                                            <input type="radio" name="released"/>
+                                            <span>Release</span>
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="released"/>
+                                            <span>To be released by the teacher</span>
+                                        </label>
+                                    </div> 
+                                </li>
+
+                            </ul>
+                            <div class="mapping-actions">
+                                <button>Map</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>  
+</div>
+</main>    
+<!--Content Container-->
+</div>
+
+<script>
+
+    $(".create-dpps").click(function(e){
+        e.preventDefault();
+        $.ajax({
+            type:'POST',
+            url:'{% url "created_dpps" %}',
+            data:{'subject_id':$("select[name=subject]").val(),'batch_id':$("select[name=batch]").val()},
+            success:function(){
+                window.location.href = "{% url 'DppView' %}";
+            }
+        })
+    })
+
+    {% if request.GET %}
+        {% for param,value in request.GET.items %}
+            $("select[name="+"{{param}}"+"]").find("option[value="+"{{value}}"+"]").attr('selected','true')
+            {% if param == "batch" %}
+                {% for batch in selected_batches %}
+                    $("select[name=batch]").find("option[value="+"{{batch}}"+"]").attr('selected','true')
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    $(".update-release-status").click(function(e){
+        e.preventDefault();
+        current_btn = $(this);
+        dpp_id = $(this).data('dpp_id');
+        $.ajax({
+            type:'POST',
+            url:"{% url 'update_dpp_release_status' %}",
+            data:{'dpp_id':dpp_id},
+            success:function(){
+                current_btn.parents(".top-block").find(".dpp-status").html("Released ");
+                current_btn.hide();
+            }
+        });
+    });
+    $(' aside .aside-container li.active').addClass('open').children('ul').show();
+    $('aside .aside-container li.has-sub>a').on('click', function(){
+        //$(this).removeAttr('href');
+        var element = $(this).parent('li');
+        if (element.hasClass('open')) {
+            element.removeClass('open');
+            element.find('li').removeClass('open');
+            element.find('ul').slideUp(200);
+        }
+        else {
+            element.addClass('open')
+            element.children('ul').slideDown(200);
+            element.siblings('li').children('ul').slideUp(200);
+            element.siblings('li').removeClass('open');
+            element.siblings('li').find('li').removeClass('open');
+            element.siblings('li').find('ul').slideUp(200);
+        }
+    });    
+
+    $(".right-action-bar .dropdown button").on('click', function(e){
+        $(this).parent().toggleClass('show');
+        $(this).next().toggleClass('show');
+
+    });
+
+    $(".mapping-section .heading-title a").on('click', function(e){
+        $('.mapping-section').removeClass('open');
+
+    });
+
+    $(".linktopic-link").on('click', function(e){
+        $('.mapping-section').addClass('open');
+
+    });
+</script>
+</body>
+{% endblock %}

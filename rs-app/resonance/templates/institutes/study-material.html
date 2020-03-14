@@ -1,0 +1,611 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block header %}
+<meta charset="UTF-8"/>
+
+<title>Division Listing</title>
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="viewport" content="user-scalable = 1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap-select.min.css' %}" type="text/css"/>
+<link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.css' %}" type="text/css">
+<link href="{% static 'css/newdesign.css' %}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="{% static 'css/tagify.css' %}" media="screen">
+{% endblock header %}
+{% block css %}
+
+
+{% endblock %}
+{% block base_content %}
+
+<div id="container">
+
+    <!--Header-->
+        {% include 'users/nav.html' %}
+    <!-- <header>        
+
+    <!--Content Container-->
+    <main>
+       <!-- side_bar starts -->
+       {% include 'users/side_bar.html' %}
+       <!-- side_bar ends -->
+	<div id="content-container">
+       <div class="page-header">
+            <h2>Study Material</h2>
+            <ol class="breadcrumb">
+                <li><a href="javascript:void(0)"><i class="fa fa-home"></i></a></li>
+                <li><a href="listing.html">Study Material</a></li>
+                <li class="active">TOC Creation</li>
+            </ol>
+        </div>
+        <div class="page-content">
+
+
+        	<div class="study-material-wrapper">
+        		<div class="study-material-container">
+                    <div class="left-section">
+                        <div class="top-section">
+                            <select name="class">
+                            	{% for class in classes %}
+	                                <option value="{{class.id}}">{{class.label}}</option>
+	                            {% endfor %}
+                            </select>        
+                            <select name="subject">
+                            	{% for subject in subjects %}
+                                	<option value="{{subject.id}}">{{subject.label}}</option>
+                                {% endfor %}
+                            </select> 
+                        </div>
+                        <div class="bottom-section">
+                             
+                            <!--No topic added-->     
+                             <div class="phases-wrapper">
+                                <div class="phases-container">
+                                    <div class="lecture-planner3-wrapper">
+                                        <div class="lecture-planner3-container">
+                                            <div class="mapping-section open">
+                                                <ul class="units-ul"></ul>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--No topic added-->
+
+                            <ol class="Left-Unit-Menu" style="display: none;">
+                                <li>
+                                    <div class="default-menu">
+                                        <div>
+                                            <i></i>
+                                            <span>Unit1</span>
+                                        </div>
+                                        <div></div>
+                                    </div>
+                                    <ul>
+                                        <li>
+                                            <div class="default-menu">
+                                                <div>
+                                                    <i></i>
+                                                    <span>Chapter1</span>
+                                                </div>
+                                                <div></div>
+                                            </div>
+                                            <ul>
+                                                <li>
+                                                    <div class="default-menu">
+                                                        <div>
+                                                            <i></i>
+                                                            <span>Topic</span>
+                                                        </div>
+                                                        <div></div>
+                                                    </div>
+                                                    <ul>
+                                                        <li>
+                                                            <div class="default-menu">
+                                                                <div>
+                                                                    <i></i>
+                                                                    <span>Sub Topic</span>
+                                                                </div>
+                                                                <div></div>
+                                                            </div>
+                                                            <ul>
+                                                                <li>
+                                                                    <div class="default-menu">
+                                                                        <div>
+                                                                            <i></i>
+                                                                            <span>Notes</span>
+                                                                        </div>
+                                                                        <div>
+                                                                             <div class="draft">(Draft)</div>
+                                                                            <div class="saved">(Saved)</div>
+                                                                            <div class="published">(Published)</div>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+                                    </ul>
+                                </li>
+
+
+                             </ol>   
+
+
+                             <ol class="Left-Unit-Menu" id="Left-Unit-Menu">
+                                
+
+
+                             </ol>   
+
+                            <ol class="Left-Unit-Section" style="display: none;">
+                                <li>
+                                    <div>
+                                        <i></i>
+                                        <span>Unit1</span>
+                                    </div>
+                                    <div>
+                                       <!--  <a href="#"><img src="images/prev-arrow.png"/></a>
+                                        <a href="#"><img src="images/next-arrow.png"/></a> -->
+                                    </div>
+                                </li>
+                                <li class="has-chapter">
+                                    <div>
+                                        <i></i>
+                                        <span>Chapter1</span>
+                                    </div>
+                                    <div>
+                                       <!--  <a href="#"><img src="images/prev-arrow.png"/></a>
+                                        <a href="#"><img src="images/next-arrow.png"/></a> -->
+                                    </div>
+                                </li>
+                                <li class="has-topic">
+                                    <div>
+                                        <i></i>
+                                        <span>Topic</span>
+                                    </div>
+                                    <div>
+                                        <!-- <a href="#"><img src="images/prev-arrow.png"/></a>
+                                        <a href="#"><img src="images/next-arrow.png"/></a> -->
+                                    </div>
+                                </li>
+                                 <li class="has-notes">
+                                    <div>
+                                        <i></i>
+                                        <span>Notes</span>
+                                    </div>
+                                    <div>
+                                        <div class="draft">(Draft)</div>
+                                        <div class="saved">(Saved)</div>
+                                        <div class="published">(Published)</div>
+                                        <!-- <a href="#"><img src="images/prev-arrow.png"/></a>
+                                        <a href="#"><img src="images/next-arrow.png"/></a> -->
+                                    </div>
+                                </li>
+                                <li>
+                                    <div>
+                                        <i></i>
+                                        <span>Unit2</span>
+                                    </div>
+                                    <div>
+                                       <!--  <a href="#"><img src="images/prev-arrow.png"/></a>
+                                        <a href="#"><img src="images/next-arrow.png"/></a> -->
+                                    </div>
+                                </li>
+                            </ol>
+
+
+                        </div>
+
+
+                        <div class="bottom-bar-section">
+                            <button class="addtoc-btn" onclick="addtocclick()"><i class="fa fa-plus"></i>TOC</button>
+                            <div class="dropdown">
+                              <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-plus"></i>Learning mode
+                              </button>
+                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item material-type" href="javascript:void(0);" data-notes-type="1">Excerise</a>
+                                <a class="dropdown-item material-type" href="javascript:void(0);"  data-notes-type="2">DPP</a>
+                                <a class="dropdown-item material-type" href="javascript:void(0);" data-notes-type="3">Solved Examples</a>
+                                <a class="dropdown-item material-type" href="javascript:void(0);" data-notes-type="4">Notes</a>
+                                <a class="dropdown-item material-type" href="javascript:void(0);" data-notes-type="5">Video</a>
+                              </div>
+                            </div>
+                        </div>
+
+                    </div>
+                     <div class="right-section">
+
+                        <div class="right-action-bar">
+                            <div><input type="text" id="title" placeholder=Title /></div>
+                            <div>
+                                <select id="language" onchange="triggerFileUpdate()">
+                                    <option value="1">English</option>
+                                    <option value="2">Hindi</option>
+                                </select>        
+                                <select id="for"  onchange="triggerFileUpdate()">
+                                    <option value="student">For Student</option>
+                                    <option value="teacher">For Teacher</option>
+                                </select>
+                                <div class="dropdown">
+                                  <button class="btn btn-secondary">
+                                    <i class="fa fa-cog"></i>
+                                  </button>
+                                  <div class="dropdown-menu">
+                                        <div class="heading-title">Settings</div>
+                                        <div class="setting-content">
+                                            <div class="block">
+                                                <div class="title">Duration</div>
+                                                <div class="block-content">
+                                                    <div class="duration-block">
+                                                        <a href="#" onclick="$('#duration').text(parseInt($('#duration').text())-1)">-</a>
+                                                        <span id="duration">3</span>
+                                                        <a href="#" onclick="$('#duration').text(parseInt($('#duration').text())+1)">+</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                 
+
+
+                                        </div>
+
+
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="right-content-section">
+                           
+                          <p>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                          
+                          <p>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+
+
+                          <p>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>  
+
+
+                        </div>
+
+                        <!-- <div class="no-content-added">No Content Added / Selected</div>
+
+                        <div class="upload-section-wrapper">
+                            <input type="text" placeholder="Enter Title">
+                            <div class="upload-section">
+                                <input id="upload" type="file"/>
+                                <a href="javascript:void(0);" id="upload_link">Upload File</a>
+                            </div>
+                        </div>
+
+                        <div class="bottom-bar-section">
+                            <a href="#">Cancel</a>
+                            <button>Save</button>
+                        </div>
+                        <div class="bottom-bar-section">
+                            <a href="#">Publish</a>
+                            <button>Edit</button>
+                        </div> -->
+                     </div>   
+        	   </div>
+            </div>
+           
+        </div>	
+
+	</div>
+</main>    
+<!--Content Container-->
+</div>
+{% endblock %}
+{% block htmljs %}
+<!-- <script src="{% static 'js/bootstrap.min.js' %}"></script> -->
+<script type="text/javascript" src="{% static 'js/tagify.js' %}"></script>
+<script>
+    $(document).on("click", "input[type=radio]" , function(e) {
+            $(".right-content-section").html("<h5>Please Select Notes/Video from TOC to upload content.</h5>");
+    
+    });
+     $(document).on("click", "input[type=radio].content" , function(e) {
+        if($(this).data('content-type') == 1){
+
+            populateSm($(this).val(),$(this).data('content-type'));
+
+        }
+    });
+
+     function triggerFileUpdate(){
+        var content_id = $('input[type=radio].content:checked').val()
+        var content_type = $('input[type=radio].content:checked').data('content-type')
+        populateSm(content_id,content_type)
+    }
+
+     function populateSm(content_id,content_type){
+         $(".right-content-section").html("<form class='content_form_submit' enctype='multipart/form-data'><div class='form-group'><label for='description'>Enter Text</label><input type='text' class='form-control' id='description' required name='description'></div><div class='form-group'><label for='upload'>Upload File</label><p id='uploadedfilepath'></p><input class='form-control' type='file' name='file' id='upload' ></div><input type='hidden' name='content' value="+content_id+"><input type='hidden' name='content_type' value="+content_type+"><select id='publish_status'><option value='0'>DRAFT</option><option value='1'>PUBLISHED</option></select><input type='hidden' value='' id='study_material_file_id'></p><button type=''submit' class='btn btn-primary'>Submit</button><form>");
+
+            $.ajax({
+                type:'POST',
+                url:'{% url "get_study_material" %}',
+                data:{'content_id':content_id, 'language_id':$("#language option:selected").val(),'for':$("#for").val()},
+                success:function(response){
+                    $("input[name=description]").val(response.content)
+                    // $("#for option:selected").val()
+                    // $("#for").val(response.for).change();
+                    $("#title").val(response.title)
+                    // $("#publish_status option:selected").val())
+                    $("#publish_status").val(response.publish_status).change();
+                    $('#uploadedfilepath').html('<a href="' + response.file+'">Uploaded File</a>');
+                    $("#duration").text(response.duration)
+                    $('#study_material_file_id').val(response.study_material_file_id)  
+                }
+            });
+     }
+
+    $(".material-type").click(function(e){
+        e.preventDefault();
+        if($("input[type='radio']:checked").length==1)
+        {
+            $.ajax({
+                type:'POST',
+                url:"{% url 'create_study_material' %}",
+                data:{'parent_toc_id':$("input[type='radio']:checked").val(),'subject_id':$("select[name=subject]").val(),'type':$(this).data('notes-type')},
+                success:function(response)
+                {
+                    tocs = response.tocs
+                    tocs.forEach(function(val, index){
+                        if(val.level==0)
+                        {
+                            $(".units-ul").append("<li><label data-parent_id="+val.id+"><input type='radio' name='toc' value="+val.id+" class='toc'/><span>"+val.label+"</span></label></li>") 
+                        }
+                        else
+                        {   
+                            $("label[data-parent_id="+val.parent_id+"]").after("<label data-parent_id="+val.id+"><input type='radio' name='toc' value="+val.id+" class='toc'/><span>"+val.label+"</span></label>")
+                        }
+                    });
+                    // 1 for study material 2 for assissment
+                    if(response.content_type==1)   
+                    {
+                        $(".right-content-section").html("<form class='content_form_submit' enctype='multipart/form-data'><div class='form-group'><label for='description'>Enter Description</label><input type='text' class='form-control' id='description' required name='description'></div><div class='form-group'><label for='upload'>Upload File</label><input class='form-control' type='file' name='file' id='upload' required></div><input type='hidden' name='content' value="+response.content_id+"></p><input type='hidden' name='study_material_id' value="+response.study_material_id+">'<button type=''submit' class='btn btn-primary'>Submit</button><form>");
+                    }
+                    else
+                    {
+                        $(".right-content-section").html("<form class='content_form_submit'><div class='form-group'>    <label for='description'>       Enter Description   </label>    <input class='form-control' type='text' for='description' required name='description'></div><div class='form-group'>    <label for='title'>     Title   </label>    <input class='form-control' for='title' type='text' required name='title'></div><div class='form-group'>    <label for='timed_type'>        Timed Type  </label>    <select class='form-control' id='timed_type' required name='timed_type'>        <option value=0>Timed on Total</option>     <option value=1>Timed on Questions</option> </select></div><div class='form-group'> <label for='timed_duration_mins'>Timed Duration Minutes</label>    <input class='form-control' id='timed_duration_mins' type='number' required name='timed_duration_mins'></div><div class='form-group'><label for='total_marks'>Total Marks</label><input class='form-control' id='total_marks' type='number' required name='total_marks'></div><div class='form-group'><label for='attempts_allowed'>Attempts Allowed</label><input class='form-control' id='attempts_allowed' type='number' required name='attempts_allowed'></div><div class='form-group'> <label for='is_graded'>Is graded</label><input class='form-control' id='is_graded' type='text' required  name='is_graded'></div><div class='form-group'><label id='difficulty'>Difficulty</label><select class='form-control' for='difficulty' required name='difficulty'><option value=0>EASY</option><option value=1>MEDIUM</option><option value='2'>HARD</option><option value='3'>VERY_HARD</option>    </select></div><div class='form-group'><label for='result_after'>Result After</label><select class='form-control' for='result_after' required name='result_after'><option value='0'> EVERY QUESTION</option><option value='1'> ALL_QUESTIONS</option> </select></div><div class='form-group'> <label for='allowed_after_duedate'>Allowed After Duedate</label><input class='form-control' type='radio' for='allowed_after_duedate' required name='allowed_after_duedate'></div><div class='form-group'><label for='instructions'>      Instructions</label><input class='form-control' for='instructions' type='text' required name='instructions'></div><div class='form-group'><label for='show_solution_after'>Show Solution After</label><select class='form-control' id='show_solution_after' required name='show_solution_after'><option value='0'>NEVER</option><option value='1'>EVERY_QUESTION</option><option value='2'>ALL_QUESTIONS</option></select></div><div class='form-group'> <label for='is_negative'>Is Negative </label>    <input class='form-control' id='is_negative' type='radio' required name='is_negative'></div><div class='form-group'><label for='total_questions'>Total Questions </label><input id='total_questions' class='form-control' type='number' required name='total_questions'></div><input type='hidden' name='content' value="+response.content_id+"><input type='hidden' name='object_status' value='0'><input type='hidden' name='assessment_id' value="+response.assessment_id+"><input type='hidden' required name='type' value="+response.assessment_type+"><button type='submit' class='btn btn-primary'>Submit</button><form>");   
+                    }
+                }
+            })
+        }
+    });
+
+    $(document).on("submit", ".content_form_submit" , function(e){
+        e.preventDefault();
+        var data = "";
+        if($("input[type=file][name=file]").length>0)
+        {
+            var form_data = new FormData();
+            file = $("input[type=file][name=file]")[0].files[0]
+            form_data.append('file', file);
+            form_data.append('content',$("input[name=content]").val())
+            form_data.append('description',$("input[name=description]").val())
+            form_data.append('content_type',$("input[name=content_type]").val())
+            form_data.append('language_id',$("#language option:selected").val())
+            form_data.append('for',$("#for option:selected").val())
+            form_data.append('title',$("#title").val())
+            form_data.append('publish_status',$("#publish_status option:selected").val())
+            form_data.append('duration',$("#duration").text())
+            form_data.append('study_material_file_id',$('#study_material_file_id').val())
+            if($("input[name=study_material_id]").length>0)
+                form_data.append('study_material_id', $("input[name=study_material_id]").val());
+            data = form_data;
+            $.ajax({
+                type:'POST',
+                url:"{% url 'upload_content_data' %}",
+                data:data,
+                processData: false,
+                contentType: false,
+                success:function(){
+                    alert();
+                }
+            })
+        }
+        else
+        {
+            data = $(this).serialize();
+            $.ajax({
+                type:'POST',
+                url:"{% url 'upload_content_data' %}",
+                data:data,
+                success:function(){
+                    alert();
+                }
+            });
+        }
+    })
+
+    $("select[name=subject],select[name=class]").change(function(e){
+        $.ajax({
+            type:'POST',
+            url:'{% url "get_toc_by_subject_and_class" %}',
+            data:{'subject_id':$("select[name=subject]").val(), 'classs_id':$("select[name=class]").val()},
+            success:function(response){
+                $("ul.units-ul").empty();
+                response.forEach(function(val, index){
+                    if(val.level==0)
+                    {
+                        $(".units-ul").append("<li><label data-parent_id="+val.id+"><input type='radio' name='toc' value="+val.id+" class='toc'/><span>"+val.label+"</span></label></li>") 
+                    }
+                    else
+                    {   
+                        $("label[data-parent_id="+val.parent_id+"]").after("<label data-parent_id="+val.id+"><input type='radio' name='toc' value="+val.id+" data-content-type="+val.content_type+" class='toc "+(val.content_type ? " content":"")+"'/><span>"+val.label+"</span></label>")
+                    }
+                });
+            }
+        })
+    });
+
+    $(' aside .aside-container li.active').addClass('open').children('ul').show();
+    $('aside .aside-container li.has-sub>a').on('click', function(){
+        //$(this).removeAttr('href');
+        var element = $(this).parent('li');
+        if (element.hasClass('open')) {
+            element.removeClass('open');
+            element.find('li').removeClass('open');
+            element.find('ul').slideUp(200);
+        }
+        else {
+            element.addClass('open')
+            element.children('ul').slideDown(200);
+            element.siblings('li').children('ul').slideUp(200);
+            element.siblings('li').removeClass('open');
+            element.siblings('li').find('li').removeClass('open');
+            element.siblings('li').find('ul').slideUp(200);
+        }
+    });    
+
+        $("#upload_link").on('click', function(e){
+        e.preventDefault();
+        $("#upload").trigger('click');
+	
+	   });
+
+        
+
+        $(".dropdown button").on('click', function(e){
+            $(this).parent().toggleClass('show');
+            $(this).next().toggleClass('show');
+    
+       });
+
+
+
+        var sidebarValue = 1;
+        var sidebarDDValue = 1;
+        var htmlcode= '';
+        var levelvalue = 0;
+        var nestedvalue = 0;
+
+        
+
+
+          function addtocclick(id){
+            return;
+                console.log('clicked id' +  id) 
+                if ($("#Left-Unit-Menu :not(:contains(li))") ){
+                    htmlcode = "<li id='parent-" + levelvalue + "' onclick='clickOn(id)'><div class='default-menu'><div><i></i><span>Unit1</span></div><div></div></div></li>";
+                    levelvalue += 1;
+                    $('#Left-Unit-Menu').append(htmlcode); 
+                 }else if(id){
+                   console.log('id mili'); 
+                   htmlcode = "<li id='chapter-" + nestedvalue + "' onclick='clickOn(id)'><div class='default-menu'><div><i></i><span>Chapter</span></div><div></div></div></li>";
+                    levelvalue += 1;
+                    $('#Left-Unit-Menu').append(htmlcode); 
+                 }
+
+            }     
+
+       
+
+        function clickOn(id){
+            console.log('clickon' + id);
+            addtocclick(id);
+        }   
+
+
+              
+
+        function ManagesidebarValue(e, val){
+            sidebarValue = val;
+            mainid = e.id;
+            //console.log(id);
+            //console.log(sidebarValue);
+            $('.Left-Unit-Section li span b').removeClass('active');
+            e.classList.toggle('active');
+            // var parent = e.parentNode;
+            // parent.toggle('active');
+
+        }
+
+
+        $(".addtssoc-btn").on('click', function(e){
+          var htmlcode= '';
+          switch(sidebarValue) {
+              case 1:
+                htmlcode = `<li class="has-unit">
+                            <div>
+                                <i></i>
+                                <span>
+                                    <b onclick="ManagesidebarValue(this, 2)" id="unit">Unit</b>
+                                    <input type="text" placeholder ="title" value="Title"/>
+                                </span>
+                            </div>
+                            <div></div>
+                        </li>`;
+                 $('.Left-Unit-Section').append(htmlcode);      
+                break;
+              case 2:
+                htmlcode = `<li class="has-chapter">
+                            <div>
+                                <i></i>
+                                <span>
+                                    <b onclick = "ManagesidebarValue(this, 3)" id="chapter">Chapter</b>
+                                    <input type="text" placeholder ="title" value="Title" />
+                                </span>
+                            </div>
+                            <div></div>
+                        </li>`;
+                 $('.Left-Unit-Section').append(htmlcode);  
+                break;
+                case 3:
+                htmlcode = `<li class="has-topic">
+                            <div>
+                                <i></i>
+                                <span>
+                                    <b onclick = "ManagesidebarValue(this, 4)" id="topic">Topic</b>
+                                    <input type="text" placeholder ="title" value ="Title" />
+                                </span>
+                            </div>
+                            <div></div>
+                        </li>`;
+                 $('.Left-Unit-Section').append(htmlcode);  
+                break;
+                case 4:
+                htmlcode = `<li class="has-subtopic">
+                            <div>
+                                <i></i>
+                                <span>
+                                    <b>Sub Topic</b>
+                                    <input type="text" placeholder ="Title" value ="Title" />
+                                </span>
+                            </div>
+                            <div></div>
+                        </li>`;
+                 $('.Left-Unit-Section').append(htmlcode);  
+                break;
+              default:
+                // code block
+            }
+    
+       });
+
+        
+
+
+        var input = document.querySelector('input[name="input-custom-dropdown"]'),
+    // init Tagify script on the above inputs
+    tagify = new Tagify(input, {
+      whitelist: ["A# .NET", "A# (Axiom)", "A-0 System", "A+", "A++", "ABAP", "ABC", "ABC ALGOL", "ABSET", "ABSYS", "ACC", "Accent", "Ace DASL", "ACL2", "Avicsoft", "ACT-III", "Action!", "ActionScript", "Ada", "Adenine", "Agda", "Agilent VEE", "Agora", "AIMMS", "Alef", "ALF", "ALGOL 58", "ALGOL 60", "ALGOL 68", "ALGOL W", "Alice", "Alma-0", "AmbientTalk", "Amiga E", "AMOS", "AMPL", "Apex (Salesforce.com)", "APL", "AppleScript", "Arc", "ARexx", "Argus", "AspectJ", "Assembly language", "ATS", "Ateji PX", "AutoHotkey", "Autocoder", "AutoIt", "AutoLISP / Visual LISP", "Averest", "AWK", "Axum", "Active Server Pages", "ASP.NET", "B", "Babbage", "Bash", "BASIC", "bc", "BCPL", "BeanShell", "Batch (Windows/Dos)", "Bertrand", "BETA", "Bigwig", "Bistro", "BitC", "BLISS", "Blockly", "BlooP", "Blue", "Boo", "Boomerang", "Bourne shell (including bash and ksh)", "BREW", "BPEL", "B", "C--", "C++ – ISO/IEC 14882", "C# – ISO/IEC 23270", "C/AL", "Caché ObjectScript", "C Shell", "Caml", "Cayenne", "CDuce", "Cecil", "Cesil", "Céu", "Ceylon", "CFEngine", "CFML", "Cg", "Ch", "Chapel", "Charity", "Charm", "Chef", "CHILL", "CHIP-8", "chomski", "ChucK", "CICS", "Cilk", "Citrine (programming language)", "CL (IBM)", "Claire", "Clarion", "Clean", "Clipper", "CLIPS", "CLIST", "Clojure", "CLU", "CMS-2", "COBOL – ISO/IEC 1989", "CobolScript – COBOL Scripting language", "Cobra", "CODE", "CoffeeScript", "ColdFusion", "COMAL", "Combined Programming Language (CPL)", "COMIT", "Common Intermediate Language (CIL)", "Common Lisp (also known as CL)", "COMPASS", "Component Pascal", "Constraint Handling Rules (CHR)", "COMTRAN", "Converge", "Cool", "Coq", "Coral 66", "Corn", "CorVision", "COWSEL", "CPL", "CPL", "Cryptol", "csh", "Csound", "CSP", "CUDA", "Curl", "Curry", "Cybil", "Cyclone", "Cython", "Java", "Javascript", "M2001", "M4", "M#", "Machine code", "MAD (Michigan Algorithm Decoder)", "MAD/I", "Magik", "Magma", "make", "Maple", "MAPPER now part of BIS", "MARK-IV now VISION:BUILDER", "Mary", "MASM Microsoft Assembly x86", "MATH-MATIC", "Mathematica", "MATLAB", "Maxima (see also Macsyma)", "Max (Max Msp – Graphical Programming Environment)", "Maya (MEL)", "MDL", "Mercury", "Mesa", "Metafont", "Microcode", "MicroScript", "MIIS", "Milk (programming language)", "MIMIC", "Mirah", "Miranda", "MIVA Script", "ML", "Model 204", "Modelica", "Modula", "Modula-2", "Modula-3", "Mohol", "MOO", "Mortran", "Mouse", "MPD", "Mathcad", "MSIL – deprecated name for CIL", "MSL", "MUMPS", "Mystic Programming L"],
+      maxTags: 10,
+      dropdown: {
+        maxItems: 20,           // <- mixumum allowed rendered suggestions
+        classname: "tags-look", // <- custom classname for this dropdown, so it could be targeted
+        enabled: 0,             // <- show suggestions on focus
+        closeOnSelect: false    // <- do not hide the suggestions dropdown once an item has been selected
+      }
+    });
+    
+</script>
+{% endblock htmljs %}

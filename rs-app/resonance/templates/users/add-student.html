@@ -1,0 +1,294 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block header %}
+<meta charset="UTF-8"/>
+
+<title>Add Student</title>
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="viewport" content="user-scalable = 1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap-select.min.css' %}" type="text/css"/>
+<link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.css' %}" type="text/css">
+<link href="{% static 'css/newdesign.css' %}" rel="stylesheet" type="text/css">
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+<!-- <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"> -->
+<script type="text/javascript" src="{% static 'js/bootstrap-select.min.js' %}"></script>
+{% endblock header %}
+{% block css %}
+
+
+{% endblock %}
+{% block base_content %}
+
+<div id="container">
+
+<!--Header-->
+{% include 'users/nav.html' %}
+<!-- <header> 		
+
+<!--Content Container-->
+<main>
+    <!-- side_bar starts -->
+    {% include 'users/side_bar.html' %}
+    <!-- side_bar ends -->
+	<div id="content-container">
+        <div class="page-header">
+            <h2>Add Student</h2>
+            <ol class="breadcrumb">
+                <li><a href="javascript:void(0)"><i class="fa fa-home"></i></a></li>
+                <li><a href="/user/student_listing/">Student</a></li>
+                <li class="active">Add student</li>
+            </ol>
+        </div>
+        <div class="page-content">  
+            
+                
+                <div class="addUserWrapper">
+                        {% if status == False %}
+                        <h4 style="color: red;">{{message}}</h4>
+                    {% endif %}
+                     <form id='student_form' method='POST' enctype='multipart/form-data'>{% csrf_token %}
+                    <div class="add-user-block">
+                        <div class="thumb">
+                            <div class="thumb-placeholder"><img id="front_image" class="img-header" src=""></div>
+                            <div>
+                                <input id="upload" name="profile_pic" type="file" onchange="readURL(this);"/>
+                                <a href="javascript:void(0);" id="upload_link" style="color: blue;text-decoration:underline; id="upload_link">Add Photo</a>
+                                
+                                <!-- <a href="javascript:void(0);" class="edit_link"><i class="fa fa-pencil"></i></a> -->
+                            </div>
+                        </div>
+                        <div class="add-user-content">
+                            <div class="form-wrapper">
+                                <div class="form-block">
+                                    <label>Name</label>
+                                    <input type="text" name="name" value="{{req_update.name}}" placeholder="Enter Name" required/>
+                                </div>
+                                <div class="form-block">
+                                    <label>Student's Email</label>
+                                    <input type="email" value="{{req_update.student_email}}" name="student_email" placeholder="Enter Email ID" required/>
+                                </div>
+                            </div>
+                            <div class="form-wrapper">
+                                <div class="form-block">
+                                    <label>Student's Mobile No.</label>
+                                    <input type="tel" value="{{req_update.student_mobile}}" name="student_mobile" placeholder="Enter Mobile No." required/>
+                                </div>
+                                <div class="form-block">
+                                    <label>Date of Birth (DOB)</label>
+                                    
+                                        <input id="student_dob" type="date"  name="student_dob" placeholder="Enter DOB" />
+                                   
+                                </div>
+                                <div class="form-block">
+                                    <label>Gender</label>
+                                    <select id="gender" name="gender" required>
+                                            <option selected disabled>Select Gender</option>
+                                        <option value='1'>Male</option>
+                                        <option value='2'>Female</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-wrapper">
+                                <div class="form-block">
+                                    <label>Division</label>
+                                    <select id="divisionFilter" name="division" required>
+                                        <option selected disabled>Select Division</option>
+                                        {% for dep in division  %}
+                                        <option value="{{dep.id}}">{{dep.name}}</option>
+                                        {% endfor %}   
+                                    </select>
+                                </div>
+                                <div class="form-block">
+                                    <label>Medium</label>
+                                    <select id="medium" name="medium" required>
+                                            <option selected disabled>Select Medium</option>
+                                        <option value='1'>English</option>
+                                        <option value='2'>Hindi</option>
+                                    </select>
+                                </div>
+                                <div class="form-block">
+                                    <label>Country</label>
+                                    <select id="country-getting-started" name="country" onchange="SelectState();" required>
+                                       
+                                    </select>
+                                </div>
+                               
+                            </div>
+
+                            <div class="form-wrapper">
+                                
+                                <div class="form-block">
+                                    <label>State</label>
+                                    <select id="state-getting-started" name="state" onchange="SelectCity();" required>
+                                      
+                                    </select>
+                                </div>
+                                <div class="form-block">
+                                    <label>City</label>
+                                    <select id="city-getting-started" name="city" onchange="SelectCenter();" required>
+                                       
+                                    </select>
+                                </div>
+                                <div class="form-block">
+                                    <label>Study Center</label>
+                                    <select id="center-getting-started" name="center">
+                                      
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-wrapper">
+                                <div class="form-block">
+                                    <label>Roll No.</label>
+                                   <input type="text" name="role_number" value="{{req_update.role_number}}" placeholder="Enter Roll No." required/>
+                                </div>
+                                <div class="form-block">
+                                        <label>Session</label>
+                                       <select id="session" name="session" onchange="program_session();"  required>
+                                            <option selected disabled>Select Session</option>
+                                            {% for dep in session %}  
+                                            <option value="{{dep.id}}">{{dep.label}}</option>
+                                            {% endfor %}   
+                                        </select>
+                                    </div>
+                               
+                                
+                            </div>
+                            <div class="form-wrapper">
+                               
+                                <div class="form-block">
+                                        <label>Program</label>
+                                        <select id="program" name="program" onchange="program_class(); program_phase_session();" required>
+                                            <option selected disabled>Select Program</option>
+                                        </select>
+                                        
+                                    </div>
+                                    <div class="form-block">
+                                            <label>Phase</label>
+                                            <select id="phase" name="phase" onchange="phase_batch();" required>
+                                                <option selected disabled >Select Phase</option>
+                                            
+                                            </select>
+                                    </div>
+                                
+                                
+                            </div>
+                            <div class="form-wrapper">
+                                <div class="form-block">
+                                    <label> Batch</label>
+                                    <select name="current_batch" id="current_batch">
+                                         <option selected disabled >Select Batch</option>
+                                       
+                                    </select>
+                                </div>
+                                
+                                
+                            </div>
+                            <div class="form-wrapper">
+                                <div class="form-block">
+                                    <label>Class</label>
+                                   <select id="class" name="class" required>
+                                        <option selected disabled>Select Class</option>
+                                    </select>
+                                </div>
+                                
+                            </div>
+                            <div class="form-wrapper">
+                                <div class="form-block">
+                                    <label>Father's Name</label>
+                                   <input type="text" value="{{req_update.father_name}}" name="father_name" placeholder="Enter Father's Name"/>
+                                </div>
+                                <div class="form-block">
+                                    <label>Mother's Name</label>
+                                    <input type="text" value="{{req_update.mother_name}}" name="mother_name" placeholder="Enter Mother's Name"/>
+                                </div>
+                            </div>
+                            <div class="form-wrapper">
+                                <div class="form-block">
+                                    <label>Father's Email</label>
+                                   <input type="email" value="{{req_update.father_email}}" name="father_email" placeholder="Enter Father's Email"/>
+                                </div>
+                                <div class="form-block">
+                                    <label>Mother's Email</label>
+                                    <input type="email" value="{{req_update.mother_email}}" name="mother_email" placeholder="Enter Mother's Email"/>
+                                </div>
+                            </div>
+                            <div class="form-wrapper">
+                                <div class="form-block">
+                                    <label>Father's Mobile</label>
+                                   <input type="tel" value="{{req_update.father_mobile}}" name="father_mobile" placeholder="Enter Father's Mobile" />
+                                </div>
+                                <div class="form-block">
+                                    <label>Mother's Mobile</label>
+                                    <input type="tel" name="mother_mobile" value="{{req_update.mother_mobile}}" placeholder="Enter Mother's Mobile"/>
+                                </div>
+                            </div>
+                             
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <a href="/user/student_listing/">Cancel</a>
+                        <button id="submit" type="submit">Save</button>
+                    </div>   
+                </form>
+                </div>
+        </div>
+    </div>
+</main>     
+<!--Content Container-->
+
+
+
+</div>
+<!-- Success Content Dialog-->
+{% if status == True %}
+
+    <div id="successDialog" class="successDialog">
+        <div class="successDialogContainer">
+            <div class="heading">Success</div>
+            <div class="dialog-content">
+                <i class="fa fa-check"></i>
+                <h3>Awesome</h3>
+               <p>{{message}}</p>
+            </div>
+             <div class="form-actions">
+                <!-- <a href="javascript:void(0);" onclick="success('cancel')">Cancel</a> -->
+                <button onclick="success()">OK</button>
+            </div>  
+        </div>     
+    </div>
+    <script>
+        function phase_batchs()
+  {
+   
+    var phase_id = $('#phase').val()
+   alert
+
+}
+    </script>
+{% endif %}
+<!-- Success Content Dialog-->
+
+<input type="number" id="division_id" value="{{req_update.division}}" hidden>
+<input type="number" id="gender_id" value="{{req_update.gender}}" hidden> 
+<input type="number" id="medium_id" value="{{req_update.medium}}" hidden>
+<input type="number" id="phase_id" value="{{req_update.phase}}" hidden>
+<input type="number" id="country_id" value="{{req_update.country}}" hidden>
+<input type="number" id="state_id" value="{{req_update.state}}" hidden>
+<input type="number" id="city_id" value="{{req_update.city}}" hidden>
+<input type="number" id="center_id" value="{{req_update.center}}" hidden>
+<input type="number" id="session_id" value="{{req_update.session}}" hidden>
+<input type="number" id="class_id" value="{{req_update.classs}}" hidden>
+<input type="number" id="program_id" value="{{req_update.program}}" hidden>
+{% endblock base_content %}
+
+{% block htmljs %}
+</script>
+<script src="{% static 'js/site.js' %}"></script>
+<script src="{% static 'js/student.js' %}"></script>
+{% endblock htmljs %}

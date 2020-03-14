@@ -1,0 +1,461 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block header %}
+<meta charset="UTF-8"/>
+
+<title>Division Listing</title>
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="viewport" content="user-scalable = 1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap-select.min.css' %}" type="text/css"/>
+<link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.css' %}" type="text/css">
+<link href="{% static 'css/newdesign.css' %}" rel="stylesheet" type="text/css">
+{% endblock header %}
+{% block css %}
+
+
+{% endblock %}
+{% block base_content %}
+
+<div id="container">
+
+<!--Header-->
+{% include 'users/nav.html' %}
+<!-- <header>        
+
+<!--Content Container-->
+    <main>
+         <!-- side_bar starts -->
+       {% include 'users/side_bar.html' %}
+       <!-- side_bar ends -->
+
+
+    <div id="content-container">
+       <div class="page-header">
+            <h2>Lecture Planner</h2>
+            <ol class="breadcrumb">
+                <li><a href="javascript:void(0)"><i class="fa fa-home"></i></a></li>
+                <li><a href="/institute/lecture-planner/">Lecture Planner</a></li>
+               
+            </ol>
+        </div>
+        <div class="page-content">
+
+            <div class="phases-wrapper">
+                <form method="GET">
+                    <div class="phases-container">
+                        <div class="topbar-wrapper">
+                            <div class="topbar-block">
+                                <div class="block">
+                                    <select class="select-class" name="classs" data-target_id="subject" required>
+                                        <option value="">Select Class</option>
+                                        {% for class in classes %}
+                                            <option value="{{class.id}}">{{class.label}}</option>
+                                        {% endfor %}
+                                    </select>
+                                     <select name="subject" data-target_id="session" required>
+                                        <option value="">Select Subject</option>
+                                        {% for subject in subjects %}
+                                            <option value="{{subject.id}}">{{subject.label}}</option>
+                                        {% endfor %}
+                                        <!-- {% if selected_subject %}
+                                            <option value="{{selected_subject.id}}">{{selected_subject.label}}</option>
+                                        {% endif %} -->
+                                    </select>
+                                     <select class="select-class" name="session" data-target_id="program" required>
+                                        <option value="">Select Session</option>
+                                        {% for session in sessions %}
+                                            <option value="{{session.id}}">{{session.label}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="block">
+                                    <select placeholder="dsds" class="select-class" name="program" data-target_id="phase" required>
+                                        <option>Select Program</option>
+                                        {% for program in programs %}
+                                            <option value="{{program.id}}">{{program.label}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <select class="select-class" name="phase" data-target_id="batch" required>
+                                        <option value="">Select Phase</option>
+                                        {% for phase in phases %}
+                                            <option value="{{phase.id}}">{{phase.label}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <select placeholder="viewpo" name="batch" multiple required>
+                                        <option>Select Batch</option>
+                                        {% for batch in batches %}
+                                            <option value="{{batch.id}}">{{batch.label}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        <div><button type="submit">GO</button></div>
+                        </form>
+                    </div>
+                    <!-- <div class="no-content-added">No Phase Selected</div> -->
+
+                    <div class="lecture-planner2-wrapper">
+                        <div class="lecture-info">
+                            {% if phase %}
+                                <div class="info-block">
+                                    <div>Phase : {{phase.label}}</div>
+                                    <div>Start Date : {{phase.start_date}}</div>
+                                    <div>End Date : {{phase.end_date}}</div>
+                                </div>
+                            {% endif %}
+                            {% if request.GET %}
+                                <div class="btn-block" style="margin-left: 400px;margin-top: 10px;">
+                                    <a href="javascript:void(0);" class="add-lecture-btn">Add Lecture</a>
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <form method="POST" id="lecture_creation_form" {% if request.GET or lectures %} style="display :none;" {% endif %}>
+                            <div class="form-wrapper">
+                                <div class="form-block">
+                                    <label>No of lectures</label>
+                                    <div class="block">
+                                        <input type="text" name="lectures" placeholder="Add no of lecture" required />
+                                    </div>
+                                </div>
+                                <div class="form-block">
+                                    <label>Lecture duration</label>
+                                    <div class="block">
+                                        <input type="text" name="duration" placeholder="Add duration" required />
+                                        <span>Hrs</span>
+                                    </div>
+                                </div>
+                                <div class="form-block">
+                                    <label>Time</label>
+                                     <div class="block">
+                                        <input type="time" placeholder="Add time" name="time" required />
+                                        <span>AM/PM</span>
+                                    </div>
+                                </div>
+                                <div class="form-action">
+                                    <button type="submit">Create</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    {% if request.GET %}
+                    <div class="lecture-planner3-wrapper">
+                        <div class="lecture-planner3-container">
+                            <div class="listing-section">
+                                <ol>
+                                    {% for lecture in lectures %}
+                                        <li class="lecture-{{lecture.id}}">
+                                            <div class="top-block">
+                                                <div>
+                                                    <span>{{lecture.title}}</span>
+                                                    <span>{{lecture.room}}</span>
+                                                    {% if lecture.batch %}<span>Batch : {{lecture.batch.label}}{%endif%}</span>
+                                                </div>
+                                                <div>
+                                                    <a href="{% url 'edit_lecture_planner' pk=lecture.id %}"><i class="fa fa-pencil"></i></a>
+                                                    <a href="javascript:void(0)" class="delete-lecture" data-lecture_id={{lecture.id}}><i class="fa fa-trash"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="bottom-block">
+                                                <ul>
+                                                    
+                                                    <li>
+                                                        <div>
+                                                            <i class="fa fa-calendar"></i>
+                                                            <span>{% if lecture.is_tentative %} Tentative {% else %} Actual {%endif%}</span>
+                                                        </div>
+                                                        <div>{{lecture.start_date_time}}</div>
+                                                    </li>
+                                                    <li>
+                                                        <div>
+                                                            <i class="fa fa-hourglass"></i>
+                                                        </div>
+                                                        <div>{{lecture.duration_hrs}} hrs</div>
+                                                    </li>
+                                                    <li>
+                                                        <div>
+                                                            <i class="fa fa-user"></i>
+                                                        </div>
+                                                        <div>{{lecture.faculty.name}}</div>
+                                                    </li>
+                                                    <li>
+                                                        <div>
+                                                            <i class="fa fa-link"></i>
+                                                            <span>({{lecture.toc_count}})</span>
+                                                        </div>
+                                                        <div><a href="javascript:void(0);" data-lecture_id="{{lecture.id}}" class="linktopic-link">Link topic</a></div>
+                                                    </li>
+                                                </ul>
+                                                
+                                            </div>
+                                        </li>
+                                    {% endfor %}
+                                </ol>
+                            </div>
+                            <div class="mapping-section">
+                                <div class="heading-title">
+                                    Select chapters to map to lectures
+                                    <a href="javascript:void(0);">X</a>
+                                </div>
+                                <ul class="units-ul">
+                                    <!-- <li>
+                                        <label>
+                                            <input type="checkbox"/>
+                                            <span>Electrostatics</span>
+                                        </label>
+                                        <label>
+                                            <input type="checkbox"/>
+                                            <span>Charging properties</span>
+                                        </label>
+                                         <label>
+                                            <input type="checkbox"/>
+                                            <span>Subtopic</span>
+                                        </label>
+                                        <label>
+                                            <input type="checkbox"/>
+                                            <span>Class lecture title</span>
+                                        </label>
+                                        <label>
+                                            <input type="checkbox"/>
+                                            <span>Study material title</span>
+                                        </label> 
+                                    </li> -->
+                                    <li class="">
+                                        <label>
+                                            <input type="checkbox"/>
+                                            <span>DPP's</span>
+                                        </label> 
+                                        <div>
+                                            <label>
+                                                <input type="radio" name="released"/>
+                                                <span>Release</span>
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="released"/>
+                                                <span>To be released by the teacher</span>
+                                            </label>
+                                        </div> 
+                                    </li>
+                                </ul>
+                                <div class="mapping-actions">
+                                    <button class="mapping-button">Map</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    <div class="paginationWrapper" style="margin: auto;">
+                        <div id="divPagination" class="paginationContainer" actpage="1">
+                            {% if request.GET %}
+                                {% if lectures.has_previous %}
+                                    <a class="pagination" href="javascript:void(0)" data-page_id="{{ lectures.previous_page_number }}" class="selected">Previous</a>
+                                {% endif %}
+                                <p class="pagination">{{lectures.number}} of {{lectures.paginator.num_pages}}</p>
+                                {% if lectures.has_next %}
+                                    <a class="pagination" href="javascript:void(0)" data-page_id="{{ lectures.next_page_number }}">Next</a></a>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+               </div>
+               
+            </div>
+
+
+            
+            
+
+        </div>  
+
+    </div>
+</main>    
+<!--Content Container-->
+</div>
+
+<script>
+    $(".add-lecture-btn").click(function(e){
+        e.preventDefault();
+        $("#lecture_creation_form").show();
+    });
+
+    $(".pagination").click(function(e){
+        e.preventDefault();
+        var searchParams = new URLSearchParams('{{request.get_full_path|safe}}');
+        searchParams.delete('page');
+        searchParams.set('page', $(this).data('page_id'));
+        window.location.href = decodeURIComponent(searchParams.toString());
+    });
+
+    {% if request.GET %}
+        {% for param,value in request.GET.items %}
+            $("select[name="+"{{param}}"+"]").find("option[value="+"{{value}}"+"]").attr('selected','true')
+            {% if param == "batch" %}
+                {% for batch in selected_batches %}
+                    $("select[name=batch]").find("option[value="+"{{batch}}"+"]").attr('selected','true')
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    var lecture_id = "";
+    $(' aside .aside-container li.active').addClass('open').children('ul').show();
+    $('aside .aside-container li.has-sub>a').on('click', function(){
+        //$(this).removeAttr('href');
+        var element = $(this).parent('li');
+        if (element.hasClass('open')) {
+            element.removeClass('open');
+            element.find('li').removeClass('open');
+            element.find('ul').slideUp(200);
+        }
+        else {
+            element.addClass('open')
+            element.children('ul').slideDown(200);
+            element.siblings('li').children('ul').slideUp(200);
+            element.siblings('li').removeClass('open');
+            element.siblings('li').find('li').removeClass('open');
+            element.siblings('li').find('ul').slideUp(200);
+        }
+    });    
+
+        $(".right-action-bar .dropdown button").on('click', function(e){
+            $(this).parent().toggleClass('show');
+            $(this).next().toggleClass('show');
+    
+       });
+
+        $(".mapping-section .heading-title a").on('click', function(e){
+            $('.mapping-section').removeClass('open');
+    
+       });
+
+        $(".linktopic-link").on('click', function(e){
+            $('.mapping-section').addClass('open');
+        });
+
+        /*$(".select-class").change(function(){
+            dependent_select_class = $(this).data('target_id');
+            dependent_select = $("select[name="+dependent_select_class+"]");
+            var field_name = $(this).attr("name");
+            $.ajax({
+                type:'GET',
+                url:"{% url 'get_corresponding_objects' %}",
+                data:{'field_name':field_name, 'field_value':$(this).val()},
+                success:function(data){
+                    $(dependent_select).empty();
+                    $(dependent_select).append('<option value="">Select Option</option>')
+                    $.each(data, function(k,obj){
+                        $(dependent_select).append('<option value="'+ obj.id +'">'+ obj.value +'</option>')
+                    });
+                }
+            })
+        });*/
+
+        $("#lecture_creation_form").submit(function(e){
+            e.preventDefault();
+            console.log($(this).serialize())
+            var form = $(this);
+            var classs_id = $("select[name='classs']").val();
+            var subject_id = $("select[name='subject']").val();
+            var session_id = $("select[name='session']").val();
+            var program_id = $("select[name='program']").val();
+            var phase_id = $("select[name='phase']").val();
+            var batch_ids = $("select[name=batch]").val();;
+            if($("input[type=hidden][name=phase_id]").length == 0)
+            {
+                $(this).append("<input type='hidden' name='classs_id' value="+classs_id+">")
+                $(this).append("<input type='hidden' name='subject_id' value="+subject_id+">")
+                $(this).append("<input type='hidden' name='session_id' value="+session_id+">")
+                $(this).append("<input type='hidden' name='program_id' value="+program_id+">")
+                $(this).append("<input type='hidden' name='phase_id' value="+phase_id+">")
+                $(this).append("<input type='hidden' name='batches' value="+batch_ids+">")
+            }
+            $.ajax({
+                type:'POST',
+                url:'{% url "create_lecture" %}',
+                data:$(this).serialize(),
+                success:function(response){
+                    window.location.reload();
+                }
+            });
+        });
+
+        $(".delete-lecture").click(function(e)
+        {
+            var li = $(this);
+            var lecture_id = $(this).data('lecture_id');
+            e.preventDefault();
+            $.ajax({
+                type:'POST',
+                url:"{% url 'delete_lecture' %}",
+                data:{'lecture_id':$(this).data('lecture_id')},
+                success:function(response){
+                    $(li).parents(".lecture-"+lecture_id+"").remove();
+                }
+            })
+        });
+
+        $(".linktopic-link").click(function(){
+            lecture_id = $(this).data('lecture_id');
+            $.ajax({
+                type:'POST',
+                url:'{% url "get_toc_by_subject_id" %}',
+                data:{'subject_id':$("select[name='subject']").val()},
+                success:function(response)
+                {
+                    $("ul.units-ul").empty();
+                    response.forEach(function(val, index){
+                        if(val.level==0)
+                        {
+                            $(".units-ul").append("<li><label data-parent_id="+val.id+"><input type='checkbox' value="+val.id+" class='toc'/><span>"+val.label+"</span></label></li>") 
+                        }
+                        else
+                        {   
+                            $("label[data-parent_id="+val.parent_id+"]").after("<label data-parent_id="+val.id+"><input type='checkbox' value="+val.id+" class='toc'/><span>"+val.label+"</span></label>")
+                        }
+                    });
+                    $.ajax({
+                        type:"POST",
+                        url:"{% url 'created_lecture_toc_ids' %}",
+                        data:{'lecture_id':lecture_id},
+                        success:function(response){
+                            response.toc_ids.forEach(function(k,v){
+                                console.log(k,v)
+                                $("ul.units-ul").find("input[value="+k+"]").attr('checked','true');
+                            });
+                        }
+                    });
+                    $.ajax({
+                        type:'POST',
+                        url:"{% url 'get_dpp_by_subject_id' %}",
+                        data:{'subject_id':$("select[name='subject']").val()},
+                        success:function(response)
+                        {
+                            // alert(response);    
+                        }
+                    });
+                }
+            })
+        });
+
+        $(".mapping-button").click(function(e){
+            var toc_ids=[];
+            $("input[class='toc'][type='checkbox']:checked").each(function(k, toc)
+            {
+                toc_ids.push(toc.value);
+            });
+            $.ajax({
+                type:'POST',
+                url:"{% url 'create_lecture_toc_mapping' %}",
+                data:{'lecture_id':lecture_id, 'toc_ids':toc_ids},
+                success:function()
+                {
+                    alert("TOC Mapped With Lecture Successfully");
+                }
+            });
+        });
+</script>
+</body>
+{% endblock %}

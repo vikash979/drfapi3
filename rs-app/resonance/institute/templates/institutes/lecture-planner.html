@@ -1,0 +1,258 @@
+{% extends 'identity_service/base.html' %}
+{% load static %}
+{% block header %}
+
+<!doctype html>
+<html> 
+<head> 
+<meta charset="UTF-8"/>
+
+<title>sProgram Listing</title>
+<!-- <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"> -->
+<meta name="viewport" content="user-scalable = 1">
+
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="viewport" content="user-scalable = 1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.css' %}" type="text/css">
+<link href="{% static 'css/newdesign.css' %}" rel="stylesheet" type="text/css">
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/bootstrap-select.min.js' %}"></script>
+<script src="{% static 'js/highstock.js' %}"></script>
+<script src="{% static 'js/moment.min.js' %}"></script>            
+<script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
+
+
+<link href="{% static 'css/newdesign.css' %}" rel="stylesheet" type="text/css">
+
+
+{% endblock header %}
+{% block css %}
+<style type="text/css">
+    input, label, select{margin: 10px 0px 5px 0px;height: 30px;}
+    .col-md-4{   width: 30%; margin-right: 20px;}
+</style>
+
+{% endblock %}
+{% block base_content %}
+
+<div id="container">
+    {% include 'identity_service/nav.html' %}
+
+<!--Header-->
+  
+<!--Header-->       
+
+<!--Content Container-->
+    <main>
+        {% include 'identity_service/side_bar.html' %}
+    <div id="content-container">
+        <div class="page-header">
+                <h2>Programs</h2>
+               <!--  <ol class="breadcrumb">
+                    <li><a href="javascript:void(0)"><i class="fa fa-home"></i></a></li>
+                    <li><a href="listing.html">Users</a></li>
+                    <li class="active">Add User</li>
+                </ol> -->
+            </div>
+            <div class="table-top">
+                        <input type="search" id="txt-search" placeholder="Search" />
+                        <div>
+                           <div>
+                                3 Results 
+                            </div>
+                            <div> 
+                             <div class="filter-by">Filter by Session<select><option>Session1</option><option>Session2</option><option>Session3</option><option>Session4</option><option>Session5</option></select></div>   
+                              <a href="javascript:void(0)" class="add-session-link">
+                                    <i class="fa fa-plus"></i>
+                                    <span>Add New</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>    
+                <div class="page-content">
+                    
+                    <div class="listing-wrapper">
+                    <div class="listing-container">
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Unique Code</th>
+                                    <th>Target</th>
+                                    <th class="division-actions">Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody class="listingtable" id="listingtable" id="pagination">
+                                   
+                                
+                                </tbody>
+                            </table>    
+                        </div>
+                        <form method="POST" action=".">
+                            <div class="row">
+                                <select name="class" class="col-md-4">
+                                    {% for class in classes %}
+                                        <option value="{{class.id}}">{{class.name}}</option>
+                                    {% endfor %}
+                                </select>
+                                <select name="subject" class="col-md-4">
+                                    {% for subject in subjects %}
+                                        <option value="{{subject.id}}">{{subject.name}}</option>
+                                    {% endfor %}
+                                </select>
+                                <select name="session" class="col-md-4">
+                                    {% for session in sessions %}
+                                        <option value="{{session.id}}">{{session.name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="row">
+                                <select name="programme" class="col-md-4"></select>
+                                    {% for programme in programmes %}
+                                        <option value="{{programme.id}}">{{programme.name}}</option>
+                                    {% endfor %}
+                                <select name="phase" class="col-md-4">
+                                    {% for phase in phases %}
+                                        <option value="{{phase.id}}">{{phase.name}}</option>
+                                    {% endfor %}
+                                </select>
+                                <select name="batch" class="col-md-4">
+                                    {% for batch in batches %}
+                                        <option value="{{batch.id}}">{{batch.name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </form>
+                        <label for="lectures_count">No. Of Lectures</label>
+                        <input id="lectures_count" class="col-md-4" name="lectures_count">
+                        <label for="duration">Lecture Duration</label>
+                        <input id="duration" class="col-md-4" name="duration">
+                        <label for="time">Time</label>
+                        <input id="time" class="col-md-4" type="date" name="">
+                        <input type="submit" class="col-md-4" value="Save">
+                     </div>
+
+                    
+                  
+                    
+                    
+                    </div>
+
+                </div>
+
+            </div>
+ </main>           
+<!--Content Container-->
+
+</div>
+
+
+<!-- Add Content Dialog-->
+    <div class="addSessionDialog">
+        <div class="addSessionDialogContainer">
+            <div class="heading">Add Programs</div>
+            <div class="dialog-content">
+                <form>
+                <div class="form-wrapper">
+                    <div class="form-block">
+                        <input type="text" name="name" id="name"  placeholder="Enter programs title" required/>
+                    </div>
+                     <div class="form-block">
+                        <input type="text" name="description" id ="description" placeholder="Enter programs unique code" required/>
+
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <a href="javascript:void(0);">Cancel</a>
+                    <button  id = "add_program" type="submit">Save</button>
+                </div>  
+                </form> 
+            </div>
+        </div>     
+    </div>
+    <!-- Add Content Dialog-->
+
+
+    <!-- Add Content Dialog-->
+    <div class="addSessionDialog foredit">
+        <div class="addSessionDialogContainer">
+            <div class="heading">Edit Programs <input type="text" name="hidden_class_id"  id= "hidden_class_id" value=""> </div>
+            <div class="dialog-content">
+                <form>
+                <div class="form-wrapper">
+                    <div class="form-block">
+                        <input type="text" name="progr_name" id="progr_name"  value="" placeholder="Enter programs title" required/>
+                    </div>
+                     <div class="form-block">
+                        <input type="text" name="desc" id="desc" placeholder="Enter programs unique code" required/>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <a href="javascript:void(0);">Cancel</a>
+                    <button id="update" type="submit" onclick="updateclass()">Save</button>
+                </div>  
+                </form> 
+            </div>
+        </div>     
+    </div>
+    <!-- Add Content Dialog-->
+
+
+<!-- Confirmation Content Dialog-->
+    <div class="confirmationDialog">
+        <div class="confirmationDialogContainer">
+            <div class="heading">Confirmation</div>
+            <div class="dialog-content">
+                <h3>Are you Sure ?</h3>
+               <p>This is a confirmation dialog  with custom message.</p>
+            </div>
+             <div class="form-actions">
+                <a href="javascript:void(0);" onclick="confirmation('cancel')">Cancel</a>
+                <button onclick="confirmation('confirm')">Confirm</button>
+            </div>  
+        </div>     
+    </div>
+<!-- Confirmation Content Dialog-->
+
+<!-- Success Content Dialog-->
+    <div class="successDialog">
+        <div class="successDialogContainer">
+            <div class="heading">Success</div>
+            <div class="dialog-content">
+                <i class="fa fa-check"></i>
+                <h3>Awesome</h3>
+               <p>This is a Success dialog  with custom message.</p>
+            </div>
+             <div class="form-actions">
+                <a href="javascript:void(0);" onclick="success('cancel')">Cancel</a>
+                <button onclick="success('ok')">OK</button>
+            </div>  
+        </div>     
+    </div>
+<!-- Success Content Dialog-->
+
+
+
+    
+
+   <script>
+    $( "form" ).on( "submit", function( event ) {
+          event.preventDefault();
+          console.log( $( this ).serializeArray() );
+        });
+
+
+</script>    
+{% endblock base_content %}
+
+{% block htmljs %}
+<script src="{% static 'js/programe.js' %}"></script>
+<script src="{% static 'js/site.js' %}"></script>
+{% endblock htmljs %}
+
